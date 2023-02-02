@@ -1,0 +1,23 @@
+.wrapper {
+  margin: 10px 0;
+}
+
+.form-control {
+  .input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid rgb(151, 147, 147);
+    width: 300px;
+    font-size: 1.6rem;
+
+    &:focus-within {
+      border: 1.5px solid var(--main-green);
+    }
+  }
+}
+.txt-error {
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 1.4rem;
+  color: red;
+}

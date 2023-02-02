@@ -1,0 +1,43 @@
+//Menu wrapper
+.menu-list {
+  padding: 0 10px;
+  overflow-y: overlay;
+
+  .menu-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .item-title {
+      font-size: 1.6rem;
+      color: white;
+    }
+    .number-notify {
+      width: 2.5rem;
+      height: auto;
+      background-color: red;
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 100px;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+  }
+}
+//Menu items
+.menu-item {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  padding: 11px 16px;
+  line-height: 2.8rem;
+  background-color: var(--main-green);
+  border-bottom: 1px solid white;
+
+  &:hover {
+    background-color: var(--dark-green);
+  }
+}

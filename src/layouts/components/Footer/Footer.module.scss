@@ -1,0 +1,42 @@
+.wrapper {
+  padding: 30px 200px;
+  background-color: var(--footer-color);
+}
+.inner {
+  display: flex;
+  justify-content: space-between;
+
+  .part-footer {
+    width: 45%;
+    margin: 0 20px;
+
+    .logo {
+      width: 150px;
+      height: auto;
+      margin-left: -5px;
+    }
+    .header {
+      margin: 10px 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    .body {
+      display: flex;
+      margin-bottom: 5px;
+      font-size: 1.8rem;
+    }
+    .icon {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .logo-certificate {
+      width: 150px;
+      height: auto;
+      margin-left: -5px;
+      margin-right: 20px;
+      margin-top: 10px;
+    }
+  }
+}
