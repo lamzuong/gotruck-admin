@@ -14,6 +14,7 @@ function MyInput({
   regex,
   checkEmpty = false,
   inputName = false,
+  iconLeft,
 }) {
   useEffect(() => {
     setHideError(hideErr);
@@ -45,6 +46,7 @@ function MyInput({
   return (
     <div className={cx('wrapper')}>
       <div className={cx('form-control')}>
+        {iconLeft ? <div className={cx('icon-left')}>{iconLeft}</div> : null}
         <input
           className={cx('input')}
           onChange={(e) => {

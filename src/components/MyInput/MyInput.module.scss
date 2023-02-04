@@ -3,16 +3,24 @@
 }
 
 .form-control {
+  display: flex;
+  align-items: center;
+
+  border: 1.5px solid rgb(151, 147, 147);
+  border-radius: 10px;
+  margin-right: 10px;
+
+  .icon-left {
+    padding: 0 0 0 10px;
+  }
   .input {
     padding: 10px;
-    border-radius: 10px;
-    border: 1.5px solid rgb(151, 147, 147);
-    width: 300px;
+    width: 250px;
     font-size: 1.6rem;
-
-    &:focus-within {
-      border: 1.5px solid var(--main-green);
-    }
+    border-radius: 10px;
+  }
+  &:focus-within {
+    border: 1.5px solid var(--main-green);
   }
 }
 .txt-error {

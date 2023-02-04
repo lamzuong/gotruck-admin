@@ -1,0 +1,54 @@
+.row-info {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+
+  .label {
+    font-weight: 600;
+    font-size: 1.8rem;
+    width: 180px;
+  }
+  .content {
+    font-size: 1.8rem;
+  }
+}
+.div3 {
+  margin: 10px;
+
+  .img-place {
+    display: flex;
+    margin: 10px;
+
+    .title {
+      font-weight: 600;
+      font-size: 1.8rem;
+      width: 200px;
+    }
+    .cover-image {
+      width: 80%;
+    }
+  }
+}
+.image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin: 5px;
+  cursor: pointer;
+}
+.cover-img {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: auto;
+
+  .icon-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .show-img {
+    object-fit: contain;
+  }
+}

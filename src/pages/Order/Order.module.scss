@@ -1,0 +1,23 @@
+.search-place {
+  display: flex;
+  align-items: center;
+
+  .title {
+    margin-right: 20px;
+  }
+}
+.table-order {
+  margin-top: 10px;
+}
+.tabs {
+  font-size: 1.6rem;
+  cursor: pointer;
+
+  .choose-tab {
+    font-weight: 700;
+    color: var(--main-green);
+  }
+  .no-choose-tab {
+    color: var(--text-color);
+  }
+}
