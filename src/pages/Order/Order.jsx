@@ -1,12 +1,14 @@
 import styles from './Order.module.scss';
+import { HeaderTable, BodyTable } from '~/components/MyTableOrder/MyTableOrder';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Button, Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import MyInput from '~/components/MyInput/MyInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import useDebounce from '~/hook/useDebounce';
 
 const cx = classNames.bind(styles);
 
@@ -65,19 +67,36 @@ function Order() {
       ],
     },
   ];
-  const title = [
-    'Mã đơn hàng',
-    'Mã tài xế',
-    'Tên tài xế',
-    'Biển số xe',
-    'Người gửi hàng',
-    'Tình trạng',
-  ];
   const status = ['Tất cả', 'Đã giao', 'Đang giao', 'Đang lấy hàng', 'Đã hủy'];
 
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
   const [tab, setTab] = useState('Tất cả');
-  const navigate = useNavigate();
+
+  const debouncedValue = useDebounce(searchValue, 500);
+  useEffect(() => {
+    if (!debouncedValue.trim()) {
+      setSearchResult([]);
+      return;
+    }
+
+    const fetchApi = async () => {
+      // setLoading(true);
+      // const result = await searchServices.search(debouncedValue);
+      // setSearchResult(result);
+      // setLoading(false);
+      var list = [];
+      orders.forEach((e) => {
+        if (e.id.toLowerCase().includes(debouncedValue.toLowerCase())) {
+          list.push(e);
+        }
+      });
+      setSearchResult(list);
+      if (debouncedValue == '') setSearchResult([]);
+    };
+
+    fetchApi();
+  }, [debouncedValue]);
 
   return (
     <div className={cx('wrapper')}>
@@ -85,55 +104,46 @@ function Order() {
         <div className={cx('title')}>Tra cứu mã đơn hàng</div>
         <MyInput data={setSearchValue} iconLeft={<FontAwesomeIcon icon={faSearch} />} />
       </div>
-
-      <Nav tabs>
-        {status.map((e, i) => (
-          <NavItem key={i} className={cx('tabs')}>
-            <NavLink className={tab == e ? 'active' : ''} onClick={() => setTab(e)}>
-              <div className={tab == e ? cx('choose-tab') : cx('no-choose-tab')}>{e}</div>
-            </NavLink>
-          </NavItem>
-        ))}
-      </Nav>
-      <TabContent activeTab={tab}>
-        {status.map((status, i) => (
-          <TabPane tabId={status} key={i}>
-            <Table striped className={cx('table-order')}>
-              <thead>
-                <tr>
-                  {title.map((e, i) => (
-                    <th key={i}>{e}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((e, i) =>
-                  status == 'Tất cả' || status == e.status ? (
-                    <tr key={i}>
-                      <td>{e.id}</td>
-                      <td>{e.shipper.id}</td>
-                      <td>{e.shipper.name}</td>
-                      <td>{e.shipper.numberTruck}</td>
-                      <td>{e.peopleSend.name}</td>
-                      <td>{e.status}</td>
-                      <td>
-                        <Button
-                          color="primary"
-                          onClick={() => {
-                            navigate(`/order-detail/${e.id}`, { state: e });
-                          }}
-                        >
-                          <h4>Xem</h4>
-                        </Button>
-                      </td>
-                    </tr>
-                  ) : null,
-                )}
-              </tbody>
-            </Table>
-          </TabPane>
-        ))}
-      </TabContent>
+      {/* Search result */}
+      {searchResult.length > 0 ? (
+        <Table striped className={cx('table-order')}>
+          <HeaderTable />
+          <tbody>
+            {searchResult.map((e, i) => (
+              <BodyTable order={e} key={i} />
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <>
+          {/* Tab order */}
+          <Nav tabs>
+            {status.map((e, i) => (
+              <NavItem key={i} className={cx('tabs')}>
+                <NavLink className={tab == e ? 'active' : ''} onClick={() => setTab(e)}>
+                  <div className={tab == e ? cx('choose-tab') : cx('no-choose-tab')}>{e}</div>
+                </NavLink>
+              </NavItem>
+            ))}
+          </Nav>
+          <TabContent activeTab={tab}>
+            {status.map((status, i) => (
+              <TabPane tabId={status} key={i}>
+                <Table striped className={cx('table-order')}>
+                  <HeaderTable />
+                  <tbody>
+                    {orders.map((e, i) =>
+                      status == 'Tất cả' || status == e.status ? (
+                        <BodyTable order={e} key={i} />
+                      ) : null,
+                    )}
+                  </tbody>
+                </Table>
+              </TabPane>
+            ))}
+          </TabContent>
+        </>
+      )}
     </div>
   );
 }

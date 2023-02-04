@@ -53,7 +53,7 @@ function MyInput({
             setValueInput(e.target.value);
             data(e.target.value);
             if (regex) valid(validate(e.target.value));
-            valid(!isEmpty(e.target.value));
+            if (valid) valid(!isEmpty(e.target.value));
           }}
           value={valueInput}
           placeholder={placeholder}
