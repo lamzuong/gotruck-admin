@@ -2,7 +2,11 @@ import Welcome from '~/pages/Welcome/Welcome';
 import Home from '~/pages/Home/Home';
 import Login from '~/pages/Login/Login';
 
-import Account from '~/pages/Account/Account';
+import Customer from '~/pages/Account/Customer/Customer';
+import CustomerAccount from '~/pages/Account/Customer/CustomerAccount/CustomerAccount';
+import Shipper from '~/pages/Account/Shipper/Shipper';
+import ShipperAccount from '~/pages/Account/Shipper/ShipperAccount/ShipperAccount';
+
 import Order from '~/pages/Order/Order';
 import OrderDetail from '~/pages/Order/OrderDetail/OrderDetail';
 import Policy from '~/pages/Policy/Policy';
@@ -23,7 +27,12 @@ const publicRoutes = [
   { path: '/', component: Welcome },
   { path: '/home', component: Home },
   { path: '/login', component: Login, layout: OnlyHeaderLayout },
-  { path: '/account', component: Account },
+
+  { path: '/customer', component: Customer },
+  { path: '/customer/:id', component: CustomerAccount },
+  { path: '/shipper', component: Shipper },
+  { path: '/shipper/:id', component: ShipperAccount },
+
   { path: '/order', component: Order },
   { path: '/order-detail/:id', component: OrderDetail },
   { path: '/policy', component: Policy },

@@ -20,6 +20,10 @@ const cx = classNames.bind(styles);
 
 function Header() {
   const [currentUser, setCurrentUser] = useState(true);
+  const MENU_ITEMS_ACCOUNT = [
+    { title: 'Khách hàng', to: '/customer' },
+    { title: 'Tài xế', to: '/shipper' },
+  ];
   const MENU_ITEMS_PRICE = [
     {
       title: 'Giá vận chuyển',
@@ -68,10 +72,12 @@ function Header() {
         <div className={cx('list-header-items')}>
           {currentUser ? (
             <>
-              <Link to={'/account'} className={cx('header-item')}>
-                <FontAwesomeIcon icon={faUserShield} />
-                <div className={cx('item-title')}>Tài khoản</div>
-              </Link>
+              <MyMenu items={MENU_ITEMS_ACCOUNT} offset={[20, 8]}>
+                <div className={cx('header-item')}>
+                  <FontAwesomeIcon icon={faUserShield} />
+                  <div className={cx('item-title')}>Tài khoản</div>
+                </div>
+              </MyMenu>
               <MyMenu items={MENU_ITEMS_PRICE}>
                 <div className={cx('header-item')}>
                   <FontAwesomeIcon icon={faSackDollar} />

@@ -3,11 +3,10 @@ import { HeaderTable, BodyTable } from '~/components/MyTableOrder/MyTableOrder';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { Button, Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
+import { Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import MyInput from '~/components/MyInput/MyInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
 import useDebounce from '~/hook/useDebounce';
 
 const cx = classNames.bind(styles);
@@ -92,7 +91,7 @@ function Order() {
         }
       });
       setSearchResult(list);
-      if (debouncedValue == '') setSearchResult([]);
+      if (debouncedValue === '') setSearchResult([]);
     };
 
     fetchApi();
@@ -120,8 +119,8 @@ function Order() {
           <Nav tabs>
             {status.map((e, i) => (
               <NavItem key={i} className={cx('tabs')}>
-                <NavLink className={tab == e ? 'active' : ''} onClick={() => setTab(e)}>
-                  <div className={tab == e ? cx('choose-tab') : cx('no-choose-tab')}>{e}</div>
+                <NavLink className={tab === e ? 'active' : ''} onClick={() => setTab(e)}>
+                  <div className={tab === e ? cx('choose-tab') : cx('no-choose-tab')}>{e}</div>
                 </NavLink>
               </NavItem>
             ))}
@@ -133,7 +132,7 @@ function Order() {
                   <HeaderTable />
                   <tbody>
                     {orders.map((e, i) =>
-                      status == 'Tất cả' || status == e.status ? (
+                      status === 'Tất cả' || status === e.status ? (
                         <BodyTable order={e} key={i} />
                       ) : null,
                     )}

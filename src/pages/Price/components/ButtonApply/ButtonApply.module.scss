@@ -1,0 +1,22 @@
+$color: #04af46;
+
+.wrapper-apply {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+
+  .button-apply {
+    height: 50px;
+    width: 300px;
+    background-color: var(--main-green);
+
+    .txt-apply {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    &:active {
+      background-color: lighten($color, 10%);
+    }
+  }
+}

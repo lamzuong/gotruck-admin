@@ -1,6 +1,6 @@
 import styles from './OrderDetail.module.scss';
 import { convertMoney } from '~/global/functionGlobal';
-import customStyles from './styleModal';
+import customStyles from './stylesModal';
 
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
@@ -43,12 +43,7 @@ function OrderDetail() {
 
   return (
     <div className={cx('wrapper')}>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
             icon={faCircleXmark}

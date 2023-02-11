@@ -1,0 +1,22 @@
+@mixin tab-price {
+  padding: 5px;
+  border-radius: 8px;
+  width: 50px;
+  text-align: center;
+}
+.tab {
+  display: flex;
+  margin-left: 10px;
+  border-radius: 8px;
+  background-color: #a49e9ea1;
+  cursor: pointer;
+
+  .tab-choose {
+    background-color: #04af46;
+    @include tab-price();
+    color: white;
+  }
+  .tab-nochoose {
+    @include tab-price();
+  }
+}
