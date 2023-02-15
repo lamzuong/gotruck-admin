@@ -1,5 +1,8 @@
 import styles from './Customer.module.scss';
-import { BodyTableCustomer, HeaderTableCustomer } from '~/components/MyTableAccount/MyTableAccount';
+import {
+  BodyTableCustomer,
+  HeaderTableCustomer,
+} from '~/pages/Account/components/MyTableAccount/MyTableAccount';
 import MyInput from '~/components/MyInput/MyInput';
 
 import classNames from 'classnames/bind';
@@ -13,24 +16,36 @@ const cx = classNames.bind(styles);
 function Customer() {
   const accounts = [
     {
-      id: 'KH2022001',
+      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
+      id: 'KH2023001',
       phone: '0794891252',
       name: 'Nguyễn Văn A',
-      vehicle: [],
+      firstTime: '24/02/2022 8.30 P.M',
+      finishOrder: 45,
+      boomOrder: 5,
+      cancelOrder: 23,
       status: 'Đã khóa',
     },
     {
+      avatar: null,
       id: 'KH2022001',
       phone: '0794891252',
       name: 'Nguyễn Văn A',
-      vehicle: [],
+      firstTime: '24/02/2022 8.30 P.M',
+      finishOrder: 45,
+      boomOrder: 0,
+      cancelOrder: 23,
       status: 'Đang hoạt động',
     },
     {
+      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
       id: 'KH2022001',
       phone: '0794891252',
       name: 'Nguyễn Văn A',
-      vehicle: [],
+      firstTime: '24/02/2022 8.30 P.M',
+      finishOrder: 45,
+      boomOrder: 0,
+      cancelOrder: 23,
       status: 'Đang hoạt động',
     },
   ];

@@ -1,5 +1,7 @@
 import styles from './Order.module.scss';
 import { HeaderTable, BodyTable } from '~/components/MyTableOrder/MyTableOrder';
+import { orders } from './data';
+import { toFindDuplicates } from '~/global/functionGlobal';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
@@ -8,101 +10,66 @@ import MyInput from '~/components/MyInput/MyInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import useDebounce from '~/hook/useDebounce';
+import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function Order() {
-  const orders = [
-    {
-      id: 'GT20220001',
-      shipper: {
-        id: 'TX220001',
-        name: 'Nguyễn Văn Tài',
-        numberTruck: '53-F2.45612',
-      },
-      peopleSend: {
-        name: 'Lê Ngọc Bình',
-        phone: '0794561231',
-        address: '12 Tân hòa đông, P. Bình Trị Đông, Q. Bình Tân, TP. Hồ Chí Minh',
-      },
-      peopleReceive: {
-        name: 'Trần Trọng Nghĩa',
-        phone: '0909123562',
-        address: '445/51 Ngô Thời Nhiệm, Long Thành, Đồng Nai',
-      },
-      status: 'Đã giao',
-      priceTransport: 250000,
-      imgReceiveGoods: [
-        'https://res.cloudinary.com/dicpaduof/image/upload/v1675313687/giaohang2_wsnibh.jpg',
-      ],
-      imgShippedGoods: [
-        'https://res.cloudinary.com/dicpaduof/image/upload/v1675313687/giaohang_ldpzlr.jpg',
-      ],
-    },
-    {
-      id: 'GT20220002',
-      shipper: {
-        id: 'TX220001',
-        name: 'Nguyễn Văn Tài',
-        numberTruck: '53-F2.45612',
-      },
-      peopleSend: {
-        name: 'Lê Ngọc Bình',
-        phone: '0794561231',
-        address: '12 Tân hòa đông, P. Bình Trị Đông, Q. Bình Tân, TP. Hồ Chí Minh',
-      },
-      peopleReceive: {
-        name: 'Trần Trọng Nghĩa',
-        phone: '0909123562',
-        address: '445/51 Ngô Thời Nhiệm, Long Thành, Đồng Nai',
-      },
-      status: 'Đang giao',
-      priceTransport: 250000,
-      imgReceiveGoods: [
-        'https://res.cloudinary.com/dicpaduof/image/upload/v1675313687/giaohang2_wsnibh.jpg',
-      ],
-      imgShippedGoods: [
-        'https://res.cloudinary.com/dicpaduof/image/upload/v1675313687/giaohang_ldpzlr.jpg',
-      ],
-    },
-  ];
   const status = ['Tất cả', 'Đã giao', 'Đang giao', 'Đang lấy hàng', 'Đã hủy'];
 
-  const [searchValue, setSearchValue] = useState('');
+  const location = useLocation();
+  const item = location.state;
+  // console.log(item);
+
+  const [searchOrderId, setSearchOrderId] = useState('');
+  const [searchUserId, setSearchUserId] = useState(() => {
+    return item !== null ? item.id : '';
+  });
   const [searchResult, setSearchResult] = useState([]);
   const [tab, setTab] = useState('Tất cả');
 
-  const debouncedValue = useDebounce(searchValue, 500);
+  const debouncedOrderId = useDebounce(searchOrderId, 500);
+  const debouncedUserId = useDebounce(searchUserId, 500);
   useEffect(() => {
-    if (!debouncedValue.trim()) {
+    if (!debouncedOrderId.trim() && !debouncedUserId.trim()) {
       setSearchResult([]);
       return;
     }
-
     const fetchApi = async () => {
-      // setLoading(true);
-      // const result = await searchServices.search(debouncedValue);
-      // setSearchResult(result);
-      // setLoading(false);
       var list = [];
       orders.forEach((e) => {
-        if (e.id.toLowerCase().includes(debouncedValue.toLowerCase())) {
+        if (e.id.toLowerCase().includes(debouncedOrderId.toLowerCase())) {
+          list.push(e);
+        }
+        if (e.idUser.toLowerCase().includes(debouncedUserId.toLowerCase())) {
           list.push(e);
         }
       });
+      list = toFindDuplicates(list);
       setSearchResult(list);
-      if (debouncedValue === '') setSearchResult([]);
+      if (debouncedOrderId === '' && debouncedUserId === '') setSearchResult([]);
     };
 
     fetchApi();
-  }, [debouncedValue]);
+  }, [debouncedOrderId, debouncedUserId]);
 
   return (
     <div className={cx('wrapper')}>
       <div className={cx('search-place')}>
-        <div className={cx('title')}>Tra cứu mã đơn hàng</div>
-        <MyInput data={setSearchValue} iconLeft={<FontAwesomeIcon icon={faSearch} />} />
+        <div className={cx('wrapper-search')}>
+          <div className={cx('title')}>Tra cứu mã đơn hàng</div>
+          <MyInput data={setSearchOrderId} iconLeft={<FontAwesomeIcon icon={faSearch} />} />
+        </div>
+        <div className={cx('wrapper-search')}>
+          <div className={cx('title')}>Tra cứu theo mã khách hàng</div>
+          <MyInput
+            data={setSearchUserId}
+            iconLeft={<FontAwesomeIcon icon={faSearch} />}
+            initValue={searchUserId}
+          />
+        </div>
       </div>
+
       {/* Search result */}
       {searchResult.length > 0 ? (
         <Table striped className={cx('table-order')}>

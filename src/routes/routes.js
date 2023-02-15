@@ -32,6 +32,7 @@ const publicRoutes = [
   { path: '/customer/:id', component: CustomerAccount },
   { path: '/shipper', component: Shipper },
   { path: '/shipper/:id', component: ShipperAccount },
+  { path: '/shipper/:id/order', component: Order },
 
   { path: '/order', component: Order },
   { path: '/order-detail/:id', component: OrderDetail },

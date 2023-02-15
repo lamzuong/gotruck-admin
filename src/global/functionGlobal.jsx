@@ -11,4 +11,7 @@ const parseInt = (number) => {
 const parseFloat = (number) => {
   return Number.parseFloat(number);
 };
-export { convertMoney, parseInt, parseFloat };
+
+const toFindDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index);
+
+export { convertMoney, parseInt, parseFloat, toFindDuplicates };

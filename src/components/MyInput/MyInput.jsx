@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 function MyInput({
   data,
   valid,
+  initValue = '',
   placeholder,
   error,
   hideErr = true,
@@ -19,8 +20,11 @@ function MyInput({
   useEffect(() => {
     setHideError(hideErr);
   }, [hideErr]);
+  useEffect(() => {
+    setValueInput(initValue);
+  }, [initValue]);
 
-  const [valueInput, setValueInput] = useState('');
+  const [valueInput, setValueInput] = useState(initValue);
   const [hideError, setHideError] = useState(hideErr);
 
   const removeAscent = (str) => {
