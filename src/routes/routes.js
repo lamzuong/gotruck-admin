@@ -1,4 +1,3 @@
-import Welcome from '~/pages/Welcome/Welcome';
 import Home from '~/pages/Home/Home';
 import Login from '~/pages/Login/Login';
 
@@ -14,19 +13,16 @@ import Policy from '~/pages/Policy/Policy';
 import Price from '~/pages/Price/Price';
 import Discount from '~/pages/Discount/Discount';
 import HistoryChange from '~/pages/HistoryChange/HistoryChange';
+import HistoryDetail from '~/pages/HistoryChange/HistoryDetail/HistoryDetail';
 
 import FormRegister from '~/pages/FormRegister/FormRegister';
 import FormSupport from '~/pages/FormSupport/FormSupport';
 import FormVehicle from '~/pages/FormVehicle/FormVehicle';
 
-// Layout
-import OnlyHeaderLayout from '~/layouts/OnlyHeaderLayout/OnlyHeaderLayout';
-
 // Không cần đăng nhập
 const publicRoutes = [
-  { path: '/', component: Welcome },
+  { path: '/', component: Login, layout: null },
   { path: '/home', component: Home },
-  { path: '/login', component: Login, layout: OnlyHeaderLayout },
 
   { path: '/customer', component: Customer },
   { path: '/customer/:id', component: CustomerAccount },
@@ -41,6 +37,7 @@ const publicRoutes = [
   { path: '/price', component: Price },
   { path: '/discount', component: Discount },
   { path: '/history-change', component: HistoryChange },
+  { path: '/history-change/:id', component: HistoryDetail },
 
   { path: '/form-support', component: FormSupport },
   { path: '/form-register', component: FormRegister },

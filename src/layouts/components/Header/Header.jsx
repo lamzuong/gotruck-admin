@@ -15,11 +15,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '~/app/authSlide';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-  const [currentUser, setCurrentUser] = useState(true);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
+
   const MENU_ITEMS_ACCOUNT = [
     { title: 'Khách hàng', to: '/customer' },
     { title: 'Tài xế', to: '/shipper' },
@@ -66,64 +71,47 @@ function Header() {
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
-        <Link to={currentUser ? '/home' : '/'}>
+        <Link to={'/home'}>
           <img src={logo} alt="GoTruck" className={cx('logo')} />
         </Link>
         <div className={cx('list-header-items')}>
-          {currentUser ? (
-            <>
-              <MyMenu items={MENU_ITEMS_ACCOUNT} offset={[20, 8]}>
-                <div className={cx('header-item')}>
-                  <FontAwesomeIcon icon={faUserShield} />
-                  <div className={cx('item-title')}>Tài khoản</div>
-                </div>
-              </MyMenu>
-              <MyMenu items={MENU_ITEMS_PRICE}>
-                <div className={cx('header-item')}>
-                  <FontAwesomeIcon icon={faSackDollar} />
-                  <div className={cx('item-title')}>Giá cả</div>
-                </div>
-              </MyMenu>
-              <MyMenu items={MENU_ITEMS_REPORT} width={'350px'} offset={[150, 8]}>
-                <div className={cx('header-item')}>
-                  <FontAwesomeIcon icon={faCircleExclamation} />
-                  <div className={cx('item-title')}>Đơn xử lý</div>
-                  <div className={cx('total-notify')}>
-                    {totalNotify() > 0 ? totalNotify() : null}
-                  </div>
-                </div>
-              </MyMenu>
-              <Link to={'/order'} className={cx('header-item')}>
-                <FontAwesomeIcon icon={faClipboardList} />
-                <div className={cx('item-title')}>Đơn hàng</div>
-              </Link>
-              <Link to={'/policy'} className={cx('header-item')}>
-                <FontAwesomeIcon icon={faShieldHalved} />
-                <div className={cx('item-title')}>Điều khoản và Chính sách</div>
-              </Link>
-              <Link
-                to={'/login'}
-                className={cx('header-item')}
-                onClick={() => {
-                  setCurrentUser(false);
-                }}
-              >
-                <FontAwesomeIcon icon={faRightFromBracket} />
-                <div className={cx('item-title')}>Đăng xuất</div>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to={'/policy'} className={cx('header-item')}>
-                <FontAwesomeIcon icon={faShieldHalved} />
-                <div className={cx('item-title')}>Điều khoản và Chính sách</div>
-              </Link>
-              <Link to={'/login'} className={cx('header-item')}>
-                <FontAwesomeIcon icon={faRightToBracket} />
-                <div className={cx('item-title')}>Đăng nhập</div>
-              </Link>
-            </>
-          )}
+          <MyMenu items={MENU_ITEMS_ACCOUNT} offset={[20, 8]}>
+            <div className={cx('header-item')}>
+              <FontAwesomeIcon icon={faUserShield} />
+              <div className={cx('item-title')}>Tài khoản</div>
+            </div>
+          </MyMenu>
+          <MyMenu items={MENU_ITEMS_PRICE}>
+            <div className={cx('header-item')}>
+              <FontAwesomeIcon icon={faSackDollar} />
+              <div className={cx('item-title')}>Giá cả</div>
+            </div>
+          </MyMenu>
+          <MyMenu items={MENU_ITEMS_REPORT} width={'350px'} offset={[150, 8]}>
+            <div className={cx('header-item')}>
+              <FontAwesomeIcon icon={faCircleExclamation} />
+              <div className={cx('item-title')}>Đơn xử lý</div>
+              <div className={cx('total-notify')}>{totalNotify() > 0 ? totalNotify() : null}</div>
+            </div>
+          </MyMenu>
+          <Link to={'/order'} className={cx('header-item')}>
+            <FontAwesomeIcon icon={faClipboardList} />
+            <div className={cx('item-title')}>Đơn hàng</div>
+          </Link>
+          <Link to={'/policy'} className={cx('header-item')}>
+            <FontAwesomeIcon icon={faShieldHalved} />
+            <div className={cx('item-title')}>Điều khoản và Chính sách</div>
+          </Link>
+          <Link
+            to={'/'}
+            className={cx('header-item')}
+            onClick={() => {
+              dispatch(logOut());
+            }}
+          >
+            <FontAwesomeIcon icon={faRightFromBracket} />
+            <div className={cx('item-title')}>Đăng xuất</div>
+          </Link>
         </div>
       </div>
     </header>
