@@ -1,0 +1,28 @@
+.search-place {
+  display: flex;
+  align-items: center;
+
+  .wrapper-search {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+  }
+  .title {
+    margin-right: 20px;
+  }
+}
+.table-order {
+  margin-top: 10px;
+}
+.tabs {
+  font-size: 1.6rem;
+  cursor: pointer;
+
+  .choose-tab {
+    font-weight: 700;
+    color: var(--main-green);
+  }
+  .no-choose-tab {
+    color: var(--text-color);
+  }
+}

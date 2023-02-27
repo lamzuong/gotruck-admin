@@ -1,10 +1,11 @@
 import styles from './OrderDetail.module.scss';
 import { convertMoney } from '~/global/functionGlobal';
 import customStyles from './stylesModal';
+import MyButton from '~/components/MyButton/MyButton';
 
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +14,7 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 function OrderDetail() {
+  const navigate = useNavigate();
   const location = useLocation();
   const item = location.state;
 
@@ -154,6 +156,15 @@ function OrderDetail() {
             </div>
           </Row>
         </Container>
+      </div>
+      {/* Button */}
+      <div className={cx('wrapper-button')}>
+        {item.status === 'Đang giao' ? (
+          <MyButton
+            title={'Xem vị trí shipper hiện tại'}
+            action={() => navigate(`/order-detail/${item.id}/shipper-location`)}
+          />
+        ) : null}
       </div>
     </div>
   );

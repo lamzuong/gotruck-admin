@@ -9,7 +9,10 @@
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(164, 234, 121);
+    background-color: darken(#04af46, 10%);
+  }
+  &:active {
+    background-color: lighten(#04af46, 10%);
   }
 
   .txt-button {

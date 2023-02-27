@@ -1,5 +1,5 @@
 import styles from './Order.module.scss';
-import { HeaderTable, BodyTable } from '~/components/MyTableOrder/MyTableOrder';
+import { HeaderTable, BodyTable } from '~/pages/Order/MyTableOrder/MyTableOrder';
 import { orders } from './data';
 import { toFindDuplicates } from '~/global/functionGlobal';
 
@@ -19,7 +19,6 @@ function Order() {
 
   const location = useLocation();
   const item = location.state;
-  // console.log(item);
 
   const [searchOrderId, setSearchOrderId] = useState('');
   const [searchUserId, setSearchUserId] = useState(() => {

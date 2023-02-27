@@ -23,7 +23,6 @@ const cx = classNames.bind(styles);
 function Header() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  console.log(auth);
 
   const MENU_ITEMS_ACCOUNT = [
     { title: 'Khách hàng', to: '/customer' },

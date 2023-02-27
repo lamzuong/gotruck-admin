@@ -7,7 +7,7 @@ import { Button, Input, Table } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import CurrencyInput from 'react-currency-input-field';
-import { HeaderTableEditAll, HeaderTableEditOne } from '~/components/MyTablePrice/MyTablePrice';
+import { HeaderTableEditAll, HeaderTableEditOne } from '~/pages/Price/MyTablePrice/MyTablePrice';
 import { MyTab } from './components/MyTab/MyTab';
 import ButtonApply from './components/ButtonApply/ButtonApply';
 import { listItemCalcPercent, listItemCalcPrice } from './functionPrice';

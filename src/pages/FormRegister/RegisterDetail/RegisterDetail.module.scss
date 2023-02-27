@@ -1,0 +1,67 @@
+.display-flex {
+  display: flex;
+  align-items: flex-start;
+}
+@mixin label {
+  font-size: 1.8rem;
+  font-weight: 600;
+  height: 50px;
+}
+.label-short {
+  @include label();
+  margin-left: 50px;
+  width: 180px;
+}
+.label-medium {
+  @include label();
+}
+.label-long {
+  @include label();
+  margin-left: 50px;
+  width: 250px;
+}
+.content {
+  margin-right: 10px;
+  font-size: 1.8rem;
+
+  .image-paper {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+}
+@mixin button($background: var(--main-green)) {
+  height: 40px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  background-color: $background;
+  margin: 10px;
+}
+.button-unblock {
+  @include button();
+}
+.button-block {
+  @include button();
+  background-color: red;
+}
+.wrapper-button {
+  display: flex;
+  margin-left: 40px;
+}
+.wrapper-modal {
+  padding: 20px;
+  .title {
+    margin-bottom: 10px;
+  }
+  .input {
+    text-align: left;
+    height: 35px;
+    font-size: 16px;
+  }
+  .button {
+    margin-top: 20px;
+  }
+}

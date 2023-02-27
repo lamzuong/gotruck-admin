@@ -1,0 +1,58 @@
+span {
+  display: inline;
+}
+.block-1 {
+  display: flex;
+}
+.wrapper-table {
+  width: 30%;
+
+  .wrapper-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .wrapper-pagination {
+    display: flex;
+    justify-content: center;
+  }
+}
+.wrapper-modal {
+  padding: 20px;
+  .title {
+    margin-bottom: 10px;
+  }
+  .input {
+    height: 40px;
+    text-align: left;
+    font-size: 16px;
+  }
+  .button-add {
+    height: 35px;
+    width: 60px;
+  }
+}
+.wrapper-radius {
+  margin-left: 30px;
+  .txt-value {
+    margin-left: 10px;
+  }
+  .button-edit {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .wrapper-input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+
+    .wrapper-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      .button {
+        margin: 0 10px;
+      }
+    }
+  }
+}
