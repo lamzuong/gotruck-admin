@@ -1,16 +1,73 @@
-span {
-  display: inline;
+.wrapper-statistic {
+  width: 100%;
+  .graph-view {
+    width: 70%;
+    height: 100%;
+  }
+  .wrapper-search {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 20px;
+    width: 26%;
+
+    .wrapper-date {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .input-date {
+      height: 30px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding-right: 15px;
+    }
+    .btn-search {
+      margin-top: 10px;
+      height: 35px;
+      .txt-search {
+        font-size: 16px;
+      }
+    }
+  }
 }
-.block-1 {
+.inline {
   display: flex;
 }
+.inline-center {
+  display: flex;
+  align-items: center;
+}
+.inline-between {
+  display: flex;
+  justify-content: space-between;
+}
+.title {
+  font-size: 25px;
+  font-weight: 700;
+}
+.title-mini {
+  font-size: 22px;
+  font-weight: 700;
+}
 .wrapper-table {
-  width: 30%;
+  width: 45%;
 
   .wrapper-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin: 20px 0;
+
+    .label {
+      width: 120px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .input {
+      font-size: 16px;
+      text-align: left;
+    }
   }
   .wrapper-pagination {
     display: flex;
@@ -21,6 +78,7 @@ span {
   padding: 20px;
   .title {
     margin-bottom: 10px;
+    font-size: 20px;
   }
   .input {
     height: 40px;
@@ -31,28 +89,46 @@ span {
     height: 35px;
     width: 60px;
   }
+  .wrapper-button {
+    display: flex;
+    justify-content: center;
+    .button {
+      margin: 5px 10px 0 10px;
+    }
+  }
 }
 .wrapper-radius {
-  margin-left: 30px;
-  .txt-value {
-    margin-left: 10px;
-  }
-  .button-edit {
-    margin-left: 10px;
-    cursor: pointer;
-  }
-  .wrapper-input {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
+  height: 150px;
 
-    .wrapper-button {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-      .button {
-        margin: 0 10px;
-      }
+  .radius-view {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+
+    .txt-value {
+      height: max-content;
+      margin-left: 10px;
+      font-size: 20px;
+    }
+    .button-edit {
+      height: max-content;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+}
+.wrapper-input {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 30px;
+
+  .wrapper-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    .button {
+      margin: 0 10px;
     }
   }
 }
