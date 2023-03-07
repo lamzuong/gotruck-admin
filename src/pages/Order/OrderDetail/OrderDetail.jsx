@@ -10,7 +10,8 @@ import { Col, Container, Row } from 'reactstrap';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-
+import { withGoogleMap, withScriptjs, GoogleMap } from 'react-google-maps';
+import Map from '../Map';
 const cx = classNames.bind(styles);
 
 function OrderDetail() {
@@ -42,6 +43,8 @@ function OrderDetail() {
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  const key = 'AIzaSyA7m9R31GTchJz_jB-8TRS2IVbYErA8nq8';
 
   return (
     <div className={cx('wrapper')}>
@@ -166,6 +169,17 @@ function OrderDetail() {
           />
         ) : null}
       </div>
+
+      <Map
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={
+          <div
+            style={{ height: `500px`, width: `1000px`, margin: `auto`, border: '2px solid black' }}
+          />
+        }
+        mapElement={<div style={{ height: `100%` }} />}
+      />
     </div>
   );
 }

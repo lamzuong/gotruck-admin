@@ -80,8 +80,8 @@ const BodyTableShipper = ({ user }) => {
         <img src={user.avatar} className={cx('avatar')} />
       </td>
       <td>{user.id}</td>
-      <td>{user.phone}</td>
       <td>{user.name}</td>
+      <td>{user.phone}</td>
       <td>{user.lastTime}</td>
       <td>{user.status}</td>
       <td>
