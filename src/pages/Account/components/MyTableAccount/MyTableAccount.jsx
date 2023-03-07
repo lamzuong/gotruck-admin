@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const titleCustomer = ['Ảnh', 'ID', 'Họ tên', 'Số điện thoại', 'Tình trạng'];
+const titleCustomer = ['Ảnh', 'ID', 'Họ tên', 'Số điện thoại', 'Tình trạng', 'Hành động'];
 const HeaderTableCustomer = () => (
   <thead>
     <tr>
