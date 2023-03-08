@@ -44,7 +44,18 @@ function OrderDetail() {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const key = 'AIzaSyA7m9R31GTchJz_jB-8TRS2IVbYErA8nq8';
+  const key = 'AIzaSyBJXVerf0xsPYBFU82i3mwD4xycZjfqsQ0';
+  goongjs.accessToken = 'wYKrUTiO6JpOvPbBLuYpEaFfXKTaGIcm96onAMIA';
+  var map = new goongjs.Map({
+    container: 'map',
+    style: 'https://tiles.goong.io/assets/goong_map_web.json', // stylesheet location
+    center: [105.85258524102564, 21.0287601], // starting position [lng, lat]
+    zoom: 9, // starting zoom
+  });
+
+  var marker = new goongjs.Marker()
+    .setLngLat([105.85258524102564, 21.0287601]) // position add marker [lng, lat]
+    .addTo(map);
 
   return (
     <div className={cx('wrapper')}>
@@ -161,25 +172,33 @@ function OrderDetail() {
         </Container>
       </div>
       {/* Button */}
-      <div className={cx('wrapper-button')}>
+      {/* <div className={cx('wrapper-button')}>
         {item.status === 'Đang giao' ? (
           <MyButton
             title={'Xem vị trí shipper hiện tại'}
             action={() => navigate(`/order-detail/${item.id}/shipper-location`)}
           />
         ) : null}
-      </div>
+      </div> */}
 
-      <Map
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={
-          <div
-            style={{ height: `500px`, width: `1000px`, margin: `auto`, border: '2px solid black' }}
-          />
-        }
-        mapElement={<div style={{ height: `100%` }} />}
-      />
+      {item.status === 'Đang giao' && (
+        // <Map
+        //   googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
+        //   loadingElement={<div style={{ height: `100%` }} />}
+        //   containerElement={
+        //     <div
+        //       style={{
+        //         height: `500px`,
+        //         width: `1000px`,
+        //         margin: `auto`,
+        //         border: '2px solid black',
+        //       }}
+        //     />
+        //   }
+        //   mapElement={<div style={{ height: `100%` }} />}
+        // />
+        <div id="map" style="width: 500px; height: 300px;"></div>
+      )}
     </div>
   );
 }

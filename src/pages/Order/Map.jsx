@@ -78,6 +78,10 @@ const Map = () => {
           position={{ lat: order.from_address.latitude, lng: order.from_address.longitude }}
         ></Marker>
         <Marker
+          title="Vị trí nhận hàng"
+          position={{ lat: order.from_address.latitude, lng: order.from_address.longitude }}
+        ></Marker>
+        <Marker
           title="Vị trí giao hàng"
           position={{ lat: order.to_address.latitude, lng: order.to_address.longitude }}
         >
