@@ -1,6 +1,6 @@
 import styles from './Order.module.scss';
 import { HeaderTable, BodyTable } from '~/pages/Order/MyTableOrder/MyTableOrder';
-import { orders } from './data';
+// import { orders } from './data';
 import { toFindDuplicates } from '~/global/functionGlobal';
 
 import React, { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import useDebounce from '~/hook/useDebounce';
 import { useLocation } from 'react-router-dom';
+import orderAPI from '~/api/orderAPI';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +27,20 @@ function Order() {
   });
   const [searchResult, setSearchResult] = useState([]);
   const [tab, setTab] = useState('Tất cả');
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await orderAPI.getAll();
+        console.log(res);
+        setOrders(res);
+      } catch (error) {
+        console.log('Failed to getOrders', error);
+      }
+    };
+    getOrders();
+  }, []);
 
   const debouncedOrderId = useDebounce(searchOrderId, 500);
   const debouncedUserId = useDebounce(searchUserId, 500);

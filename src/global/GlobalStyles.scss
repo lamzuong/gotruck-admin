@@ -36,7 +36,6 @@ input,
   outline: none;
   border: none;
 }
-
 //Fonts emmbeded
 @font-face {
   font-family: Inter;
@@ -52,12 +51,6 @@ input,
   font-family: Inter;
   src: url('/assets/fonts/Inter-SemiBold.woff2');
   font-weight: 700;
-}
-@font-face {
-  font-family: Inter;
-  src: url('/assets/fonts/Inter-SemiBoldItalic.woff2');
-  font-weight: 700;
-  font-style: italic;
 }
 
 //Scrollbar CSS

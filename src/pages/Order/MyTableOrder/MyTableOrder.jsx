@@ -22,17 +22,17 @@ const BodyTable = ({ order }) => {
   const navigate = useNavigate();
   return (
     <tr>
-      <td>{order.id}</td>
-      <td>{order.shipper.id}</td>
-      <td>{order.shipper.name}</td>
-      <td>{order.shipper.numberTruck}</td>
-      <td>{order.peopleSend.name}</td>
+      <td>{order.id_order}</td>
+      <td>{order.shipper?.id_shipper.id_shipper || <i>Chưa có</i>}</td>
+      <td>{order.shipper?.id_shipper.name || <i>Chưa có</i>}</td>
+      <td>{order.shipper?.truck.license_plate || <i>Chưa có</i>}</td>
+      <td>{order.id_customer.name}</td>
       <td>{order.status}</td>
       <td>
         <Button
           color="primary"
           onClick={() => {
-            navigate(`/order-detail/${order.id}`, { state: order });
+            navigate(`/order-detail/${order.id_order}`, { state: order });
           }}
         >
           <h4>Xem</h4>

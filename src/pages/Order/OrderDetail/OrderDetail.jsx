@@ -27,15 +27,22 @@ function OrderDetail() {
   }
 
   const div_1_left_title = [
-    { title: 'Mã đơn hàng', content: item.id },
-    { title: 'Tài xế', content: item.shipper.id + ' - ' + item.shipper.name },
-    { title: 'Biển số xe', content: item.shipper.numberTruck },
+    { title: 'Mã đơn hàng', content: item.id_order },
+    {
+      title: 'Tài xế',
+      content: item.shipper ? (
+        item.shipper?.id_shipper.id_shipper + ' - ' + item.shipper?.id_shipper.name
+      ) : (
+        <i>Chưa có</i>
+      ),
+    },
+    { title: 'Biển số xe', content: item.shipper?.truck.license_plate || <i>Chưa có</i> },
   ];
   const div_1_right_title = [
-    { title: 'Người gửi', content: item.peopleSend.name },
-    { title: 'Số điện thoại', content: item.peopleSend.phone },
-    { title: 'Người nhận', content: item.peopleReceive.name },
-    { title: 'Số điện thoại', content: item.peopleReceive.phone },
+    { title: 'Người gửi', content: item.from_address.name },
+    { title: 'Số điện thoại', content: item.from_address.phone },
+    { title: 'Người nhận', content: item.to_address.name },
+    { title: 'Số điện thoại', content: item.to_address.phone },
   ];
 
   const [imageChoose, setImageChoose] = useState('');
@@ -45,17 +52,6 @@ function OrderDetail() {
   const closeModal = () => setIsOpen(false);
 
   const key = 'AIzaSyBJXVerf0xsPYBFU82i3mwD4xycZjfqsQ0';
-  goongjs.accessToken = 'wYKrUTiO6JpOvPbBLuYpEaFfXKTaGIcm96onAMIA';
-  var map = new goongjs.Map({
-    container: 'map',
-    style: 'https://tiles.goong.io/assets/goong_map_web.json', // stylesheet location
-    center: [105.85258524102564, 21.0287601], // starting position [lng, lat]
-    zoom: 9, // starting zoom
-  });
-
-  var marker = new goongjs.Marker()
-    .setLngLat([105.85258524102564, 21.0287601]) // position add marker [lng, lat]
-    .addTo(map);
 
   return (
     <div className={cx('wrapper')}>
@@ -104,13 +100,13 @@ function OrderDetail() {
           <Row>
             <div className={cx('row-info')}>
               <div className={cx('label')}>Giao từ</div>
-              <div className={cx('content')}>{item.peopleSend.address}</div>
+              <div className={cx('content')}>{item.from_address.address}</div>
             </div>
           </Row>
           <Row>
             <div className={cx('row-info')}>
               <div className={cx('label')}>Tới</div>
-              <div className={cx('content')}>{item.peopleReceive.address}</div>
+              <div className={cx('content')}>{item.to_address.address}</div>
             </div>
           </Row>
           {/* foot div 2 */}
@@ -182,22 +178,21 @@ function OrderDetail() {
       </div> */}
 
       {item.status === 'Đang giao' && (
-        // <Map
-        //   googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
-        //   loadingElement={<div style={{ height: `100%` }} />}
-        //   containerElement={
-        //     <div
-        //       style={{
-        //         height: `500px`,
-        //         width: `1000px`,
-        //         margin: `auto`,
-        //         border: '2px solid black',
-        //       }}
-        //     />
-        //   }
-        //   mapElement={<div style={{ height: `100%` }} />}
-        // />
-        <div id="map" style="width: 500px; height: 300px;"></div>
+        <Map
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={
+            <div
+              style={{
+                height: `500px`,
+                width: `1000px`,
+                margin: `auto`,
+                border: '2px solid black',
+              }}
+            />
+          }
+          mapElement={<div style={{ height: `100%` }} />}
+        />
       )}
     </div>
   );
