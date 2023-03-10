@@ -29,6 +29,7 @@
     "react-select": "^5.7.0",
     "reactstrap": "^9.1.5",
     "redux": "^4.2.1",
+    "socket.io-client": "^4.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
