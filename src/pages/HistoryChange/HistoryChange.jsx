@@ -11,6 +11,7 @@ function HistoryChange() {
   const navigate = useNavigate();
   return (
     <div>
+      <div className={cx('title-header')}>Lịch sử thay đổi</div>
       <Table striped>
         <thead>
           <tr>

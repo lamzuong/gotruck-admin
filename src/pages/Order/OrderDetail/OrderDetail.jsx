@@ -110,7 +110,7 @@ function OrderDetail() {
             </div>
           </Row>
           {/* foot div 2 */}
-          <Row xs="2">
+          <Row xs="3">
             <Col>
               <div className={cx('row-info')}>
                 <div className={cx('label')}>Tình trạng</div>
@@ -121,6 +121,12 @@ function OrderDetail() {
               <div className={cx('row-info')}>
                 <div className={cx('label')}>Tiền vận chuyển</div>
                 <div className={cx('content')}>{convertMoney(item.priceTransport, 'VNĐ')}</div>
+              </div>
+            </Col>
+            <Col>
+              <div className={cx('row-info')}>
+                <div className={cx('label')}>Phí giao dịch</div>
+                <div className={cx('content')}>{convertMoney(12100, 'VNĐ')}</div>
               </div>
             </Col>
           </Row>

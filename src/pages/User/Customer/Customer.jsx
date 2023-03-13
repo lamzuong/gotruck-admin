@@ -1,13 +1,23 @@
-import styles from './Shipper.module.scss';
+import styles from './Customer.module.scss';
 import {
-  BodyTableShipper,
-  HeaderTableShipper,
-} from '~/pages/Account/components/MyTableAccount/MyTableAccount';
+  BodyTableCustomer,
+  HeaderTableCustomer,
+} from '~/pages/User/components/MyTableAccount/MyTableAccount';
 import MyInput from '~/components/MyInput/MyInput';
 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
+import {
+  Nav,
+  NavItem,
+  NavLink,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  TabContent,
+  Table,
+  TabPane,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -17,83 +27,36 @@ function Customer() {
   const accounts = [
     {
       avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022001',
+      id: 'KH2023001',
       phone: '0794891252',
       name: 'Nguyễn Văn A',
-      identityNumber: '0797412015322',
       firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
       finishOrder: 45,
+      boomOrder: 5,
       cancelOrder: 23,
-      star: 4,
       status: 'Đã khóa',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [
-        {
-          id: 1,
-          name: 'Huyndai',
-          numberTruck: '56F-45123',
-          imagePapers: [
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-          ],
-          default: true,
-        },
-        {
-          id: 2,
-          name: 'Toyota',
-          numberTruck: '56F-46153',
-          imagePapers: [
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-          ],
-          default: false,
-        },
-      ],
+    },
+    {
+      avatar: null,
+      id: 'KH2022001',
+      phone: '0794891252',
+      name: 'Nguyễn Văn A',
+      firstTime: '24/02/2022 8.30 P.M',
+      finishOrder: 45,
+      boomOrder: 0,
+      cancelOrder: 23,
+      status: 'Đang hoạt động',
     },
     {
       avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022002',
+      id: 'KH2022001',
       phone: '0794891252',
-      name: 'Nguyễn Văn B',
-      identityNumber: '0797412015322',
+      name: 'Nguyễn Văn A',
       firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
       finishOrder: 45,
+      boomOrder: 0,
       cancelOrder: 23,
-      star: 4.3,
       status: 'Đang hoạt động',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [],
-    },
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022003',
-      phone: '0794891252',
-      name: 'Nguyễn Văn C',
-      identityNumber: '0797412015322',
-      firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
-      finishOrder: 45,
-      cancelOrder: 23,
-      star: 4.5,
-      status: 'Đang hoạt động',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [],
     },
   ];
   const status = ['Tất cả', 'Đang hoạt động', 'Đã khóa'];
@@ -111,10 +74,10 @@ function Customer() {
       {/* Search result */}
       {searchResult.length > 0 ? (
         <Table striped className={cx('table-order')}>
-          <HeaderTableShipper />
+          <HeaderTableCustomer />
           <tbody>
             {searchResult.map((e, i) => (
-              <BodyTableShipper order={e} key={i} />
+              <BodyTableCustomer order={e} key={i} />
             ))}
           </tbody>
         </Table>
@@ -134,11 +97,11 @@ function Customer() {
             {status.map((status, i) => (
               <TabPane tabId={status} key={i}>
                 <Table striped className={cx('table-order')}>
-                  <HeaderTableShipper />
+                  <HeaderTableCustomer />
                   <tbody>
                     {accounts.map((e, i) =>
                       status == 'Tất cả' || status == e.status ? (
-                        <BodyTableShipper user={e} key={i} />
+                        <BodyTableCustomer user={e} key={i} />
                       ) : null,
                     )}
                   </tbody>
@@ -148,6 +111,34 @@ function Customer() {
           </TabContent>
         </>
       )}
+      {/* Page */}
+      <div className={cx('inline-around')}>
+        <div style={{ width: 150 }} />
+        <div className={cx('wrapper-pagination')}>
+          <Pagination size="lg">
+            <PaginationItem>
+              <PaginationLink
+                previous
+                // onClick={() => pageTruck > 1 && setPageTruck(pageTruck - 1)}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink>{1}</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                next
+                // onClick={() =>
+                //   pageTruck < Math.ceil(listTrucks.length / 10) && setPageTruck(pageTruck + 1)
+                // }
+              />
+            </PaginationItem>
+          </Pagination>
+        </div>
+        <div style={{ color: 'grey' }}>
+          Tổng số trang: {1} trên {10}
+        </div>
+      </div>
     </div>
   );
 }

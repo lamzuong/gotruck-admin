@@ -58,8 +58,8 @@ const titleShipper = [
   'Ảnh',
   'ID',
   'Họ tên',
-  'Số điện thoại',
   'Hoạt động lần cuối',
+  'Số dư GoTruck',
   'Tình trạng',
   'Hành động',
 ];
@@ -72,7 +72,7 @@ const HeaderTableShipper = () => (
     </tr>
   </thead>
 );
-const BodyTableShipper = ({ user }) => {
+const BodyTableShipper = ({ user, handleInputMoney }) => {
   const navigate = useNavigate();
   return (
     <tr>
@@ -81,8 +81,8 @@ const BodyTableShipper = ({ user }) => {
       </td>
       <td>{user.id}</td>
       <td>{user.name}</td>
-      <td>{user.phone}</td>
       <td>{user.lastTime}</td>
+      <td>151,156 đ</td>
       <td>{user.status}</td>
       <td>
         <Button
@@ -99,9 +99,18 @@ const BodyTableShipper = ({ user }) => {
             <h4>Mở khóa</h4>
           </Button>
         ) : (
-          <Button color="danger" className={cx('button-block')}>
-            <h4>Khóa tài khoản</h4>
-          </Button>
+          <>
+            <Button color="danger" className={cx('button-block')}>
+              <h4>Khóa tài khoản</h4>
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => handleInputMoney(user)}
+              className={cx('button-pay')}
+            >
+              <h4>Nạp tiền</h4>
+            </Button>
+          </>
         )}
       </td>
     </tr>

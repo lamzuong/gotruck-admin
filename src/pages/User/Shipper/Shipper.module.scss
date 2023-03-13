@@ -1,0 +1,81 @@
+.wrapper-radius {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  .radius-view {
+    display: flex;
+
+    .txt-value {
+      font-size: 20px;
+      margin-right: 20px;
+    }
+    .button-edit {
+      font-size: 20px;
+    }
+  }
+  .wrapper-input {
+    display: flex;
+    align-items: center;
+    .button {
+      margin: 5px;
+    }
+  }
+}
+
+.search-place {
+  display: flex;
+  align-items: center;
+
+  .title {
+    margin-right: 20px;
+  }
+}
+.table-order {
+  margin-top: 10px;
+}
+.tabs {
+  font-size: 1.6rem;
+  cursor: pointer;
+
+  .choose-tab {
+    font-weight: 700;
+    color: var(--main-green);
+  }
+  .no-choose-tab {
+    color: var(--text-color);
+  }
+}
+.wrapper-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.wrapper-modal {
+  padding: 20px;
+  .title {
+    margin-right: 20px;
+    font-weight: 600;
+    width: 120px;
+  }
+  .input {
+    height: 30px;
+    width: 50%;
+    text-align: left;
+    font-size: 16px;
+  }
+}
+.title-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 20px;
+}
+.inline-center {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.inline-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

@@ -82,6 +82,14 @@ function Order() {
             initValue={searchUserId}
           />
         </div>
+        <div className={cx('wrapper-search')}>
+          <div className={cx('title')}>Tra cứu theo mã tài xế</div>
+          <MyInput
+            data={setSearchUserId}
+            iconLeft={<FontAwesomeIcon icon={faSearch} />}
+            initValue={searchUserId}
+          />
+        </div>
       </div>
 
       {/* Search result */}

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function MyMenu({ children, items = [], width = '200px', offset = [50, 8] }) {
+function MyMenu({ children, items = [], width = '', offset = [50, 8] }) {
   const renderItems = () => {
     return (
       <div className={cx('menu-list')} style={{ width }}>
@@ -30,7 +30,7 @@ function MyMenu({ children, items = [], width = '200px', offset = [50, 8] }) {
         interactive
         delay={[0, 200]}
         offset={offset}
-        placement="bottom-end"
+        placement="right-start"
         render={() => renderItems()}
       >
         {children}

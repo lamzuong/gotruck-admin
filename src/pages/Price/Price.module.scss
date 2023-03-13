@@ -21,6 +21,19 @@ input::-webkit-inner-spin-button {
 }
 
 $color: #04af46 !global;
+.title {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.title-link {
+  margin-bottom: 20px;
+  font-style: italic;
+  font-weight: 600;
+  color: #05a595;
+  text-decoration: underline;
+  text-align: right;
+}
 .wrapper-button {
   display: flex;
   justify-content: center;

@@ -1,0 +1,94 @@
+.display-flex {
+  display: flex;
+  align-items: flex-start;
+}
+.column {
+  width: 100%;
+}
+.avatar {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+@mixin label {
+  font-size: 1.8rem;
+  font-weight: 600;
+  height: 50px;
+}
+.label-nor {
+  @include label();
+  font-size: 22px;
+  margin-top: 20px;
+}
+.label-short {
+  @include label();
+  margin-left: 50px;
+  width: 150px;
+  vertical-align: middle;
+}
+.label-medium {
+  @include label();
+  margin-left: 50px;
+  width: 180px;
+}
+.label-long {
+  @include label();
+  margin-left: 50px;
+  width: 230px;
+}
+
+.view-image {
+  max-width: 100%;
+}
+.image-paper {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.content {
+  margin-right: 10px;
+  font-size: 1.8rem;
+  max-width: 250px;
+}
+.wrapper-modal {
+  padding: 20px;
+  .title {
+    margin-right: 20px;
+    font-weight: 600;
+    width: 120px;
+  }
+  .input {
+    height: 30px;
+    width: 50%;
+    text-align: left;
+    font-size: 16px;
+  }
+}
+@mixin button {
+  width: 200px;
+  height: 40px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.button-unblock {
+  @include button();
+  background-color: var(--main-green);
+  margin-right: 10px;
+}
+.button-block {
+  @include button();
+  background-color: red;
+}
+.view-button {
+  margin-left: 50px;
+}
+.inline {
+  display: flex;
+}
+.inline-center {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,39 @@
+.title-header {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.input {
+  height: 40px;
+  max-width: 100%;
+  font-size: 16px;
+  text-align: left;
+  vertical-align: top;
+}
+.area {
+  @extend .input;
+  height: 140px;
+}
+.button {
+  margin-top: 20px;
+}
+.view-images {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+
+  .image {
+    width: 94px;
+    height: 94px;
+    padding: 2px;
+    object-fit: cover;
+  }
+  .icon-remove {
+    position: relative;
+    width: 15px;
+    height: 15px;
+    margin-left: -10px;
+    margin-top: -2px;
+    cursor: pointer;
+  }
+}

@@ -11,6 +11,7 @@ import { HeaderTableEditAll, HeaderTableEditOne } from '~/pages/Price/MyTablePri
 import { MyTab } from './components/MyTab/MyTab';
 import ButtonApply from './components/ButtonApply/ButtonApply';
 import { listItemCalcPercent, listItemCalcPrice } from './functionPrice';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -283,6 +284,10 @@ function Price() {
         </div>
       </Modal>
 
+      <div className={cx('title')}>Bảng giá vận chuyển</div>
+      <Link to={'/pr/history-change'}>
+        <div className={cx('title-link')}>Xem lịch sử thay đổi &#62;&#62;</div>
+      </Link>
       {/* Bảng giá */}
       <Table bordered>
         <thead>

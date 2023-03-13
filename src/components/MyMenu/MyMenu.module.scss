@@ -17,6 +17,7 @@
     .number-notify {
       width: 2.5rem;
       height: auto;
+      margin-left: 10px;
       background-color: red;
       color: white;
       text-align: center;
@@ -34,10 +35,10 @@
   border-radius: 0;
   padding: 11px 16px;
   line-height: 2.8rem;
-  background-color: var(--main-green);
-  border-bottom: 1px solid white;
+  background-color: rgb(30, 83, 83);
+  // border-bottom: 1px solid white;
 
   &:hover {
-    background-color: var(--dark-green);
+    background-color: lighten(rgb(30, 83, 83), 10%);
   }
 }

@@ -23,7 +23,7 @@ function Login() {
           title={'ĐĂNG NHẬP'}
           className={cx('button')}
           classNameText={cx('txt-button')}
-          action={() => navigate('/home')}
+          action={() => navigate('/earning')}
         />
       </div>
     </div>

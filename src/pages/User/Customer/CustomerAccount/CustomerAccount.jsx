@@ -46,31 +46,31 @@ function CustomerAccount() {
             <label className={cx('label-long')}>Số đơn hủy</label>
             <label className={cx('content')}>{item.cancelOrder}</label>
           </div>
-          <div>
-            <label className={cx('label-long')}>
-              {item.status === 'Đã khóa' ? (
-                <Button className={cx('button-unblock')} color="success">
-                  Mở khóa tài khoản
-                </Button>
-              ) : (
-                <Button className={cx('button-block')} color="danger">
-                  Khóa tài khoản
-                </Button>
-              )}
-            </label>
-            <label className={cx('content')}>
-              <Button
-                className={cx('button-custom')}
-                color="success"
-                onClick={() => {
-                  navigate(`/shipper/${item.id}/order`, { state: item });
-                }}
-              >
-                Xem danh sách đơn hàng
-              </Button>
-            </label>
-          </div>
         </div>
+      </div>
+      <div style={{ marginLeft: 180 }}>
+        <label className={cx('label-long')}>
+          {item.status === 'Đã khóa' ? (
+            <Button className={cx('button-unblock')} color="success">
+              Mở khóa tài khoản
+            </Button>
+          ) : (
+            <Button className={cx('button-block')} color="danger">
+              Khóa tài khoản
+            </Button>
+          )}
+        </label>
+        <label className={cx('content')}>
+          <Button
+            className={cx('button-custom')}
+            color="success"
+            onClick={() => {
+              navigate(`/shipper/${item.id}/order`, { state: item });
+            }}
+          >
+            Xem danh sách đơn hàng
+          </Button>
+        </label>
       </div>
     </div>
   );

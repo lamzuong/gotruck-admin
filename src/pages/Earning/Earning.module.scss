@@ -1,0 +1,67 @@
+.wrapper-statistic {
+  width: 100%;
+  .title {
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .graph-view {
+    width: 70%;
+    height: 100%;
+  }
+  .wrapper-search {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 20px;
+    width: 30%;
+
+    .wrapper-date {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .title-date {
+      margin: 0px 5px;
+    }
+    .input-date {
+      height: 30px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding-right: 10px;
+      margin: 5px;
+    }
+    .btn-search {
+      margin-top: 10px;
+      height: 35px;
+      .txt-search {
+        font-size: 16px;
+      }
+    }
+  }
+}
+.wrapper-earning {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  .title-earning {
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .money-earning {
+    margin-left: 50px;
+    font-size: 30px;
+    font-weight: 600;
+  }
+}
+.inline {
+  display: flex;
+}
+.inline-center {
+  display: flex;
+  align-items: center;
+}
+.inline-between {
+  display: flex;
+  justify-content: space-between;
+}
