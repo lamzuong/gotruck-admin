@@ -20,6 +20,22 @@
   margin-left: 50px;
   width: 250px;
 }
+.avatar {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+}
+.img {
+  height: 100px;
+  cursor: pointer;
+}
+.icon-del {
+  position: relative;
+  top: -50px;
+  left: -5px;
+  color: red;
+  cursor: pointer;
+}
 .view-image {
   display: flex;
   flex-wrap: wrap;

@@ -25,6 +25,10 @@ import Earning from '~/pages/Earning/Earning';
 import Notification from '~/pages/Notification/Notification';
 import Goods from '~/pages/Goods/Goods';
 import Truck from '~/pages/Truck/Truck';
+import ContactUser from '~/pages/FormSupport/ContactUser/ContactUser';
+import FormWithdraw from '~/pages/FormWithdraw/FormWithdraw';
+import WithdrawDetail from '~/pages/FormWithdraw/WithdrawDetail/WithdrawDetail';
+import VehicleDetail from '~/pages/FormVehicle/VehicleDetail/VehicleDetail';
 
 // Không cần đăng nhập
 const publicRoutes = [
@@ -54,9 +58,13 @@ const publicRoutes = [
 
   { path: '/form-support', component: FormSupport },
   { path: '/form-support/support-detail/:id', component: SupportDetail },
+  { path: '/form-support/support-detail/:id/contact', component: ContactUser },
   { path: '/form-register', component: FormRegister },
   { path: '/form-register/register-detail/:id', component: RegisterDetail },
+  { path: '/form-withdraw', component: FormWithdraw },
+  { path: '/form-withdraw/withdraw-detail/:id', component: WithdrawDetail },
   { path: '/form-vehicle', component: FormVehicle },
+  { path: '/form-vehicle/vehicle-detail/:id', component: VehicleDetail },
 ];
 // Đăng nhập để xem được
 const privateRoutes = [];

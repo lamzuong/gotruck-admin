@@ -1,13 +1,14 @@
 import styles from './SupportDetail.module.scss';
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { Button } from 'reactstrap';
 
 const cx = classNames.bind(styles);
 
 function SupportDetail() {
+  const navigate = useNavigate();
   const location = useLocation();
   const item = location.state;
 
@@ -18,6 +19,10 @@ function SupportDetail() {
           <div>
             <label className={cx('label-short')}>Mã đơn</label>
             <label className={cx('content')}>{item.id}</label>
+          </div>
+          <div>
+            <label className={cx('label-short')}>Mã người dùng</label>
+            <label className={cx('content')}>{item.sender.id}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Họ tên</label>
@@ -58,17 +63,28 @@ function SupportDetail() {
             </label>
           </div>
           <div>
-            <label className={cx('label-long')}>
-              {item.status === 'Chưa tiếp nhận' ? (
+            {item.status === 'Chưa tiếp nhận' ? (
+              <Button className={cx('button-unblock')} color="success">
+                Tiếp nhận
+              </Button>
+            ) : item.status === 'Đã tiếp nhận' ? (
+              <div className={cx('inline')}>
                 <Button className={cx('button-unblock')} color="success">
-                  Tiếp nhận
-                </Button>
-              ) : (
-                <Button className={cx('button-block')} color="success">
                   Đã xong
                 </Button>
-              )}
-            </label>
+                <Button
+                  className={cx('button-custom')}
+                  color="warning"
+                  onClick={() =>
+                    navigate(`/form-support/support-detail/${item.id}/contact`, {
+                      state: item,
+                    })
+                  }
+                >
+                  Liên hệ với người gửi
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import classNames from 'classnames/bind';
 import { Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import MyPagination from '~/components/MyPagination/MyPagination';
 
 const cx = classNames.bind(styles);
 const status = ['Tất cả', 'Đã xử lý', 'Đã tiếp nhận', 'Chưa tiếp nhận'];
@@ -50,6 +51,8 @@ function FormSupport() {
           </TabPane>
         ))}
       </TabContent>
+
+      <MyPagination />
     </div>
   );
 }

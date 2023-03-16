@@ -1,4 +1,4 @@
-import styles from './RegisterDetail.module.scss';
+import styles from './VehicleDetail.module.scss';
 
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { Button, Input, Modal } from 'reactstrap';
 
 const cx = classNames.bind(styles);
 
-function RegisterDetail() {
+function VehicleDetail() {
   const location = useLocation();
   const item = location.state;
 
@@ -39,20 +39,20 @@ function RegisterDetail() {
             <label className={cx('content')}>{item.id}</label>
           </div>
           <div>
-            <label className={cx('label-short')}>Họ tên</label>
-            <label className={cx('content')}>{item.name}</label>
+            <label className={cx('label-short')}>Mã tài xế</label>
+            <label className={cx('content')}>{item.user.id}</label>
           </div>
           <div>
-            <label className={cx('label-short')}>Email</label>
-            <label className={cx('content')}>{item.email}</label>
+            <label className={cx('label-short')}>Tên tài xế</label>
+            <label className={cx('content')}>{item.user.name}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Điện thoại</label>
-            <label className={cx('content')}>{item.phone}</label>
+            <label className={cx('content')}>{item.user.phone}</label>
           </div>
           <div>
             <label className={cx('label-short')}>CMND/CCCD</label>
-            <label className={cx('content')}>{item.cmnd}</label>
+            <label className={cx('content')}>{item.user.cmnd}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Thời gian gửi</label>
@@ -74,9 +74,9 @@ function RegisterDetail() {
             <label className={cx('content')}>{item.truck.number}</label>
           </div>
           <div className={cx('display-flex')}>
-            <label className={cx('label-long')}>Hình ảnh giấy tờ</label>
+            <label className={cx('label-short')}>Hình ảnh giấy tờ</label>
             <label className={cx('view-image')}>
-              {item.image.map((e, i) => (
+              {item.truck.img.map((e, i) => (
                 <img src={e} key={i} className={cx('image-paper')} />
               ))}
             </label>
@@ -90,10 +90,10 @@ function RegisterDetail() {
           {item.status === 'Chưa xử lý' ? (
             <div className={cx('wrapper-button')}>
               <Button className={cx('button-unblock')} color="success">
-                Chấp thuận và cấp tài khoản
+                Chấp thuận phương tiện
               </Button>
               <Button className={cx('button-block')} color="danger" onClick={toggle}>
-                Từ chối đơn
+                Từ chối
               </Button>
             </div>
           ) : null}
@@ -103,4 +103,4 @@ function RegisterDetail() {
   );
 }
 
-export default RegisterDetail;
+export default VehicleDetail;

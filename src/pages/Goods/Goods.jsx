@@ -223,14 +223,14 @@ function Goods() {
                       className={cx('button')}
                       onClick={() => toggleDeleteGoods(e.label)}
                     >
-                      Sửa
+                      <h4>Sửa</h4>
                     </Button>
                     <Button
                       color="danger"
                       className={cx('button')}
                       onClick={() => toggleDeleteGoods(e.label)}
                     >
-                      Xóa
+                      <h4>Xóa</h4>
                     </Button>
                   </td>
                 </tr>

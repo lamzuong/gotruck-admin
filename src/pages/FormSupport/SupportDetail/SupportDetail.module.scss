@@ -37,21 +37,24 @@
     margin-right: 10px;
   }
 }
-@mixin button($width: 200px) {
+@mixin button($width: 100%) {
   width: $width;
   height: 40px;
   font-size: 1.6rem;
   font-weight: 700;
-  background-color: var(--main-green);
+  margin: 10px;
 }
 .button-unblock {
-  @include button();
-}
-.button-block {
-  @include button();
+  @include button(150px);
+  background-color: var(--main-green);
 }
 .button-custom {
-  @include button(fit-content);
-  padding: 0 20px;
-  background-color: var(--main-green);
+  @include button(200px);
+  background-color: orange;
+  color: #fff;
+}
+.inline {
+  display: flex;
+  width: 550px;
+  margin-left: 40px;
 }

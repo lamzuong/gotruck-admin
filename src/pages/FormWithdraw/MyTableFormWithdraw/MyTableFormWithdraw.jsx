@@ -1,18 +1,18 @@
-import styles from './MyTableFormSupport.module.scss';
+import styles from './MyTableFormWithdraw.module.scss';
 
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import classNames from 'classnames/bind';
+import { convertMoney } from '~/global/functionGlobal';
 
 const cx = classNames.bind(styles);
 
 const title = [
   'Mã đơn',
-  'Mã người dùng',
-  'Họ tên',
-  'Chủ đề',
+  'Mã người gửi',
   'Tình trạng',
-  'Thời gian',
+  'Số tiền cần rút',
+  'Thời gian gửi',
   'Hành động',
 ];
 const HeaderTable = () => (
@@ -24,34 +24,29 @@ const HeaderTable = () => (
     </tr>
   </thead>
 );
-const BodyTable = ({ item }) => {
+const BodyTable = ({ item, showConfirm }) => {
   const navigate = useNavigate();
   return (
     <tr>
       <td>{item.id}</td>
-      <td>{item.sender.id}</td>
-      <td>{item.sender.name}</td>
-      <td>{item.subject}</td>
+      <td>{item.user.id}</td>
       <td>{item.status}</td>
+      <td>{convertMoney(item.money, 'đ')}</td>
       <td>{item.time}</td>
       <td>
         <Button
           color="primary"
           onClick={() => {
-            navigate(`/form-support/support-detail/${item.id}`, { state: item });
+            navigate(`/form-withdraw/withdraw-detail/${item.id}`, { state: item });
           }}
         >
           <h4>Xem</h4>
         </Button>
-        {item.status === 'Đã tiếp nhận' ? (
-          <Button color="success" onClick={() => {}} className={cx('button')}>
-            <h4>Xử lý xong</h4>
+        {item.status === 'Chưa xử lý' && (
+          <Button color="success" style={{ marginLeft: 10 }} onClick={showConfirm}>
+            <h4>Xác nhận xong</h4>
           </Button>
-        ) : item.status === 'Chưa tiếp nhận' ? (
-          <Button color="dark" onClick={() => {}} className={cx('button')}>
-            <h4>Tiếp nhận</h4>
-          </Button>
-        ) : null}
+        )}
       </td>
     </tr>
   );

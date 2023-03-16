@@ -81,7 +81,12 @@ const sidebar = [
         numberNotify: 2,
       },
       {
-        title: 'Đơn yêu cầu thay đổi thông tin xe',
+        title: 'Đơn yêu cầu rút tiền',
+        to: '/form-withdraw',
+        numberNotify: 2,
+      },
+      {
+        title: 'Đơn yêu cầu thêm phương tiện',
         to: '/form-vehicle',
         numberNotify: 2,
       },

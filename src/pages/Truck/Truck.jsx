@@ -17,6 +17,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import CurrencyInput from 'react-currency-input-field';
 
 const cx = classNames.bind(styles);
 
@@ -157,31 +158,44 @@ function Truck() {
       {/* Modal add truck type */}
       <Modal isOpen={modalTruck} toggle={toggleTruck}>
         <div className={cx('wrapper-modal')}>
-          <FormGroup>
+          <FormGroup className={cx('inline-between')}>
             <Label>Nhập trọng tải cho xe cần thêm</Label>
-            <Input
-              onChange={(e) => setValueTruck(e.target.value)}
-              bsSize="lg"
-              invalid={invalidTruck}
-              className={cx('input')}
-            />
+            <div className={cx('input-suffix')}>
+              <Input
+                onChange={(e) => setValueTruck(e.target.value)}
+                bsSize="lg"
+                invalid={invalidTruck}
+                className={cx('input')}
+              />
+              <p style={{ marginLeft: 10 }}>tấn</p>
+            </div>
             <FormFeedback>Loại trọng tải đã tồn tại</FormFeedback>
           </FormGroup>
-          <FormGroup>
+          <FormGroup className={cx('inline-between')}>
             <Label>Giá tối thiểu 2km đầu tiên</Label>
-            <Input
-              onChange={(e) => setDistanceLte2(e.target.value)}
-              bsSize="lg"
-              className={cx('input')}
-            />
+            <div className={cx('input-suffix')}>
+              <CurrencyInput
+                placeholder="0"
+                maxLength={7}
+                onValueChange={(value) => setDistanceLte2(value)}
+                value={distanceLte2}
+                className={cx('input-money')}
+              />
+              <p style={{ marginLeft: 10 }}>VNĐ</p>
+            </div>
           </FormGroup>
-          <FormGroup>
+          <FormGroup className={cx('inline-between')}>
             <Label>Giá mỗi km tiếp theo</Label>
-            <Input
-              onChange={(e) => setDistanceGt2(e.target.value)}
-              bsSize="lg"
-              className={cx('input')}
-            />
+            <div className={cx('input-suffix')}>
+              <CurrencyInput
+                placeholder="0"
+                maxLength={7}
+                onValueChange={(value) => setDistanceGt2(value)}
+                value={distanceGt2}
+                className={cx('input-money')}
+              />
+              <p style={{ marginLeft: 10 }}>VNĐ</p>
+            </div>
           </FormGroup>
           <Button color="primary" block className={cx('button-add')} onClick={handleAddTruck}>
             <h4>Thêm</h4>
@@ -218,6 +232,7 @@ function Truck() {
           <tr>
             <th>STT</th>
             <th>Loại xe tải</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -227,7 +242,7 @@ function Truck() {
               <td>{e.label}</td>
               <td>
                 <Button color="danger" onClick={() => toggleDeleteTruck(e.value)}>
-                  Xóa
+                  <h4>Xóa</h4>
                 </Button>
               </td>
             </tr>

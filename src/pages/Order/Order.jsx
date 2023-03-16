@@ -12,6 +12,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import useDebounce from '~/hook/useDebounce';
 import { useLocation } from 'react-router-dom';
 import orderAPI from '~/api/orderAPI';
+import MyPagination from '~/components/MyPagination/MyPagination';
 
 const cx = classNames.bind(styles);
 
@@ -132,6 +133,8 @@ function Order() {
           </TabContent>
         </>
       )}
+
+      <MyPagination />
     </div>
   );
 }

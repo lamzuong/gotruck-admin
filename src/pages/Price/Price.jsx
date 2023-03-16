@@ -113,6 +113,15 @@ function Price() {
       setCheckedNewItem(list);
     }
   }, [deltaPrice1, deltaPercent1, deltaPrice2, deltaPercent2]);
+  const handleResetInput = (index) => {
+    if (index === 1) {
+      setDeltaPrice1(0);
+      setDeltaPercent1(0);
+    } else {
+      setDeltaPrice2(0);
+      setDeltaPercent2(0);
+    }
+  };
   return (
     <div>
       {/* Modal edit one */}
@@ -227,8 +236,14 @@ function Price() {
                 tab={tab1}
                 nameTab1={PRICE_1}
                 nameTab2={PERCENT_1}
-                onClick1={() => setTab1(PRICE_1)}
-                onClick2={() => setTab1(PERCENT_1)}
+                onClick1={() => {
+                  setTab1(PRICE_1);
+                  handleResetInput(1);
+                }}
+                onClick2={() => {
+                  setTab1(PERCENT_1);
+                  handleResetInput(1);
+                }}
               />
             </div>
             <div className={cx('wrapper-delta')}>
@@ -240,6 +255,7 @@ function Price() {
                     maxLength={9}
                     onValueChange={(value) => setDeltaPrice2(value)}
                     className={cx('currency-input')}
+                    value={deltaPrice2}
                   />
                   <div>đ</div>
                 </div>
@@ -250,6 +266,7 @@ function Price() {
                     maxLength={2}
                     onValueChange={(value) => setDeltaPercent2(value)}
                     className={cx('currency-input')}
+                    value={deltaPercent2}
                   />
                   <div>%</div>
                 </div>
@@ -258,8 +275,14 @@ function Price() {
                 tab={tab2}
                 nameTab1={PRICE_2}
                 nameTab2={PERCENT_2}
-                onClick1={() => setTab2(PRICE_2)}
-                onClick2={() => setTab2(PERCENT_2)}
+                onClick1={() => {
+                  setTab2(PRICE_2);
+                  handleResetInput(2);
+                }}
+                onClick2={() => {
+                  setTab2(PERCENT_2);
+                  handleResetInput(2);
+                }}
               />
             </div>
           </div>

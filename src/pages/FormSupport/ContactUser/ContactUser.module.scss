@@ -1,0 +1,82 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 60px;
+  border-bottom: 1px solid grey;
+  .icon {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .name {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+  }
+}
+.body {
+  overflow: auto;
+  min-height: 80vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .mess {
+    width: fit-content;
+    max-width: 30%;
+    margin: 5px;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .mess-admin {
+    @extend .mess;
+    position: relative;
+    float: right;
+    background-color: var(--main-green);
+  }
+  .mess-user {
+    @extend .mess;
+    background-color: rgb(218, 216, 216);
+  }
+  .txt-mess {
+  }
+  .txt-mess-admin {
+    color: white;
+  }
+  .txt-mess-user {
+    color: #000;
+  }
+  .view-image {
+    .image {
+      height: 60px;
+      width: 60px;
+      cursor: pointer;
+      margin: 5px;
+    }
+  }
+}
+.footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .input {
+    height: 40px;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 20px;
+    background-color: rgb(239, 234, 234);
+    padding: 0 20px;
+  }
+  .icon {
+    margin-left: 20px;
+    font-size: 25px;
+    cursor: pointer;
+  }
+}
