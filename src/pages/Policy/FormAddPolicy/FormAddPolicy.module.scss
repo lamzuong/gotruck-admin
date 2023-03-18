@@ -1,0 +1,16 @@
+.title-header {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.input {
+  height: 40px;
+  max-width: 100%;
+  font-size: 16px;
+  text-align: left;
+  vertical-align: top;
+}
+.area {
+  @extend .input;
+  height: 340px;
+}

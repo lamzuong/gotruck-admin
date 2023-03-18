@@ -29,6 +29,11 @@ import ContactUser from '~/pages/FormSupport/ContactUser/ContactUser';
 import FormWithdraw from '~/pages/FormWithdraw/FormWithdraw';
 import WithdrawDetail from '~/pages/FormWithdraw/WithdrawDetail/WithdrawDetail';
 import VehicleDetail from '~/pages/FormVehicle/VehicleDetail/VehicleDetail';
+import CustomerPolicy from '~/pages/Policy/CustomerPolicy/CustomerPolicy';
+import ShipperPolicy from '~/pages/Policy/ShipperPolicy/ShipperPolicy';
+import SecurityPolicy from '~/pages/Policy/SecurityPolicy/SecurityPolicy';
+import RegulationPolicy from '~/pages/Policy/RegulationPolicy/RegulationPolicy';
+import FormAddPolicy from '~/pages/Policy/FormAddPolicy/FormAddPolicy';
 
 // Không cần đăng nhập
 const publicRoutes = [
@@ -49,7 +54,13 @@ const publicRoutes = [
   { path: '/order', component: Order },
   { path: '/order-detail/:id', component: OrderDetail },
   { path: '/order-detail/:id/shipper-location', component: ShipperLocation },
+
   { path: '/policy', component: Policy },
+  { path: '/policy/customer', component: CustomerPolicy },
+  { path: '/policy/shipper', component: ShipperPolicy },
+  { path: '/policy/security', component: SecurityPolicy },
+  { path: '/policy/regulation', component: RegulationPolicy },
+  { path: '/policy/form', component: FormAddPolicy },
 
   { path: '/pr/price', component: Price },
   { path: '/pr/discount', component: Discount },

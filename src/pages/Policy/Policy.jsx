@@ -13,22 +13,22 @@ function Policy() {
       <MyButtonPolicy
         icon={<FontAwesomeIcon icon={faUser} size={'2x'} color={'#04af46'} />}
         title={'Điều khoản cho khách hàng'}
-        to={'/'}
+        to={'/policy/customer'}
       />
       <MyButtonPolicy
         icon={<FontAwesomeIcon icon={faTruck} size={'2x'} color={'#04af46'} />}
         title={'Điều khoản cho shipper'}
-        to={'/'}
+        to={'/policy/shipper'}
       />
       <MyButtonPolicy
         icon={<FontAwesomeIcon icon={faUserShield} size={'2x'} color={'#04af46'} />}
         title={'Chính sách bảo mật'}
-        to={'/'}
+        to={'/policy/security'}
       />
       <MyButtonPolicy
         icon={<FontAwesomeIcon icon={faArrowsRotate} size={'2x'} color={'#04af46'} />}
         title={'Quy chế hoạt động của GoTruck'}
-        to={'/'}
+        to={'/policy/regulation'}
       />
     </div>
   );
