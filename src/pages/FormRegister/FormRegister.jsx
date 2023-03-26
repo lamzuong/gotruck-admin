@@ -52,7 +52,7 @@ function FormRegister() {
         ))}
       </TabContent>
 
-      <MyPagination />
+      {/* <MyPagination /> */}
     </div>
   );
 }

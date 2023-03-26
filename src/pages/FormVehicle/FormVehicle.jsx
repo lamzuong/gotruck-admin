@@ -52,7 +52,7 @@ function FormVehicle() {
         ))}
       </TabContent>
 
-      <MyPagination />
+      {/* <MyPagination /> */}
     </div>
   );
 }

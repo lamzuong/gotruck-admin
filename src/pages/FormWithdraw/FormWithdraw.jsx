@@ -82,7 +82,7 @@ function FormWithdraw() {
         ))}
       </TabContent>
 
-      <MyPagination />
+      {/* <MyPagination /> */}
     </div>
   );
 }

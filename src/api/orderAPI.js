@@ -5,29 +5,20 @@ const orderAPI = {
     const url = '/orderAdmin';
     return axiosClient.get(url);
   },
-
+  getByNoPage: (params) => {
+    const url = `/orderAdmin/pagination?status=${params.status}`;
+    return axiosClient.get(url);
+  },
   getByPage: (params) => {
-    const url = `/goodsType/pagination?page=${params.page}&limit=${params.limit}`;
+    const url = `/orderAdmin/pagination?page=${params.page}&limit=${params.limit}&status=${params.status}`;
     return axiosClient.get(url);
   },
-
-  get: (id) => {
-    const url = `/goodsType/${id}`;
+  search: (params) => {
+    const url = `/orderAdmin/search?page=${params.page}&limit=${params.limit}&idCustomer=${params.idCustomer}&idShipper=${params.idShipper}&idOrder=${params.idOrder}`;
     return axiosClient.get(url);
   },
-
-  add: (params) => {
-    const url = `/goodsType`;
-    return axiosClient.post(url, { ...params });
-  },
-
-  delete: (label) => {
-    const url = `/goodsType/${label}`;
-    return axiosClient.delete(url);
-  },
-
-  search: (keyword = '') => {
-    const url = `/goodsType/search/${keyword}`;
+  searchNoPage: (params) => {
+    const url = `/orderAdmin/search?idCustomer=${params.idCustomer}&idShipper=${params.idShipper}&idOrder=${params.idOrder}`;
     return axiosClient.get(url);
   },
 };

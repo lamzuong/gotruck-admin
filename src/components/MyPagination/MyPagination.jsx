@@ -1,13 +1,24 @@
 import styles from './MyPagination.module.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-function MyPagination({ page = 1, totalItems = 10 }) {
+function MyPagination({ page = 1, totalItems = 10, setPage }) {
   const [currentPage, setCurrentPage] = useState(page);
+
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page]);
+  useEffect(() => {
+    setPage(currentPage);
+  }, [currentPage]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [totalItems]);
+
   return (
     <div className={cx('inline-around')}>
       <div></div>
@@ -33,7 +44,7 @@ function MyPagination({ page = 1, totalItems = 10 }) {
         </Pagination>
       </div>
       <div style={{ color: 'grey' }}>
-        Tổng số trang: {currentPage} trên {Math.ceil(totalItems / 10)}
+        Tổng số trang: {currentPage} trên {totalItems / 10 == 0 ? 1 : Math.ceil(totalItems / 10)}
       </div>
     </div>
   );

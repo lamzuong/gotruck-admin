@@ -6,7 +6,7 @@ const title = [
   'Mã tài xế',
   'Tên tài xế',
   'Biển số xe',
-  'Người gửi hàng',
+  'Mã khách hàng',
   'Tình trạng',
 ];
 const HeaderTable = () => (
@@ -23,10 +23,10 @@ const BodyTable = ({ order }) => {
   return (
     <tr>
       <td>{order.id_order}</td>
-      <td>{order.shipper?.id_shipper.id_shipper || <i>Chưa có</i>}</td>
-      <td>{order.shipper?.id_shipper.name || <i>Chưa có</i>}</td>
-      <td>{order.shipper?.truck.license_plate || <i>Chưa có</i>}</td>
-      <td>{order.id_customer.name}</td>
+      <td>{order.shipper?.id_shipper?.id_shipper || <i>Chưa có</i>}</td>
+      <td>{order.shipper?.id_shipper?.name || <i>Chưa có</i>}</td>
+      <td>{order.shipper?.truck?.license_plate || <i>Chưa có</i>}</td>
+      <td>{order.id_customer.id_cus}</td>
       <td>{order.status}</td>
       <td>
         <Button

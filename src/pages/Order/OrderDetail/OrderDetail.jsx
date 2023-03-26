@@ -30,11 +30,12 @@ function OrderDetail() {
     { title: 'Mã đơn hàng', content: item.id_order },
     {
       title: 'Tài xế',
-      content: item.shipper ? (
-        item.shipper?.id_shipper.id_shipper + ' - ' + item.shipper?.id_shipper.name
-      ) : (
-        <i>Chưa có</i>
-      ),
+      content:
+        Object.keys(item.shipper).length > 0 && item.shipper.id_shipper ? (
+          item.shipper?.id_shipper?.id_shipper + ' - ' + item.shipper?.id_shipper?.name
+        ) : (
+          <i>Chưa có</i>
+        ),
     },
     { title: 'Biển số xe', content: item.shipper?.truck.license_plate || <i>Chưa có</i> },
   ];
@@ -120,7 +121,7 @@ function OrderDetail() {
             <Col>
               <div className={cx('row-info')}>
                 <div className={cx('label')}>Tiền vận chuyển</div>
-                <div className={cx('content')}>{convertMoney(item.priceTransport, 'VNĐ')}</div>
+                <div className={cx('content')}>{convertMoney(item.priceTransport || 0, 'VNĐ')}</div>
               </div>
             </Col>
             <Col>

@@ -52,7 +52,7 @@ function FormSupport() {
         ))}
       </TabContent>
 
-      <MyPagination />
+      {/* <MyPagination /> */}
     </div>
   );
 }
