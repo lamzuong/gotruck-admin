@@ -1,0 +1,13 @@
+.wrapper {
+  border-radius: 10px;
+  box-shadow: 0 0 10px 1px grey;
+  background-color: white;
+}
+.item {
+  display: flex;
+  padding: 10px;
+  cursor: pointer;
+}
+.title {
+  margin-left: 10px;
+}

@@ -5,15 +5,23 @@ import classNames from 'classnames/bind';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import ReactSelect from 'react-select';
 import MyButtonAdd from '~/components/MyButtonAdd/MyButtonAdd';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function Notification() {
+  const navigate = useNavigate();
   const options = [
     { value: 'Tất cả người dùng', label: 'Tất cả người dùng' },
     { value: 'Tất cả khách hàng', label: 'Tất cả khách hàng' },
     { value: 'Tất cả tài xế', label: 'Tất cả tài xế' },
     { value: 'Người dùng cụ thể', label: 'Người dùng cụ thể' },
+  ];
+  const optionNotify = [
+    { value: 'Normal', label: 'Bình thường' },
+    { value: 'Warning', label: 'Cảnh báo' },
+    { value: 'Order', label: 'Đơn hàng' },
+    { value: 'Discount', label: 'Khuyến mãi' },
   ];
   const [valueOption, setValueOption] = useState(options[0]);
   const [imageChoose, setImageChoose] = useState([]);
@@ -31,7 +39,12 @@ function Notification() {
 
   return (
     <div className={cx('wrapper')}>
-      <div className={cx('title-header')}>Thông báo</div>
+      <div className={cx('inline-between')}>
+        <div className={cx('title-header')}>Thông báo</div>
+        <div className={cx('title-link')} onClick={() => navigate('/notification/history')}>
+          Xem lịch sử thay đổi &#62;&#62;
+        </div>
+      </div>
       <Form>
         <FormGroup>
           <Label>Gửi tới</Label>
@@ -43,6 +56,14 @@ function Notification() {
             <Input className={cx('input')} />
           </FormGroup>
         )}
+        <FormGroup>
+          <Label>Loại thông báo</Label>
+          <ReactSelect
+            defaultValue={optionNotify[0]}
+            options={optionNotify}
+            onChange={setValueOption}
+          />
+        </FormGroup>
         <FormGroup>
           <Label>Tiêu đề</Label>
           <Input className={cx('input')} />

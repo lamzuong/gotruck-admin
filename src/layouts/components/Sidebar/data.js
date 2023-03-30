@@ -48,6 +48,10 @@ const sidebar = [
         title: 'Quản lý loại xe tải',
         to: '/t/truck',
       },
+      {
+        title: 'Bán kính nhận đơn',
+        to: '/t/radius',
+      },
     ],
   },
   {

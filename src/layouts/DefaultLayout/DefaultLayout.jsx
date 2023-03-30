@@ -5,6 +5,7 @@ import Footer from '../components/Footer/Footer';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import Sidebar from '../components/Sidebar/Sidebar';
+import Header2 from '../components/Header2/Header2';
 
 const cx = classNames.bind(styles);
 
@@ -12,10 +13,13 @@ function DefaultLayout({ children }) {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('container')}>
-        <aside>
+        <aside className={cx('left-wrapper')}>
           <Sidebar />
         </aside>
-        <div className={cx('content')}>{children}</div>
+        <div className={cx('right-wrapper')}>
+          <Header2 />
+          <div className={cx('content')}>{children}</div>
+        </div>
       </div>
     </div>
   );

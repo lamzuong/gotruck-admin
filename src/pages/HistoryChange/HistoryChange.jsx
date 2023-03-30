@@ -31,7 +31,7 @@ function HistoryChange() {
                 <i
                   className={cx('underline')}
                   onClick={() => {
-                    navigate(`/history-change/${e.id}`, { state: e.price });
+                    navigate(`/pr/history-change/${e.id}`, { state: e.price });
                   }}
                 >
                   Xem chi tiết

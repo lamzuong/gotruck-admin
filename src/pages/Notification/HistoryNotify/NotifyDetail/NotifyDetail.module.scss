@@ -1,0 +1,21 @@
+.inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px 0;
+}
+.label {
+  width: 200px;
+  font-weight: 600;
+  font-size: 18px;
+}
+.content {
+  width: 80%;
+  font-size: 18px;
+}
+.image {
+  height: 60px;
+  width: 60px;
+  margin: 5px;
+  object-fit: cover;
+}

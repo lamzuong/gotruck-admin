@@ -1,5 +1,6 @@
 import Home from '~/pages/Home/Home';
 import Login from '~/pages/Login/Login';
+import ChangePass from '~/pages/ChangePass/ChangePass';
 
 import Customer from '~/pages/User/Customer/Customer';
 import CustomerAccount from '~/pages/User/Customer/CustomerAccount/CustomerAccount';
@@ -22,13 +23,20 @@ import FormVehicle from '~/pages/FormVehicle/FormVehicle';
 import SupportDetail from '~/pages/FormSupport/SupportDetail/SupportDetail';
 import RegisterDetail from '~/pages/FormRegister/RegisterDetail/RegisterDetail';
 import Earning from '~/pages/Earning/Earning';
+
 import Notification from '~/pages/Notification/Notification';
+import HistoryNotify from '~/pages/Notification/HistoryNotify/HistoryNotify';
+import NotifyDetail from '~/pages/Notification/HistoryNotify/NotifyDetail/NotifyDetail';
+
 import Goods from '~/pages/Goods/Goods';
 import Truck from '~/pages/Truck/Truck';
+import Radius from '~/pages/Radius/Radius';
+
 import ContactUser from '~/pages/FormSupport/ContactUser/ContactUser';
 import FormWithdraw from '~/pages/FormWithdraw/FormWithdraw';
 import WithdrawDetail from '~/pages/FormWithdraw/WithdrawDetail/WithdrawDetail';
 import VehicleDetail from '~/pages/FormVehicle/VehicleDetail/VehicleDetail';
+
 import CustomerPolicy from '~/pages/Policy/CustomerPolicy/CustomerPolicy';
 import ShipperPolicy from '~/pages/Policy/ShipperPolicy/ShipperPolicy';
 import SecurityPolicy from '~/pages/Policy/SecurityPolicy/SecurityPolicy';
@@ -38,12 +46,16 @@ import FormAddPolicy from '~/pages/Policy/FormAddPolicy/FormAddPolicy';
 // Không cần đăng nhập
 const publicRoutes = [
   { path: '/', component: Login, layout: null },
-  // { path: '/home', component: Home },
+  { path: '/change-pass', component: ChangePass },
+
   { path: '/earning', component: Earning },
   { path: '/notification', component: Notification },
+  { path: '/notification/history', component: HistoryNotify },
+  { path: '/notification/history/:id', component: NotifyDetail },
 
   { path: '/t/goods', component: Goods },
   { path: '/t/truck', component: Truck },
+  { path: '/t/radius', component: Radius },
 
   { path: '/customer', component: Customer },
   { path: '/customer/:id', component: CustomerAccount },

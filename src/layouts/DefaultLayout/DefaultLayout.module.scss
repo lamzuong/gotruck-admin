@@ -7,12 +7,18 @@
 }
 .container {
   display: flex;
-  flex-wrap: wrap;
-  max-width: 100%;
 }
 .content {
   flex: 1;
   padding: 20px 40px;
+}
+.left-wrapper {
+  width: 20%;
+}
+.right-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
 }
 a {
   text-decoration: none;

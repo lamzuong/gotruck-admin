@@ -35,19 +35,6 @@ function Customer() {
     toggle();
   };
 
-  const [radiusShow, setRadiusShow] = useState(5);
-  const [valueRadius, setValueRadius] = useState(5);
-  const [showEditRadius, setShowEditRadius] = useState(false);
-  const handleRadiusChange = (event) => {
-    const limit = 2;
-    setValueRadius(event.target.value.slice(0, limit));
-  };
-  const handleEditRadius = () => {
-    setShowEditRadius(false);
-    setRadiusShow(valueRadius);
-    // call API
-  };
-
   const accounts = [
     {
       avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
@@ -151,48 +138,7 @@ function Customer() {
           </div>
         </div>
       </Modal>
-      {/* Bán kính nhận đơn */}
-      <div className={cx('wrapper-radius')}>
-        <div className={cx('radius-view')}>
-          <div className={cx('title-header')}>Bán kính nhận đơn:</div>
-          <span className={cx('txt-value')}>{radiusShow} km</span>
-          {!showEditRadius && (
-            <span className={cx('button-edit')} onClick={() => setShowEditRadius(true)}>
-              <FontAwesomeIcon icon={faPenToSquare} />
-            </span>
-          )}
-        </div>
-        {showEditRadius && (
-          <div className={cx('wrapper-input')}>
-            <div className={cx('inline-center')}>
-              <Input
-                bsSize="lg"
-                type="number"
-                max={2}
-                value={valueRadius}
-                onChange={handleRadiusChange}
-              />
-              <div style={{ margin: 10 }}>km</div>
-            </div>
-            <div className={cx('wrapper-button')}>
-              <Button color="primary" size="lg" className={cx('button')} onClick={handleEditRadius}>
-                OK
-              </Button>
-              <Button
-                color="danger"
-                size="lg"
-                className={cx('button')}
-                onClick={() => setShowEditRadius(false)}
-              >
-                Hủy
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-      <hr />
       {/*  */}
-      <div className={cx('title-header')}>Tài khoản</div>
       <div className={cx('search-place')}>
         <div className={cx('title')}>Tra cứu ID</div>
         <MyInput data={setSearchValue} iconLeft={<FontAwesomeIcon icon={faSearch} />} />

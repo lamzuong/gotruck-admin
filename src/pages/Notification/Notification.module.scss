@@ -10,6 +10,15 @@
   text-align: left;
   vertical-align: top;
 }
+.title-link {
+  margin-bottom: 20px;
+  font-style: italic;
+  font-weight: 600;
+  color: #05a595;
+  text-decoration: underline;
+  text-align: right;
+  cursor: pointer;
+}
 .area {
   @extend .input;
   height: 140px;
@@ -36,4 +45,9 @@
     margin-top: -2px;
     cursor: pointer;
   }
+}
+.inline-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

@@ -1,27 +1,3 @@
-.wrapper-radius {
-  display: flex;
-  align-items: center;
-  height: 50px;
-  .radius-view {
-    display: flex;
-
-    .txt-value {
-      font-size: 20px;
-      margin-right: 20px;
-    }
-    .button-edit {
-      font-size: 20px;
-    }
-  }
-  .wrapper-input {
-    display: flex;
-    align-items: center;
-    .button {
-      margin: 5px;
-    }
-  }
-}
-
 .search-place {
   display: flex;
   align-items: center;
