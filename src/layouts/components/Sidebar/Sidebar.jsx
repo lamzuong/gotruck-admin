@@ -28,7 +28,7 @@ function Sidebar() {
 
   return (
     <div className={cx('wrapper')}>
-      <Link to={'/home'}>
+      <Link to={'/earning'}>
         <img src={logo} alt="GoTruck" className={cx('logo')} />
       </Link>
       {sidebar.map((e, i) =>

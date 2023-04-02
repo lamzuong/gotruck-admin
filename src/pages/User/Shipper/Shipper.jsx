@@ -3,26 +3,18 @@ import {
   BodyTableShipper,
   HeaderTableShipper,
 } from '~/pages/User/components/MyTableAccount/MyTableAccount';
+import shipperAPI from '~/api/shipperAPI';
 import MyInput from '~/components/MyInput/MyInput';
+import MyPagination from '~/components/MyPagination/MyPagination';
 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import {
-  Button,
-  Input,
-  Modal,
-  Nav,
-  NavItem,
-  NavLink,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  TabContent,
-  Table,
-  TabPane,
-} from 'reactstrap';
+import { Input, Modal, Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
+import useDebounce from '~/hook/useDebounce';
+import MyConfirm from '~/components/MyConfirm/MyConfirm';
 
 const cx = classNames.bind(styles);
 
@@ -122,14 +114,87 @@ function Customer() {
   const [searchValue, setSearchValue] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [tab, setTab] = useState('Tất cả');
+  const [rerender, setRerender] = useState(false);
+
+  const [shippers, setShippers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [txtConfirm, setTxtConfirm] = useState(false);
+  const [userConfirm, setUserConfirm] = useState(null);
+
+  useEffect(() => {
+    const getShipper = async () => {
+      try {
+        const total = await shipperAPI.getByNoPage({
+          status: tab,
+        });
+        setTotalItems(total);
+        const res = await shipperAPI.getByPage({
+          limit: 10,
+          page: page,
+          status: tab,
+        });
+        setShippers(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (searchValue === '') getShipper();
+  }, [tab, page, rerender]);
+
+  const debouncedShipperId = useDebounce(searchValue, 200);
+  useEffect(() => {
+    if (!debouncedShipperId.trim()) {
+      setSearchResult([]);
+      return;
+    }
+    const fetchApi = async () => {
+      const res = await shipperAPI.searchNoPage({
+        idShipper: debouncedShipperId,
+      });
+      setTotalItems(res);
+
+      const result = await shipperAPI.search({
+        page: page,
+        limit: 10,
+        idShipper: debouncedShipperId,
+      });
+
+      setSearchResult(result);
+      if (debouncedShipperId === '') {
+        setSearchResult([]);
+      }
+    };
+
+    fetchApi();
+  }, [debouncedShipperId, page, shippers]);
+
+  const changeTab = (tab) => {
+    setPage(1);
+    setTab(tab);
+  };
+
+  const handleBlock = async () => {
+    await shipperAPI.block(userConfirm.id_shipper);
+    setShowConfirm(false);
+    setRerender(!rerender);
+  };
 
   return (
     <div className={cx('wrapper')}>
+      <MyConfirm
+        setShow={setShowConfirm}
+        show={showConfirm}
+        title={txtConfirm}
+        action={handleBlock}
+      />
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Mã tài xế:</div>
-            <div>{userInputMoney.id}</div>
+            <div>{userInputMoney.id_shipper}</div>
           </div>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Số tiền nạp:</div>
@@ -144,22 +209,34 @@ function Customer() {
         <MyInput data={setSearchValue} iconLeft={<FontAwesomeIcon icon={faSearch} />} />
       </div>
       {/* Search result */}
-      {searchResult.length > 0 ? (
-        <Table striped className={cx('table-order')}>
-          <HeaderTableShipper />
-          <tbody>
-            {searchResult.map((e, i) => (
-              <BodyTableShipper user={e} key={i} />
-            ))}
-          </tbody>
-        </Table>
+      {searchValue !== '' ? (
+        searchResult.length > 0 ? (
+          <Table striped className={cx('table-order')}>
+            <HeaderTableShipper />
+            <tbody>
+              {searchResult.map((e, i) => (
+                <BodyTableShipper
+                  user={e}
+                  handleInputMoney={handleInputMoney}
+                  key={i}
+                  show={showConfirm}
+                  setShow={setShowConfirm}
+                  setText={setTxtConfirm}
+                  setUser={setUserConfirm}
+                />
+              ))}
+            </tbody>
+          </Table>
+        ) : (
+          <div>Không có tài xế nào phù hợp</div>
+        )
       ) : (
         <>
           {/* Tab order */}
           <Nav tabs>
             {status.map((e, i) => (
               <NavItem key={i} className={cx('tabs')}>
-                <NavLink className={tab === e ? 'active' : ''} onClick={() => setTab(e)}>
+                <NavLink className={tab === e ? 'active' : ''} onClick={() => changeTab(e)}>
                   <div className={tab === e ? cx('choose-tab') : cx('no-choose-tab')}>{e}</div>
                 </NavLink>
               </NavItem>
@@ -171,11 +248,17 @@ function Customer() {
                 <Table striped className={cx('table-order')}>
                   <HeaderTableShipper />
                   <tbody>
-                    {accounts.map((e, i) =>
-                      status === 'Tất cả' || status === e.status ? (
-                        <BodyTableShipper user={e} handleInputMoney={handleInputMoney} key={i} />
-                      ) : null,
-                    )}
+                    {shippers.map((e, i) => (
+                      <BodyTableShipper
+                        user={e}
+                        handleInputMoney={handleInputMoney}
+                        key={i}
+                        show={showConfirm}
+                        setShow={setShowConfirm}
+                        setText={setTxtConfirm}
+                        setUser={setUserConfirm}
+                      />
+                    ))}
                   </tbody>
                 </Table>
               </TabPane>
@@ -184,33 +267,7 @@ function Customer() {
         </>
       )}
       {/* Page */}
-      <div className={cx('inline-around')}>
-        <div style={{ width: 150 }} />
-        <div className={cx('wrapper-pagination')}>
-          <Pagination size="lg">
-            <PaginationItem>
-              <PaginationLink
-                previous
-                // onClick={() => pageTruck > 1 && setPageTruck(pageTruck - 1)}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink>{1}</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                next
-                // onClick={() =>
-                //   pageTruck < Math.ceil(listTrucks.length / 10) && setPageTruck(pageTruck + 1)
-                // }
-              />
-            </PaginationItem>
-          </Pagination>
-        </div>
-        <div style={{ color: 'grey' }}>
-          Tổng số trang: {1} trên {10}
-        </div>
-      </div>
+      <MyPagination setPage={setPage} page={page} totalItems={totalItems.length} />
     </div>
   );
 }

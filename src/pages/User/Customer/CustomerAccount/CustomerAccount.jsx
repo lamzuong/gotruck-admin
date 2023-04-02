@@ -4,21 +4,49 @@ import { noAvatar } from '~/global/imagesLink';
 import classNames from 'classnames/bind';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import MyConfirm from '~/components/MyConfirm/MyConfirm';
+import { useState } from 'react';
+import customerAPI from '~/api/customerAPI';
 
 const cx = classNames.bind(styles);
 
 function CustomerAccount() {
   const location = useLocation();
   const navigate = useNavigate();
-  const item = location.state;
+
+  const [item, setItem] = useState(location.state);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [txtConfirm, setTxtConfirm] = useState(false);
+
+  const handleBlock = async () => {
+    await customerAPI.block(item.id_cus);
+    setShowConfirm(false);
+    const res = await customerAPI.getCusById(item.id_cus);
+    setItem(res);
+  };
+  const toggle = (block) => {
+    setShowConfirm(!showConfirm);
+    setTxtConfirm(
+      block
+        ? 'Bạn có chắc muốn khóa tài khoản này không ?'
+        : 'Bạn muốn mở khóa tài khoản này đúng không ?',
+    );
+  };
+
   return (
     <div className={cx('wrapper')}>
+      <MyConfirm
+        setShow={setShowConfirm}
+        show={showConfirm}
+        title={txtConfirm}
+        action={handleBlock}
+      />
       <div className={cx('display-flex')}>
         <img src={item.avatar || noAvatar} className={cx('avatar')} />
         <div className={cx('column')}>
           <div>
             <label className={cx('label-short')}>Mã khách hàng</label>
-            <label className={cx('content')}>{item.id}</label>
+            <label className={cx('content')}>{item.id_cus}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Họ tên</label>
@@ -50,12 +78,12 @@ function CustomerAccount() {
       </div>
       <div style={{ marginLeft: 180 }}>
         <label className={cx('label-long')}>
-          {item.status === 'Đã khóa' ? (
-            <Button className={cx('button-unblock')} color="success">
+          {item.block ? (
+            <Button className={cx('button-unblock')} color="success" onClick={() => toggle(false)}>
               Mở khóa tài khoản
             </Button>
           ) : (
-            <Button className={cx('button-block')} color="danger">
+            <Button className={cx('button-block')} color="danger" onClick={() => toggle(true)}>
               Khóa tài khoản
             </Button>
           )}
@@ -65,7 +93,7 @@ function CustomerAccount() {
             className={cx('button-custom')}
             color="success"
             onClick={() => {
-              navigate(`/shipper/${item.id}/order`, { state: item });
+              navigate(`/order/shipper/${item.id}`, { state: item });
             }}
           >
             Xem danh sách đơn hàng

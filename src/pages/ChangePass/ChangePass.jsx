@@ -11,17 +11,17 @@ function ChangePass() {
     <div>
       <div className={cx('inline')}>
         <Label className={cx('label')}>Mật khẩu cũ</Label>
-        <Input className={cx('input')} />
+        <Input className={cx('input')} type="password" />
       </div>
 
       <div className={cx('inline')}>
         <Label className={cx('label')}>Mật khẩu mới</Label>
-        <Input className={cx('input')} />
+        <Input className={cx('input')} type="password" />
       </div>
 
       <div className={cx('inline')}>
         <Label className={cx('label')}>Nhập lại mật khẩu mới</Label>
-        <Input className={cx('input')} />
+        <Input className={cx('input')} type="password" />
       </div>
 
       <Button className={cx('button')} color="primary" block>

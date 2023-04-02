@@ -11,23 +11,48 @@ import {
 } from '../../components/MyTableVehicle/MyTableVehicle';
 import { convertMoney } from '~/global/functionGlobal';
 import { useState } from 'react';
+import shipperAPI from '~/api/shipperAPI';
+import MyConfirm from '~/components/MyConfirm/MyConfirm';
 
 const cx = classNames.bind(styles);
 
 function ShipperAccount() {
   const location = useLocation();
-  const item = location.state;
 
+  const [item, setItem] = useState(location.state);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [txtConfirm, setTxtConfirm] = useState(false);
+
+  const handleBlock = async () => {
+    await shipperAPI.block(item.id_shipper);
+    setShowConfirm(false);
+    const res = await shipperAPI.getShipperById(item.id_shipper);
+    setItem(res);
+  };
+  const toggleConfirm = (block) => {
+    setShowConfirm(!showConfirm);
+    setTxtConfirm(
+      block
+        ? 'Bạn có chắc muốn khóa tài khoản này không ?'
+        : 'Bạn muốn mở khóa tài khoản này đúng không ?',
+    );
+  };
   return (
     <div className={cx('wrapper')}>
+      <MyConfirm
+        setShow={setShowConfirm}
+        show={showConfirm}
+        title={txtConfirm}
+        action={handleBlock}
+      />
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Mã tài xế:</div>
-            <div>{item.id}</div>
+            <div>{item.id_shipper}</div>
           </div>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Số tiền nạp:</div>
@@ -41,7 +66,7 @@ function ShipperAccount() {
         <div className={cx('column')}>
           <div className={cx('inline')}>
             <label className={cx('label-short')}>Mã tài xế</label>
-            <label className={cx('content')}>{item.id}</label>
+            <label className={cx('content')}>{item.id_shipper}</label>
           </div>
           <div className={cx('inline')}>
             <label className={cx('label-short')}>Họ tên</label>
@@ -53,7 +78,7 @@ function ShipperAccount() {
           </div>
           <div className={cx('inline')}>
             <label className={cx('label-short')}>CMND/CCCD</label>
-            <label className={cx('content')}>{item.identityNumber}</label>
+            <label className={cx('content')}>{item.cmnd}</label>
           </div>
           <div className={cx('inline')}>
             <label className={cx('label-short')}>Email</label>
@@ -68,7 +93,7 @@ function ShipperAccount() {
           <div className={cx('inline')}>
             <label className={cx('label-medium')}>Hình ảnh giấy tờ</label>
             <label className={cx('view-image')} style={{ marginBottom: 20 }}>
-              {item.imagePapers.map((e, i) => (
+              {item.imagePapers?.map((e, i) => (
                 <img src={e} key={i} className={cx('image-paper')} />
               ))}
             </label>
@@ -105,8 +130,12 @@ function ShipperAccount() {
           </div>
 
           <div className={cx('view-button')}>
-            {item.status === 'Đã khóa' ? (
-              <Button className={cx('button-unblock')} color="success">
+            {item.block ? (
+              <Button
+                className={cx('button-unblock')}
+                color="success"
+                onClick={() => toggleConfirm(false)}
+              >
                 Mở khóa tài khoản
               </Button>
             ) : (
@@ -114,7 +143,11 @@ function ShipperAccount() {
                 <Button className={cx('button-unblock')} color="success" onClick={toggle}>
                   Nạp tiền
                 </Button>
-                <Button className={cx('button-block')} color="danger">
+                <Button
+                  className={cx('button-block')}
+                  color="danger"
+                  onClick={() => toggleConfirm(true)}
+                >
                   Khóa tài khoản
                 </Button>
               </>
@@ -127,7 +160,7 @@ function ShipperAccount() {
         <Table striped>
           <HeaderTableVehicle />
           <tbody>
-            {item.vehicle.map((e, i) => (
+            {item.vehicle?.map((e, i) => (
               <BodyTableVehicle item={e} key={i} />
             ))}
           </tbody>

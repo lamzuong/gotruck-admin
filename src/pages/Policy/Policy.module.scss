@@ -25,6 +25,10 @@
       }
     }
   }
+  .inline {
+    display: flex;
+    flex-direction: row;
+  }
   .title {
     font-size: 20px;
     font-weight: 600;

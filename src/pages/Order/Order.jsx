@@ -81,7 +81,7 @@ function Order() {
         idShipper: debouncedShipperId,
         idOrder: debouncedOrderId,
       });
-      console.log(result);
+
       setSearchResult(result);
       if (debouncedOrderId === '' && debouncedCustomerId === '' && debouncedShipperId === '') {
         setSearchResult([]);
