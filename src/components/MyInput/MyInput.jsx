@@ -16,6 +16,7 @@ function MyInput({
   checkEmpty = false,
   inputName = false,
   iconLeft,
+  type = 'text',
 }) {
   useEffect(() => {
     setHideError(hideErr);
@@ -52,6 +53,7 @@ function MyInput({
       <div className={cx('form-control')}>
         {iconLeft ? <div className={cx('icon-left')}>{iconLeft}</div> : null}
         <input
+          type={type}
           className={cx('input')}
           onChange={(e) => {
             setValueInput(e.target.value);

@@ -2,7 +2,6 @@ const { createSlice } = require('@reduxjs/toolkit');
 
 const initState = {
   user: null,
-  error: false,
 };
 
 const auth = createSlice({
@@ -10,16 +9,13 @@ const auth = createSlice({
   initialState: initState,
   reducers: {
     logInSuccess: (state, action) => {
-      return { user: action.payload, error: false };
-    },
-    logInFail: (state, action) => {
-      return { user: null, error: true };
+      return { user: action.payload };
     },
     logOut: (state, action) => {
-      return { user: null, error: false };
+      return { user: null };
     },
   },
 });
 const { reducer, actions } = auth;
-export const { logInSuccess, logInFail, logOut } = actions;
+export const { logInSuccess, logOut } = actions;
 export default reducer;

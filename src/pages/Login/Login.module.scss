@@ -1,7 +1,12 @@
 .wrapper {
   display: flex;
 }
-
+.error-mess {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: center;
+}
 .background {
   width: 100vw;
   height: 100vh;

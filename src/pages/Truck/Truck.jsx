@@ -18,6 +18,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import CurrencyInput from 'react-currency-input-field';
+import MyPagination from '~/components/MyPagination/MyPagination';
 
 const cx = classNames.bind(styles);
 
@@ -123,35 +124,35 @@ function Truck() {
     }
   };
   // page
-  const previousPageTruck = () => {
-    if (valueSearchTruck === '') {
-      if (pageTruck > 1) setPageTruck(pageTruck - 1);
-    } else {
-      if (pageSearchTruck > 1) setPageSearchTruck(pageSearchTruck - 1);
-    }
-  };
-  const currentPageTruck = () => {
-    if (valueSearchTruck === '') {
-      if (truck.length === 0) return 0;
-      return pageTruck;
-    } else {
-      if (resultSearchTruck.length === 0) return 0;
-      return pageSearchTruck;
-    }
-  };
-  const nextPageTruck = () => {
-    if (valueSearchTruck === '') {
-      if (pageTruck < Math.ceil(totalTruck.length / 10)) setPageTruck(pageTruck + 1);
-    } else {
-      if (pageSearchTruck < Math.ceil(totalResultSearchTruck.length / 10))
-        setPageSearchTruck(pageSearchTruck + 1);
-    }
-  };
-  const arrayTruckCurrent = () => {
-    if (valueSearchTruck === '') {
-      return truck;
-    } else return resultSearchTruck;
-  };
+  // const previousPageTruck = () => {
+  //   if (valueSearchTruck === '') {
+  //     if (pageTruck > 1) setPageTruck(pageTruck - 1);
+  //   } else {
+  //     if (pageSearchTruck > 1) setPageSearchTruck(pageSearchTruck - 1);
+  //   }
+  // };
+  // const currentPageTruck = () => {
+  //   if (valueSearchTruck === '') {
+  //     if (truck.length === 0) return 0;
+  //     return pageTruck;
+  //   } else {
+  //     if (resultSearchTruck.length === 0) return 0;
+  //     return pageSearchTruck;
+  //   }
+  // };
+  // const nextPageTruck = () => {
+  //   if (valueSearchTruck === '') {
+  //     if (pageTruck < Math.ceil(totalTruck.length / 10)) setPageTruck(pageTruck + 1);
+  //   } else {
+  //     if (pageSearchTruck < Math.ceil(totalResultSearchTruck.length / 10))
+  //       setPageSearchTruck(pageSearchTruck + 1);
+  //   }
+  // };
+  // const arrayTruckCurrent = () => {
+  //   if (valueSearchTruck === '') {
+  //     return truck;
+  //   } else return resultSearchTruck;
+  // };
 
   return (
     <div className={cx('wrapper-table')}>
@@ -232,7 +233,8 @@ function Truck() {
           <tr>
             <th>STT</th>
             <th>Loại xe tải</th>
-            <th>Hành động</th>
+            <th>Ngày tạo</th>
+            <th>Người tạo</th>
           </tr>
         </thead>
         <tbody>
@@ -240,42 +242,13 @@ function Truck() {
             <tr key={i}>
               <td>{(pageTruck - 1) * 10 + i + 1}</td>
               <td>{e.label}</td>
-              <td>
-                <Button color="danger" onClick={() => toggleDeleteTruck(e.value)}>
-                  <h4>Xóa</h4>
-                </Button>
-              </td>
+              <td>24/02/2023 10:03 P.M</td>
+              <td>Nguyễn Huệ</td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <div className={cx('inline-around')}>
-        <div></div>
-        <div className={cx('wrapper-pagination')}>
-          <Pagination size="lg">
-            <PaginationItem>
-              <PaginationLink
-                previous
-                onClick={() => pageTruck > 1 && setPageTruck(pageTruck - 1)}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink>{pageTruck}</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                next
-                onClick={() =>
-                  pageTruck < Math.ceil(listTrucks.length / 10) && setPageTruck(pageTruck + 1)
-                }
-              />
-            </PaginationItem>
-          </Pagination>
-        </div>
-        <div style={{ color: 'grey' }}>
-          Tổng số trang: {currentPageTruck()} trên {Math.ceil(arrayTruckCurrent().length / 10)}
-        </div>
-      </div>
+      <MyPagination setPage={setPageTruck} />
     </div>
   );
 }
