@@ -14,8 +14,8 @@ const cx = classNames.bind(styles);
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('nvan.gotruck');
+  const [password, setPassword] = useState('123456');
   const [failed, setFailed] = useState(false);
 
   const handleLogin = async () => {
@@ -40,8 +40,21 @@ function Login() {
         <label className={cx('label-signin')}>
           <img src={require('~/assets/images/logo-name-green.png')} />
         </label>
-        <MyInput placeholder={'Tài khoản'} data={setUsername} initValue={username} />
-        <MyInput type="password" placeholder={'Mật khẩu'} data={setPassword} initValue={password} />
+        <MyInput
+          placeholder={'Tài khoản'}
+          data={setUsername}
+          initValue={username}
+          enter={true}
+          action={handleLogin}
+        />
+        <MyInput
+          type="password"
+          placeholder={'Mật khẩu'}
+          data={setPassword}
+          initValue={password}
+          enter={true}
+          action={handleLogin}
+        />
         {failed && <div className={cx('error-mess')}>Tài khoản hoặc mật khẩu không đúng !!</div>}
         <MyButton
           title={'ĐĂNG NHẬP'}

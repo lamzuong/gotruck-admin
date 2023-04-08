@@ -1,28 +1,89 @@
 import styles from './FormAddPolicy.module.scss';
+import policyAPI from '~/api/policyAPI';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
+import { useSelector } from 'react-redux';
+import { navigateBackPolicy } from '~/global/functionGlobal';
 
 const cx = classNames.bind(styles);
 
 function FormAddPolicy() {
+  const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const item = location.state;
-  const [title, setTitle] = useState(item.title);
+
+  const action = item.policy.title === '' ? 'Add' : 'Edit';
+
+  const navigate = useNavigate();
+  const [title, setTitle] = useState(item.policy.title);
   const [content, setContent] = useState('');
   useEffect(() => {
     let result = '';
-    for (const text of item.content) {
+    for (const text of item.policy?.content) {
       result += text + '\n';
     }
     setContent(result);
   }, []);
-  const handleSave = () => {
-    console.log(content.split('\n'));
+  const handleSave = async () => {
+    await policyAPI.addPolicy({
+      title: title,
+      content: content
+        .trim()
+        .split('\n')
+        .filter((x) => x.trim() !== ''),
+      type: item.typePolicy,
+      history: {
+        oldValue: {
+          title: null,
+          content: [],
+        },
+        modifiedAt: new Date(),
+        modifiedBy: user._id,
+      },
+      deletedAt: null,
+      deletedBy: null,
+      hide: false,
+    });
+    navigate(`/policy/${navigateBackPolicy(item.typePolicy)}`);
   };
-
+  const handleEdit = async () => {
+    await policyAPI.addPolicy({
+      title: title,
+      content: content
+        .trim()
+        .split('\n')
+        .filter((x) => x.trim() !== ''),
+      type: item.typePolicy,
+      history: {
+        oldValue: {
+          title: item.policy.title,
+          content: item.policy.content,
+        },
+        modifiedAt: new Date(),
+        modifiedBy: user._id,
+      },
+      deletedAt: null,
+      deletedBy: null,
+      hide: true,
+    });
+    await policyAPI.editPolicy({
+      _id: item.policy._id,
+      title: title,
+      content: content
+        .trim()
+        .split('\n')
+        .filter((x) => x.trim() !== ''),
+      type: item.typePolicy,
+      history: item.policy.history,
+      deletedAt: null,
+      deletedBy: null,
+      hide: false,
+    });
+    navigate(`/policy/${navigateBackPolicy(item.typePolicy)}`);
+  };
   return (
     <div>
       <div className={cx('title-header')}>{item.header}</div>
@@ -39,7 +100,7 @@ function FormAddPolicy() {
           onChange={(e) => setContent(e.target.value)}
         />
       </FormGroup>
-      <Button color="primary" block onClick={handleSave}>
+      <Button color="primary" block onClick={action === 'Add' ? handleSave : handleEdit}>
         <h4>Lưu</h4>
       </Button>
     </div>

@@ -17,6 +17,8 @@ function MyInput({
   inputName = false,
   iconLeft,
   type = 'text',
+  enter = false,
+  action = () => {},
 }) {
   useEffect(() => {
     setHideError(hideErr);
@@ -48,6 +50,9 @@ function MyInput({
     return text.trim() === '';
   };
 
+  function enterKey(e) {
+    if (e.key === 'Enter') action();
+  }
   return (
     <div className={cx('wrapper')}>
       <div className={cx('form-control')}>
@@ -69,6 +74,9 @@ function MyInput({
           }}
           onClick={() => {
             setHideError(true);
+          }}
+          onKeyDown={(e) => {
+            if (enter === true) enterKey(e);
           }}
         />
       </div>

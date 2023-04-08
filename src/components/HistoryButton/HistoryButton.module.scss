@@ -1,0 +1,19 @@
+.inline-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.title-header {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.title-link {
+  margin-bottom: 20px;
+  font-style: italic;
+  font-weight: 600;
+  color: #05a595;
+  text-decoration: underline;
+  text-align: right;
+  cursor: pointer;
+}

@@ -1,4 +1,3 @@
-import Home from '~/pages/Home/Home';
 import Login from '~/pages/Login/Login';
 import ChangePass from '~/pages/ChangePass/ChangePass';
 
@@ -37,11 +36,10 @@ import FormWithdraw from '~/pages/FormWithdraw/FormWithdraw';
 import WithdrawDetail from '~/pages/FormWithdraw/WithdrawDetail/WithdrawDetail';
 import VehicleDetail from '~/pages/FormVehicle/VehicleDetail/VehicleDetail';
 
-import CustomerPolicy from '~/pages/Policy/CustomerPolicy/CustomerPolicy';
-import ShipperPolicy from '~/pages/Policy/ShipperPolicy/ShipperPolicy';
-import SecurityPolicy from '~/pages/Policy/SecurityPolicy/SecurityPolicy';
-import RegulationPolicy from '~/pages/Policy/RegulationPolicy/RegulationPolicy';
+import CustomerPolicy from '~/pages/Policy/DetailPolicy/DetailPolicy';
 import FormAddPolicy from '~/pages/Policy/FormAddPolicy/FormAddPolicy';
+import HistoryPage from '~/pages/Policy/HistoryPage/HistoryPage';
+import DetailPolicy from '~/pages/Policy/HistoryPage/HistoryDetail/HistoryDetail';
 
 // Không cần đăng nhập
 const publicRoutes = [
@@ -70,10 +68,12 @@ const publicRoutes = [
 
   { path: '/policy', component: Policy },
   { path: '/policy/customer', component: CustomerPolicy },
-  { path: '/policy/shipper', component: ShipperPolicy },
-  { path: '/policy/security', component: SecurityPolicy },
-  { path: '/policy/regulation', component: RegulationPolicy },
+  { path: '/policy/shipper', component: CustomerPolicy },
+  { path: '/policy/security', component: CustomerPolicy },
+  { path: '/policy/regulation', component: CustomerPolicy },
   { path: '/policy/form', component: FormAddPolicy },
+  { path: '/policy/history/:type', component: HistoryPage },
+  { path: '/policy/history/:type/detail', component: DetailPolicy },
 
   { path: '/pr/price', component: Price },
   { path: '/pr/discount', component: Discount },
