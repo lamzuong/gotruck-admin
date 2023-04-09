@@ -1,27 +1,39 @@
 import styles from './FormRegister.module.scss';
-import data from './data';
 import MyInput from '~/components/MyInput/MyInput';
 import { BodyTable, HeaderTable } from './MyTableFormRegister/MyTableFormRegister';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import MyPagination from '~/components/MyPagination/MyPagination';
+import formAPI from '~/api/form';
 
 const cx = classNames.bind(styles);
 
-const status = ['Tất cả', 'Chấp thuận', 'Từ chối', 'Chưa xử lý'];
+const status = ['Tất cả'];
 
 function FormRegister() {
   const [searchId, setSearchId] = useState('');
   const [tab, setTab] = useState('Tất cả');
+  const [page, setPage] = useState(1);
+  const [listRegister, setListRegister] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const resListRegister = await formAPI.getAllFormRegister();
+      if (!resListRegister.isNotFound) {
+        setListRegister([...resListRegister]);
+      }
+    }.call(this));
+  }, []);
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('search-place')}>
         <div className={cx('wrapper-search')}>
-          <div className={cx('title')}>Tra cứu mã đơn</div>
+          <div className={cx('title')}>Tra cứu mã tài xế</div>
           <MyInput data={setSearchId} iconLeft={<FontAwesomeIcon icon={faSearch} />} />
         </div>
       </div>
@@ -41,7 +53,7 @@ function FormRegister() {
             <Table striped className={cx('table-order')}>
               <HeaderTable />
               <tbody>
-                {data.map((e, i) =>
+                {listRegister.map((e, i) =>
                   status === 'Tất cả' || status === e.status ? (
                     <BodyTable item={e} key={i} />
                   ) : null,
@@ -52,7 +64,7 @@ function FormRegister() {
         ))}
       </TabContent>
 
-      {/* <MyPagination /> */}
+      <MyPagination setPage={setPage} page={page} totalItems={listRegister.length} />
     </div>
   );
 }

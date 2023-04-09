@@ -18,41 +18,6 @@ import useDebounce from '~/hook/useDebounce';
 const cx = classNames.bind(styles);
 
 function Customer() {
-  const accounts = [
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'KH2023001',
-      phone: '0794891252',
-      name: 'Nguyễn Văn A',
-      firstTime: '24/02/2022 8.30 P.M',
-      finishOrder: 45,
-      boomOrder: 5,
-      cancelOrder: 23,
-      status: 'Đã khóa',
-    },
-    {
-      avatar: null,
-      id: 'KH2022001',
-      phone: '0794891252',
-      name: 'Nguyễn Văn A',
-      firstTime: '24/02/2022 8.30 P.M',
-      finishOrder: 45,
-      boomOrder: 0,
-      cancelOrder: 23,
-      status: 'Đang hoạt động',
-    },
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'KH2022001',
-      phone: '0794891252',
-      name: 'Nguyễn Văn A',
-      firstTime: '24/02/2022 8.30 P.M',
-      finishOrder: 45,
-      boomOrder: 0,
-      cancelOrder: 23,
-      status: 'Đang hoạt động',
-    },
-  ];
   const status = ['Tất cả', 'Đang hoạt động', 'Đã khóa'];
 
   const [searchValue, setSearchValue] = useState('');

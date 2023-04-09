@@ -1,31 +1,54 @@
 import styles from './Radius.module.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Button, Input, Table } from 'reactstrap';
+import radiusAPI from '~/api/radius';
+import { useSelector } from 'react-redux';
+import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
-const data = [
-  { time: '23/1/2023 2:03 P.M', radius: 3, user: { id: 1, name: 'Nguyễn Tiến Đạt' } },
-  { time: '21/12/2022 3:03 P.M', radius: 3, user: { id: 2, name: 'Trần Văn Nhân' } },
-  { time: '1/11/2022 4:03 P.M', radius: 3, user: { id: 3, name: 'Lê Đình Thái' } },
-  { time: '21/10/2022 6:03 P.M', radius: 3, user: { id: 4, name: 'Nguyễn Ngọc Ngà' } },
-];
+
 function Radius() {
-  const [radiusShow, setRadiusShow] = useState(5);
-  const [valueRadius, setValueRadius] = useState(5);
+  const [radiusShow, setRadiusShow] = useState('');
+  const [valueRadius, setValueRadius] = useState('');
   const [showEditRadius, setShowEditRadius] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const [data, setData] = useState([]);
+
   const handleRadiusChange = (event) => {
     const limit = 2;
     setValueRadius(event.target.value.slice(0, limit));
   };
-  const handleEditRadius = () => {
+  const handleEditRadius = async () => {
+    await radiusAPI.putRadius({
+      radius: Number(valueRadius) * 1000,
+      nameUserChange: user.fullname,
+    });
+
+    const resHistoryChange = await radiusAPI.getHistoryChange();
+    if (!resHistoryChange.notFound) {
+      setValueRadius(resHistoryChange[0].distance_receive_order / 1000);
+      setData([...resHistoryChange]);
+      setRadiusShow(resHistoryChange[0].distance_receive_order / 1000);
+    }
+
     setShowEditRadius(false);
-    setRadiusShow(valueRadius);
-    // call API
   };
+
+  useEffect(() => {
+    const getHistoryChange = async () => {
+      const resHistoryChange = await radiusAPI.getHistoryChange();
+      if (!resHistoryChange.notFound) {
+        setValueRadius(resHistoryChange[0].distance_receive_order / 1000);
+        setRadiusShow(resHistoryChange[0].distance_receive_order / 1000);
+        setData([...resHistoryChange]);
+      }
+    };
+    getHistoryChange();
+  }, []);
   return (
     <div>
       <div className={cx('wrapper-radius')}>
@@ -79,9 +102,9 @@ function Radius() {
           {data.map((e, i) => (
             <tr>
               <td>{i + 1}</td>
-              <td>{e.time}</td>
-              <td>{e.radius + ' km'}</td>
-              <td>{e.user.name}</td>
+              <td>{formatDateFull(e.createdAt)}</td>
+              <td>{Number(e.distance_receive_order) / 1000 + ' km'}</td>
+              <td>{e.nameUserChange}</td>
             </tr>
           ))}
         </tbody>

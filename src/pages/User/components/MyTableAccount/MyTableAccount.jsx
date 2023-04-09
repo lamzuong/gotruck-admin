@@ -6,10 +6,11 @@ import { Button } from 'reactstrap';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { convertMoney } from '~/global/functionGlobal';
+import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
-const titleCustomer = ['Ảnh', 'ID', 'Họ tên', 'Số điện thoại', 'Tình trạng', 'Hành động'];
+const titleCustomer = ['ID', 'Ảnh', 'Họ tên', 'Số điện thoại', 'Tình trạng', 'Hành động'];
 const HeaderTableCustomer = () => (
   <thead>
     <tr>
@@ -48,10 +49,10 @@ const BodyTableCustomer = ({
 
   return (
     <tr>
+      <td>{user.id_cus}</td>
       <td>
         <img src={avatar} className={cx('avatar')} />
       </td>
-      <td>{user.id_cus}</td>
       <td>{user.name}</td>
       <td>{user.phone}</td>
       <td>{user.block ? 'Đã khóa' : 'Đang hoạt động'}</td>
@@ -81,8 +82,8 @@ const BodyTableCustomer = ({
 export { HeaderTableCustomer, BodyTableCustomer };
 
 const titleShipper = [
-  'Ảnh',
   'ID',
+  'Ảnh',
   'Họ tên',
   'Hoạt động lần cuối',
   'Số dư GoTruck',
@@ -126,12 +127,12 @@ const BodyTableShipper = ({
 
   return (
     <tr>
-      <td>
-        <img src={user.avatar} className={cx('avatar')} />
-      </td>
       <td>{user.id_shipper}</td>
+      <td>
+        <img src={user.avatar} className={cx('avatar')} alt={user.avatar} />
+      </td>
       <td>{user.name}</td>
-      <td>{user.lastTime}</td>
+      <td>{formatDateFull(user.updatedAt)}</td>
       <td>{convertMoney(user.balance, ' đ')}</td>
       <td>{user.block ? 'Đã khóa' : 'Đang hoạt động'}</td>
       <td>

@@ -12,6 +12,7 @@ import { MyTab } from './components/MyTab/MyTab';
 import ButtonApply from './components/ButtonApply/ButtonApply';
 import { listItemCalcPercent, listItemCalcPrice } from './functionPrice';
 import { Link } from 'react-router-dom';
+import priceAPI from '~/api/priceAPI';
 
 const cx = classNames.bind(styles);
 
@@ -22,14 +23,8 @@ function Price() {
     PERCENT_1 = 'Phần trăm 1',
     PRICE_2 = 'Giá 2',
     PERCENT_2 = 'Phần trăm 2';
-  const [data, setData] = useState([
-    { id: 1, title: 'Xe 1 tấn', price1: 100000, price2: 35000 },
-    { id: 2, title: 'Xe 3 tấn', price1: 120000, price2: 40000 },
-    { id: 3, title: 'Xe 5 tấn', price1: 140000, price2: 50000 },
-    { id: 4, title: 'Xe 10 tấn', price1: 160000, price2: 60000 },
-    { id: 5, title: 'Xe trên 10 tấn', price1: 200000, price2: 75000 },
-  ]);
-  const [checkedPostion, setCheckedPostion] = useState(Array(5).fill(false));
+  const [data, setData] = useState([]);
+  const [checkedPostion, setCheckedPostion] = useState(Array(data.length).fill(false));
   const [checkedItem, setCheckedItem] = useState([]);
   const [checkedNewItem, setCheckedNewItem] = useState([]);
 
@@ -54,13 +49,14 @@ function Price() {
     setDisableEdit(a);
     setDisableEditAll(b);
   };
+
   const handleChange = (e) => {
     const { checked, value } = e.target;
     if (checked && value === 'All') {
-      setCheckedPostion(Array(5).fill(true));
+      setCheckedPostion(Array(data.length).fill(true));
     } else {
       if (!checked && value === 'All') {
-        setCheckedPostion(Array(5).fill(false));
+        setCheckedPostion(Array(data.length).fill(false));
       } else if (value !== 'All') {
         let tempArr = [...checkedPostion];
         tempArr.splice(value, 1, checked);
@@ -122,6 +118,18 @@ function Price() {
       setDeltaPercent2(0);
     }
   };
+
+  useEffect(() => {
+    //call get all price
+    const getAllTransportPrice = async () => {
+      const resTransportPrice = await priceAPI.getAllTransportPrice();
+      if (!resTransportPrice.notFound) {
+        setData([...resTransportPrice]);
+      }
+    };
+    getAllTransportPrice();
+  }, []);
+
   return (
     <div>
       {/* Modal edit one */}
@@ -196,10 +204,10 @@ function Price() {
               {checkedItem.map((e, i) => (
                 <tr key={i}>
                   <td>
-                    <label className={cx('label')}>{e.title}</label>
+                    <label className={cx('label')}>{e?.title}</label>
                   </td>
-                  <td>{e ? convertMoney(e.price1, 'đ') : null}</td>
-                  <td>{e ? convertMoney(e.price2, 'đ') : null}</td>
+                  <td>{e ? convertMoney(e?.price1, 'đ') : null}</td>
+                  <td>{e ? convertMoney(e?.price2, 'đ') : null}</td>
                 </tr>
               ))}
             </tbody>
@@ -294,10 +302,10 @@ function Price() {
               {checkedNewItem.map((e, i) => (
                 <tr key={i}>
                   <td>
-                    <label className={cx('label')}>{e.title}</label>
+                    <label className={cx('label')}>{e?.title}</label>
                   </td>
-                  <td>{e ? convertMoney(e.price1, 'đ') : null}</td>
-                  <td>{e ? convertMoney(e.price2, 'đ') : null}</td>
+                  <td>{e ? convertMoney(e?.price1, 'đ') : null}</td>
+                  <td>{e ? convertMoney(e?.price2, 'đ') : null}</td>
                 </tr>
               ))}
             </tbody>
@@ -308,14 +316,14 @@ function Price() {
       </Modal>
 
       <div className={cx('title')}>Bảng giá vận chuyển</div>
-      <Link to={'/pr/history-change'}>
+      {/* <Link to={'/pr/history-change'}>
         <div className={cx('title-link')}>Xem lịch sử thay đổi &#62;&#62;</div>
-      </Link>
+      </Link> */}
       {/* Bảng giá */}
       <Table bordered>
         <thead>
           <tr>
-            <th>Tỉnh/Thành phố</th>
+            {/* <th>Tỉnh/Thành phố</th> */}
             <th>Dịch vụ</th>
             <th>
               Giá cước <p style={{ color: '#04af46' }}>tối thiểu 2km</p> đầu tiên
@@ -327,26 +335,28 @@ function Price() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th rowSpan={5}>Toàn quốc</th>
-            <td>{data[0].title}</td>
-            <td>{convertMoney(data[0].price1, ' đ')}</td>
-            <td>{convertMoney(data[0].price2, ' đ')}</td>
-            <td>
-              <Input
-                type="checkbox"
-                value={0}
-                onChange={handleChange}
-                checked={checkedPostion[0]}
-              />
-            </td>
-          </tr>
+          {data[0] && (
+            <tr>
+              {/* <th rowSpan={5}>Toàn quốc</th> */}
+              <td>{data[0]?.title}</td>
+              <td>{convertMoney(data[0]?.price1, ' đ')}</td>
+              <td>{convertMoney(data[0]?.price2, ' đ')}</td>
+              <td>
+                <Input
+                  type="checkbox"
+                  value={0}
+                  onChange={handleChange}
+                  checked={checkedPostion[0]}
+                />
+              </td>
+            </tr>
+          )}
           {data.map((e, i) =>
             i !== 0 ? (
               <tr key={i}>
-                <td>{e.title}</td>
-                <td>{convertMoney(e.price1, ' đ')}</td>
-                <td>{convertMoney(e.price2, ' đ')}</td>
+                <td>{e?.title}</td>
+                <td>{convertMoney(e?.price1, ' đ')}</td>
+                <td>{convertMoney(e?.price2, ' đ')}</td>
                 <td>
                   <Input
                     type="checkbox"
