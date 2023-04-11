@@ -19,6 +19,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import CurrencyInput from 'react-currency-input-field';
 import MyPagination from '~/components/MyPagination/MyPagination';
+import { useSelector } from 'react-redux';
+import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +44,8 @@ function Truck() {
   const [resultSearchTruck, setResultSearchTruck] = useState([]);
   const [totalResultSearchTruck, setTotalResultSearchTruck] = useState([]);
   const [pageSearchTruck, setPageSearchTruck] = useState(1);
+  const user = useSelector((state) => state.auth.user);
+
   const toggleTruck = () => {
     setModalTruck(!modalTruck);
     setInvalidTruck(false);
@@ -64,9 +68,15 @@ function Truck() {
     const getTruckType = async () => {
       try {
         const res = await truckAPI.getTruckTypePagination({ page: pageTruck, limit: 10 });
+        console.log(res);
         let list = [];
         for (const e of res) {
-          list.push({ value: e.name, label: 'Xe ' + e.name + ' tấn' });
+          list.push({
+            value: e.name,
+            label: 'Xe ' + e.name + ' tấn',
+            createdBy: e.createdBy?.fullname,
+            createdAt: e.createdAt,
+          });
         }
         setTruck(list);
       } catch (error) {
@@ -88,7 +98,7 @@ function Truck() {
   const handleAddTruck = async () => {
     try {
       const distance = await truckAPI.getAllDistance();
-      const truck = await truckAPI.addTruckType({ name: +valueTruck });
+      const truck = await truckAPI.addTruckType({ name: +valueTruck, createdBy: user._id });
       await truckAPI.addTruckPrice({
         id_truck_type: truck._id,
         id_distance: distance[0]._id,
@@ -242,8 +252,8 @@ function Truck() {
             <tr key={i}>
               <td>{(pageTruck - 1) * 10 + i + 1}</td>
               <td>{e.label}</td>
-              <td>24/02/2023 10:03 P.M</td>
-              <td>Nguyễn Huệ</td>
+              <td>{formatDateFull(e.createdAt)}</td>
+              <td>{e.createdBy}</td>
             </tr>
           ))}
         </tbody>

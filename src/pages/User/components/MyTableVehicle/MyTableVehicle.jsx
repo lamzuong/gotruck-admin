@@ -6,7 +6,7 @@ const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
 
 const cx = classNames.bind(styles);
 
-const title = ['Tên phương tiện', 'Biển số xe', 'Giấy tờ xe', 'Xe đang chạy'];
+const title = ['Tên phương tiện', 'Biển số xe', 'Giấy tờ xe', 'Hình ảnh xe', 'Xe đang chạy'];
 
 const HeaderTableVehicle = () => {
   return (
@@ -23,10 +23,15 @@ const BodyTableVehicle = ({ item }) => {
   return (
     <tr>
       <td>{item.name}</td>
-      <td>{item.numberTruck}</td>
+      <td>{item.license_plate}</td>
       <td>
-        {item.imagePapers.map((e, i) => (
-          <img src={e} key={i} className={cx('image-paper')} />
+        {item.list_vehicle_registration.map((e, i) => (
+          <img src={e} key={i} className={cx('image-paper')} alt={e} />
+        ))}
+      </td>
+      <td>
+        {item.list_image_info.map((e, i) => (
+          <img src={e} key={i} className={cx('image-paper')} alt={e} />
         ))}
       </td>
       <td>{item.default ? <FontAwesomeIcon icon={faTruck} /> : ''}</td>

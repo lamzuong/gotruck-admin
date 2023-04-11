@@ -5,8 +5,9 @@ import classNames from 'classnames/bind';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import MyConfirm from '~/components/MyConfirm/MyConfirm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import customerAPI from '~/api/customerAPI';
+import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +34,14 @@ function CustomerAccount() {
     );
   };
 
+  useEffect(() => {
+    const getInfoCus = async () => {
+      const res = await customerAPI.getCusById(item.id_cus);
+      setItem(res);
+    };
+    getInfoCus();
+  }, []);
+
   return (
     <div className={cx('wrapper')}>
       <MyConfirm
@@ -58,21 +67,21 @@ function CustomerAccount() {
           </div>
           <div>
             <label className={cx('label-long')}>Ngày bắt đầu hoạt động</label>
-            <label className={cx('content')}>{item.firstTime}</label>
+            <label className={cx('content')}>{formatDateFull(item.createdAt)}</label>
           </div>
         </div>
         <div className={cx('column')}>
           <div>
             <label className={cx('label-long')}>Số đơn hoàn thành</label>
-            <label className={cx('content')}>{item.finishOrder}</label>
+            <label className={cx('content')}>{item.countCompleted}</label>
           </div>
-          <div>
+          {/* <div>
             <label className={cx('label-long')}>Số đơn không hoàn thành</label>
             <label className={cx('content')}>{item.boomOrder}</label>
-          </div>
+          </div> */}
           <div>
             <label className={cx('label-long')}>Số đơn hủy</label>
-            <label className={cx('content')}>{item.cancelOrder}</label>
+            <label className={cx('content')}>{item.countCancel}</label>
           </div>
         </div>
       </div>

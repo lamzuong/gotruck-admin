@@ -9,7 +9,17 @@ import MyPagination from '~/components/MyPagination/MyPagination';
 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { Input, Modal, Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
+import {
+  Button,
+  Input,
+  Modal,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  Table,
+  TabPane,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
@@ -27,88 +37,6 @@ function Customer() {
     toggle();
   };
 
-  const accounts = [
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022001',
-      phone: '0794891252',
-      name: 'Nguyễn Văn A',
-      identityNumber: '0797412015322',
-      firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
-      finishOrder: 45,
-      cancelOrder: 23,
-      star: 4,
-      status: 'Đã khóa',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [
-        {
-          id: 1,
-          name: 'Huyndai',
-          numberTruck: '56F-45123',
-          imagePapers: [
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-          ],
-          default: true,
-        },
-        {
-          id: 2,
-          name: 'Toyota',
-          numberTruck: '56F-46153',
-          imagePapers: [
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-            'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-          ],
-          default: false,
-        },
-      ],
-    },
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022002',
-      phone: '0794891252',
-      name: 'Nguyễn Văn B',
-      identityNumber: '0797412015322',
-      firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
-      finishOrder: 45,
-      cancelOrder: 23,
-      star: 4.3,
-      status: 'Đang hoạt động',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [],
-    },
-    {
-      avatar: 'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      id: 'TX2022003',
-      phone: '0794891252',
-      name: 'Nguyễn Văn C',
-      identityNumber: '0797412015322',
-      firstTime: '24/02/2022 8.30 P.M',
-      lastTime: '24/02/2023 9.30 P.M',
-      finishOrder: 45,
-      cancelOrder: 23,
-      star: 4.5,
-      status: 'Đang hoạt động',
-      imagePapers: [
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-        'https://toplist.vn/images/800px/photo-studio-duc-cuong-321718.jpg',
-      ],
-      vehicle: [],
-    },
-  ];
   const status = ['Tất cả', 'Đang hoạt động', 'Đã khóa'];
 
   const [searchValue, setSearchValue] = useState('');
@@ -123,6 +51,21 @@ function Customer() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [txtConfirm, setTxtConfirm] = useState(false);
   const [userConfirm, setUserConfirm] = useState(null);
+  const [money, setMoney] = useState('');
+
+  const handleRecharge = async () => {
+    if (money <= 100000) {
+      alert('Số tiền phải lớn hơn 100,000 vnđ');
+    } else {
+      const shipperSend = userInputMoney;
+      shipperSend.balance = Number(shipperSend.balance) + Number(money);
+      await shipperAPI.recharge(shipperSend.id_shipper, shipperSend);
+
+      setModal(false);
+      const res = await shipperAPI.getShipperById(shipperSend.id_shipper);
+      setRerender(!rerender);
+    }
+  };
 
   useEffect(() => {
     const getShipper = async () => {
@@ -145,6 +88,7 @@ function Customer() {
   }, [tab, page, rerender]);
 
   const debouncedShipperId = useDebounce(searchValue, 200);
+
   useEffect(() => {
     if (!debouncedShipperId.trim()) {
       setSearchResult([]);
@@ -152,14 +96,14 @@ function Customer() {
     }
     const fetchApi = async () => {
       const res = await shipperAPI.searchNoPage({
-        idShipper: debouncedShipperId,
+        idShipper: debouncedShipperId.toUpperCase(),
       });
       setTotalItems(res);
 
       const result = await shipperAPI.search({
         page: page,
         limit: 10,
-        idShipper: debouncedShipperId,
+        idShipper: debouncedShipperId.toUpperCase(),
       });
 
       setSearchResult(result);
@@ -198,9 +142,23 @@ function Customer() {
           </div>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Số tiền nạp:</div>
-            <Input type="number" className={cx('input')} />
+            <Input
+              type="number"
+              className={cx('input')}
+              onChange={(e) => {
+                setMoney(e.target.value);
+              }}
+            />
             <div style={{ marginLeft: 10 }}>VNĐ</div>
           </div>
+          <Button
+            className={cx('button-unblock')}
+            style={{ marginLeft: 140, marginTop: 10 }}
+            color="success"
+            onClick={() => handleRecharge()}
+          >
+            Nạp tiền
+          </Button>
         </div>
       </Modal>
       {/*  */}
