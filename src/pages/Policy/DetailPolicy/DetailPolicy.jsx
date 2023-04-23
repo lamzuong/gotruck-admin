@@ -1,10 +1,9 @@
 import styles from '../Policy.module.scss';
-import data from '../data';
 import MyConfirm from '~/components/MyConfirm/MyConfirm';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { Button, Modal } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -67,7 +66,7 @@ function DetailPolicy() {
       }
     };
     getPolicy();
-  }, [rerender]);
+  }, [rerender, info.typePolicy]);
 
   return (
     <div className={cx('wrapper-policy')}>
@@ -95,7 +94,7 @@ function DetailPolicy() {
         policy.map(
           (e, i) =>
             e.hide === false && (
-              <div key={i}>
+              <div key={i} className={cx('show-action')}>
                 <div className={cx('inline-between')}>
                   <div className={cx('title')}>{e.title}</div>
                   <div className={cx('inline')}>

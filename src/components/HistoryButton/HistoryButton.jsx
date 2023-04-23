@@ -4,12 +4,12 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-function HistoryButton({ header, action = () => {} }) {
+function HistoryButton({ title, header, action = () => {} }) {
   return (
     <div className={cx('inline-between')}>
       <div className={cx('title-header')}>{header}</div>
       <div className={cx('title-link')} onClick={action}>
-        Xem lịch sử thay đổi &#62;&#62;
+        {title ? title : ' Xem lịch sử thay đổi'} &#62;&#62;&#62;
       </div>
     </div>
   );

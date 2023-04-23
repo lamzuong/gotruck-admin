@@ -14,7 +14,7 @@ for (let i = 6; i >= 0; i--) {
 const month = [];
 let d1 = new Date();
 let d2 = new Date();
-d2.setMonth(d2.getMonth() - 1);
+d2.setDate(d2.getDate() - 29);
 let d3 = (d1 - d2) / 24 / 60 / 60 / 1000;
 for (let i = d3; i >= 0; i--) {
   let date = new Date();

@@ -10,7 +10,7 @@ function HistoryDetail(props) {
     <Table bordered>
       <thead>
         <tr>
-          <th>Tỉnh/Thành phố</th>
+          {/* <th>Tỉnh/Thành phố</th> */}
           <th>Dịch vụ</th>
           <th>
             Giá cước <p style={{ color: '#04af46' }}>tối thiểu 2km</p> đầu tiên
@@ -20,7 +20,7 @@ function HistoryDetail(props) {
       </thead>
       <tbody>
         <tr>
-          <th rowSpan={5}>Toàn quốc</th>
+          {/* <th rowSpan={5}>Toàn quốc</th> */}
           <td>{item[0].truck}</td>
           <td>{convertMoney(item[0].priceMin, ' đ')}</td>
           <td>{convertMoney(item[0].priceEachKm, ' đ')}</td>

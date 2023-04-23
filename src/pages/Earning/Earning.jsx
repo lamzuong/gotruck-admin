@@ -53,12 +53,12 @@ function Earning() {
       datasets: [
         {
           label: 'Doanh thu theo ngày',
-          data: res[0].earnPerHour,
+          data: res.earnPerHour,
           borderColor: 'blue',
         },
       ],
     });
-    setTotal(res[0].total);
+    setTotal(res.total);
   };
   useEffect(() => {
     const getEarning = async () => {
@@ -74,26 +74,18 @@ function Earning() {
           setEndDate(convertSubstringDate(currentDate));
 
           const res = await earningApi.getEarningWeek();
-          res.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          });
-          let dataShow = [];
-          let totalShow = 0;
-          for (let i = 6; i >= 0; i--) {
-            dataShow.push(res[i]?.total || 0);
-            totalShow += res[i]?.total || 0;
-          }
+          console.log(res);
           setData({
             labels: week,
             datasets: [
               {
                 label: 'Doanh thu theo tuần',
-                data: dataShow,
+                data: res.earnPerDay,
                 borderColor: 'blue',
               },
             ],
           });
-          setTotal(totalShow);
+          setTotal(res.total);
         } else if (statistic.value === 'month') {
           let d = new Date();
           d.setMonth(d.getMonth() - 1);
@@ -101,27 +93,17 @@ function Earning() {
           setEndDate(convertSubstringDate(currentDate));
 
           const res = await earningApi.getEarningMonth();
-          res.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          });
-          let dataShow = [];
-          let totalShow = 0;
-          for (let i = month.length - 1; i >= 0; i--) {
-            dataShow.push(res[i]?.total || 0);
-            totalShow += res[i]?.total || 0;
-          }
           setData({
             labels: month,
             datasets: [
               {
                 label: 'Doanh thu theo tháng',
-                data: dataShow,
+                data: res.earnPerDay,
                 borderColor: 'blue',
               },
             ],
           });
-          setTotal(totalShow);
-        } else if (statistic.value === 'specific') {
+          setTotal(res.total);
         }
       } catch (error) {
         console.log(error);
@@ -129,51 +111,6 @@ function Earning() {
     };
     getEarning();
   }, [statistic]);
-  useEffect(() => {
-    const getSpecficDate = async () => {
-      if (startDate === endDate) earnToday(startDate);
-      else if (statistic.value === 'specific') {
-        const res = await earningApi.getEarningSpecific({
-          startDate: startDate,
-          endDate: endDate,
-        });
-        res.sort((a, b) => {
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-
-        let d1 = new Date(startDate);
-        let d2 = new Date(endDate);
-        let d3 = (d2 - d1) / 24 / 60 / 60 / 1000;
-        let specific = [];
-        for (let i = d3; i >= 0; i--) {
-          let date = new Date();
-          date.setDate(date.getDate() - i);
-          let strDate = date.toISOString().slice(0, 10);
-          let arrDate = strDate.split('-');
-          specific.push(arrDate[2] + '/' + arrDate[1]);
-        }
-
-        let dataShow = [];
-        let totalShow = 0;
-        for (let i = d3; i >= 0; i--) {
-          dataShow.push(res[i]?.total || 0);
-          totalShow += res[i]?.total || 0;
-        }
-        setData({
-          labels: specific,
-          datasets: [
-            {
-              label: 'Doanh thu theo ngày cụ thể',
-              data: dataShow,
-              borderColor: 'blue',
-            },
-          ],
-        });
-        setTotal(totalShow);
-      }
-    };
-    getSpecficDate();
-  }, [startDate, endDate]);
 
   const options = {};
   const optionsStatis = [
@@ -182,20 +119,66 @@ function Earning() {
     { value: 'month', label: 'Thống kê theo tháng' },
     { value: 'specific', label: 'Thống kê theo ngày cụ thể' },
   ];
+
+  const get_day_of_time = (d1, d2) => {
+    const date1 = new Date(d1);
+    const date2 = new Date(d2);
+    let ms1 = date1.getTime();
+    let ms2 = date2.getTime();
+    return Math.ceil((ms2 - ms1) / (24 * 60 * 60 * 1000));
+  };
+
   const handleStartDate = (e) => {
-    if (e.target.value > endDate) {
-      setStartDate(startDate);
-      alert('Chọn ngày không hợp lệ');
-      return;
-    } else setStartDate(e.target.value);
+    setStartDate(e.target.value);
   };
+
   const handleEndDate = (e) => {
-    if (e.target.value < startDate) {
-      setEndDate(endDate);
-      alert('Chọn ngày không hợp lệ');
-      return;
-    } else setEndDate(e.target.value);
+    setEndDate(e.target.value);
   };
+
+  const handleSearch = async () => {
+    if (!startDate) {
+      alert('Chưa chọn ngày bắt đầu');
+    } else if (!endDate) {
+      alert('Chưa chọn ngày kết thúc');
+    } else if (endDate < startDate) {
+      alert('Chọn ngày không hợp lệ');
+    } else if (get_day_of_time(startDate, endDate) > 30) {
+      alert('Thời gian tìm kiếm giới hạn trong 30 ngày');
+    } else {
+      if (startDate === endDate) earnToday(startDate);
+      else if (statistic.value === 'specific') {
+        const res = await earningApi.getEarningSpecific({
+          startDate: startDate,
+          endDate: endDate,
+        });
+
+        let d1 = new Date(startDate);
+        let d2 = new Date(endDate);
+        let d3 = (d2 - d1) / 24 / 60 / 60 / 1000;
+        let specific = [];
+        for (let i = d3; i >= 0; i--) {
+          let date = new Date(endDate);
+          date.setDate(date.getDate() - i);
+          let strDate = date.toISOString().slice(0, 10);
+          let arrDate = strDate.split('-');
+          specific.push(arrDate[2] + '/' + arrDate[1]);
+        }
+        setData({
+          labels: specific,
+          datasets: [
+            {
+              label: 'Doanh thu theo ngày cụ thể',
+              data: res.earnPerDay,
+              borderColor: 'blue',
+            },
+          ],
+        });
+        setTotal(res.total);
+      }
+    }
+  };
+
   return (
     <div className={cx('wrapper-statistic')}>
       <div className={cx('title')}>Thống kê doanh thu</div>
@@ -233,6 +216,15 @@ function Earning() {
                       value={endDate || ''}
                     />
                   </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    className={cx('button-unblock')}
+                    color="success"
+                    onClick={() => handleSearch()}
+                  >
+                    Tìm kiếm
+                  </Button>
                 </div>
                 {/* <Button block color="primary" className={cx('btn-search')}>
                   <div className={cx('txt-search')}>Tìm kiếm</div>

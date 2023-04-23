@@ -6,7 +6,7 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-function MyButtonAdd({ data }) {
+function MyButtonAdd({ data, single }) {
   return (
     <div className={cx('wrapper')}>
       <label htmlFor="file-upload" className={cx('custom-file-input')}>
@@ -16,7 +16,7 @@ function MyButtonAdd({ data }) {
       <input
         type="file"
         id="file-upload"
-        multiple
+        multiple={single ? false : true}
         onChange={(e) => {
           data(e.target.files);
         }}

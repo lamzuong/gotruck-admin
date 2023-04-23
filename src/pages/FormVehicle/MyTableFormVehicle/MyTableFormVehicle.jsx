@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import classNames from 'classnames/bind';
 import { convertMoney } from '~/global/functionGlobal';
+import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
@@ -21,10 +22,10 @@ const BodyTable = ({ item }) => {
   const navigate = useNavigate();
   return (
     <tr>
-      <td>{item.id}</td>
-      <td>{item.user.id}</td>
+      <td>{item.id_truck}</td>
+      <td>{item.id_shipper.id_shipper}</td>
       <td>{item.status}</td>
-      <td>{item.time}</td>
+      <td>{formatDateFull(item.createdAt)}</td>
       <td>
         <Button
           color="primary"

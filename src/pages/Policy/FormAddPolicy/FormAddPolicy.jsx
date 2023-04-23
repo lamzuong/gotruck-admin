@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import { navigateBackPolicy } from '~/global/functionGlobal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -20,14 +22,20 @@ function FormAddPolicy() {
   const navigate = useNavigate();
   const [title, setTitle] = useState(item.policy.title);
   const [content, setContent] = useState('');
+
   useEffect(() => {
     let result = '';
     for (const text of item.policy?.content) {
       result += text + '\n';
     }
     setContent(result);
-  }, []);
+  }, [item.policy?.content]);
+
   const handleSave = async () => {
+    if (title.trim() === '' || content.trim() === '') {
+      alert('Tiêu đề và nội dung không được dể trống');
+      return;
+    }
     await policyAPI.addPolicy({
       title: title,
       content: content
@@ -49,7 +57,12 @@ function FormAddPolicy() {
     });
     navigate(`/policy/${navigateBackPolicy(item.typePolicy)}`);
   };
+
   const handleEdit = async () => {
+    if (title.trim() === '' || content.trim() === '') {
+      alert('Tiêu đề và nội dung không được dể trống');
+      return;
+    }
     await policyAPI.addPolicy({
       title: title,
       content: content
@@ -86,7 +99,17 @@ function FormAddPolicy() {
   };
   return (
     <div>
-      <div className={cx('title-header')}>{item.header}</div>
+      <div
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}
+      >
+        <FontAwesomeIcon
+          icon={faArrowLeftLong}
+          style={{ fontSize: '150%', cursor: 'pointer' }}
+          onClick={() => navigate(-1)}
+        />
+        <div style={{ fontWeight: 'bold', fontSize: 26, marginLeft: 15 }}>{item.header}</div>
+      </div>
+
       <FormGroup>
         <Label>Tiêu đề</Label>
         <Input className={cx('input')} value={title} onChange={(e) => setTitle(e.target.value)} />

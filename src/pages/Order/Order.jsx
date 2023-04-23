@@ -1,7 +1,7 @@
 import styles from './Order.module.scss';
 import { HeaderTable, BodyTable } from '~/pages/Order/MyTableOrder/MyTableOrder';
 // import { orders } from './data';
-import { toFindDuplicates } from '~/global/functionGlobal';
+// import { toFindDuplicates } from '~/global/functionGlobal';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
@@ -17,7 +17,7 @@ import MyPagination from '~/components/MyPagination/MyPagination';
 const cx = classNames.bind(styles);
 
 function Order() {
-  const status = ['Tất cả', 'Đã giao', 'Đang giao', 'Đang lấy hàng', 'Đã hủy'];
+  const status = ['Tất cả', 'Chưa nhận', 'Đã nhận', 'Đang giao', 'Đã giao', 'Đã hủy'];
 
   const location = useLocation();
   const item = location.state;
@@ -56,7 +56,7 @@ function Order() {
       }
     };
     if (searchCustomerId === '' && searchOrderId === '' && searchShipperId === '') getOrders();
-  }, [tab, currentPage]);
+  }, [tab, currentPage, searchCustomerId, searchOrderId, searchShipperId]);
 
   const debouncedOrderId = useDebounce(searchOrderId, 200);
   const debouncedCustomerId = useDebounce(searchCustomerId, 200);

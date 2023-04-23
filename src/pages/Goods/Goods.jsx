@@ -17,6 +17,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -25,34 +26,48 @@ function Goods() {
   const [totalGoods, setTotalGoods] = useState([]);
   const [goods, setGoods] = useState([]);
   const [rerenderGoods, setRerenderGoods] = useState(false);
+  const user = useSelector((state) => state.auth.user);
 
   const [modalGoods, setModalGoods] = useState(false);
   const [valueGoods, setValueGoods] = useState('');
   const [invalidGoods, setInvalidGoods] = useState(false);
   const [modalDeleteGoods, setModalDeleteGoods] = useState(false);
   const [valueDeleteGoods, setValueDeleteGoods] = useState('');
-
+  const [modalUpdateGoods, setModalUpdateGoods] = useState(false);
+  const [valueUpdateGoods, setValueUpdateGoods] = useState('');
+  const [itemUpdate, setItemUpdate] = useState('');
   const [valueSearchGoods, setValueSearchGoods] = useState('');
   const [resultSearchGoods, setResultSearchGoods] = useState([]);
   const [totalResultSearchGoods, setTotalResultSearchGoods] = useState([]);
   const [pageSearchGoods, setPageSearchGoods] = useState(1);
+  const [totalItem, setTotalItem] = useState(1);
 
   const toggleGoods = () => {
     setModalGoods(!modalGoods);
     setInvalidGoods(false);
   };
+
   const toggleDeleteGoods = (label) => {
     setValueDeleteGoods(label);
     setModalDeleteGoods(!modalDeleteGoods);
+  };
+
+  const toggleUpdateGoods = (label) => {
+    setModalUpdateGoods(!modalUpdateGoods);
+    setInvalidGoods(false);
   };
   // ================== Loại hàng hoá ==================
   useEffect(() => {
     const getAllGoods = async () => {
       const res = await goodsApi.getAll();
+
       setTotalGoods(res);
+      const totalItemTemp = Math.ceil(res.length / 10);
+      setTotalItem(totalItemTemp);
     };
     getAllGoods();
   }, [rerenderGoods]);
+
   // show goods type
   useEffect(() => {
     const getGoodsType = async () => {
@@ -65,6 +80,7 @@ function Goods() {
     };
     getGoodsType();
   }, [pageGoods, rerenderGoods]);
+
   // add, delete goods type
   useEffect(() => {
     for (let i = 0; i < totalGoods.length; i++) {
@@ -75,18 +91,58 @@ function Goods() {
     }
     setInvalidGoods(false);
   }, [valueGoods]);
+
+  useEffect(() => {
+    for (let i = 0; i < totalGoods.length; i++) {
+      if (valueUpdateGoods === totalGoods[i].value) {
+        setInvalidGoods(true);
+        return;
+      }
+    }
+    setInvalidGoods(false);
+  }, [valueUpdateGoods]);
+
   const handleAddGoods = async () => {
     try {
-      await goodsApi.add({ value: valueGoods, label: valueGoods });
+      await goodsApi.add({ value: valueGoods.trim(), label: valueGoods.trim() });
       toggleGoods();
       setRerenderGoods(!rerenderGoods);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleUpdateGoods = async () => {
+    try {
+      const dataSend = {
+        id_good_update: itemUpdate._id,
+        goodNew: {
+          value: valueUpdateGoods,
+          label: valueUpdateGoods,
+          history: {
+            oldValue: itemUpdate.value,
+            newValue: valueUpdateGoods,
+            modifiedAt: new Date(),
+            modifiedBy: user._id,
+          },
+        },
+      };
+      await goodsApi.put(dataSend);
+      toggleUpdateGoods();
+      setRerenderGoods(!rerenderGoods);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDeleteGoods = async () => {
     try {
-      await goodsApi.delete(valueDeleteGoods);
+      const dataSend = {
+        valueDeleteGoods: valueDeleteGoods,
+        deletedAt: new Date(),
+        deletedBy: user._id,
+      };
+      await goodsApi.delete(dataSend);
       toggleDeleteGoods();
       setRerenderGoods(!rerenderGoods);
     } catch (error) {
@@ -98,7 +154,7 @@ function Goods() {
   useEffect(() => {
     const searchGoods = async () => {
       try {
-        if (debouncedGoods !== '') {
+        if (debouncedGoods.trim() !== '') {
           const res = await goodsApi.search(debouncedGoods);
           setTotalResultSearchGoods(res);
           let list = [];
@@ -163,12 +219,37 @@ function Goods() {
           </FormGroup>
           <Button
             color="primary"
-            disabled={invalidGoods}
+            disabled={invalidGoods || !valueGoods?.trim()}
             block
             className={cx('button-add')}
             onClick={handleAddGoods}
           >
             <h4>Thêm</h4>
+          </Button>
+        </div>
+      </Modal>
+      {/* Modal update goods */}
+      <Modal isOpen={modalUpdateGoods} toggle={toggleUpdateGoods}>
+        <div className={cx('wrapper-modal')}>
+          <div className={cx('title')}>Nhập tên loại hàng hóa mới</div>
+          <FormGroup>
+            <Input
+              value={valueUpdateGoods}
+              onChange={(e) => setValueUpdateGoods(e.target.value)}
+              bsSize="lg"
+              invalid={invalidGoods}
+              className={cx('input')}
+            />
+            <FormFeedback>Loại hàng hóa đã tồn tại</FormFeedback>
+          </FormGroup>
+          <Button
+            color="primary"
+            disabled={invalidGoods || !valueUpdateGoods?.trim()}
+            block
+            className={cx('button-add')}
+            onClick={handleUpdateGoods}
+          >
+            <h4>Sửa</h4>
           </Button>
         </div>
       </Modal>
@@ -221,7 +302,11 @@ function Goods() {
                     <Button
                       color="warning"
                       className={cx('button')}
-                      onClick={() => toggleDeleteGoods(e.label)}
+                      onClick={() => {
+                        setItemUpdate(e);
+                        setValueUpdateGoods(e.value);
+                        toggleUpdateGoods(e.label);
+                      }}
                     >
                       <h4>Sửa</h4>
                     </Button>
@@ -254,7 +339,7 @@ function Goods() {
               </Pagination>
             </div>
             <div style={{ color: 'grey' }}>
-              Tổng số trang: {currentPageGoods()} trên {Math.ceil(arrayGoodsCurrent().length / 10)}
+              Tổng số trang: {currentPageGoods()} trên {totalItem}
             </div>
           </div>
         </div>

@@ -2,16 +2,24 @@ import styles from './HistoryDetail.module.scss';
 
 import React from 'react';
 import classNames from 'classnames/bind';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function HistoryDetail() {
   const location = useLocation();
   const item = location.state;
+  const navigate = useNavigate();
 
   return (
     <div>
+      <FontAwesomeIcon
+        icon={faArrowLeftLong}
+        style={{ fontSize: '150%', cursor: 'pointer' }}
+        onClick={() => navigate(-1)}
+      />
       {item.history.oldValue.title && item.deletedBy === null && (
         <>
           <div className={cx('title-header')}>Chính sách ban đầu</div>

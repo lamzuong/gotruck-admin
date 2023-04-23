@@ -1,18 +1,19 @@
 import styles from './Price.module.scss';
-import { customStyles, customStyles2 } from './stylesModal';
-import { convertMoney, parseInt } from '~/global/functionGlobal';
+import { customStyles2 } from './stylesModal';
+import { convertMoney } from '~/global/functionGlobal';
 
 import classNames from 'classnames/bind';
 import { Button, Input, Table } from 'reactstrap';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import CurrencyInput from 'react-currency-input-field';
-import { HeaderTableEditAll, HeaderTableEditOne } from '~/pages/Price/MyTablePrice/MyTablePrice';
+import { HeaderTableEditAll } from '~/pages/Price/MyTablePrice/MyTablePrice';
 import { MyTab } from './components/MyTab/MyTab';
 import ButtonApply from './components/ButtonApply/ButtonApply';
 import { listItemCalcPercent, listItemCalcPrice } from './functionPrice';
 import { Link } from 'react-router-dom';
 import priceAPI from '~/api/priceAPI';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -24,31 +25,29 @@ function Price() {
     PRICE_2 = 'Giá 2',
     PERCENT_2 = 'Phần trăm 2';
   const [data, setData] = useState([]);
-  const [checkedPostion, setCheckedPostion] = useState(Array(data.length).fill(false));
+  const [checkedPostion, setCheckedPostion] = useState([]);
   const [checkedItem, setCheckedItem] = useState([]);
   const [checkedNewItem, setCheckedNewItem] = useState([]);
 
   const [disableEdit, setDisableEdit] = useState(true);
-  const [disableEditAll, setDisableEditAll] = useState(true);
-
-  useEffect(() => {
-    const checked = checkedPostion.filter((x) => x === true).length;
-    if (checked > 1) handleDisable(true, false);
-    else if (checked === 1) handleDisable(false, true);
-    else handleDisable(true, true);
-
-    let list = [];
-    for (let i = 0; i < checkedPostion.length; i++) {
-      if (checkedPostion[i]) list.push(data[i]);
-    }
-    setCheckedItem(list);
-    setCheckedNewItem(list);
-  }, [checkedPostion]);
-
-  const handleDisable = (a, b) => {
-    setDisableEdit(a);
-    setDisableEditAll(b);
+  const [modalEdit, setModalEdit] = useState([false, false]);
+  const handleModal = (index) => {
+    index === 0
+      ? setModalEdit([!modalEdit[0], modalEdit[1]])
+      : setModalEdit([modalEdit[0], !modalEdit[1]]);
   };
+
+  // const [newPrice, setNewPrice] = useState([0, 0]);
+  const [deltaPrice1, setDeltaPrice1] = useState(0);
+  const [deltaPrice2, setDeltaPrice2] = useState(0);
+  const [deltaPercent1, setDeltaPercent1] = useState(0);
+  const [deltaPercent2, setDeltaPercent2] = useState(0);
+  const [action, setAction] = useState(UP);
+  const user = useSelector((state) => state.auth.user);
+
+  const [tab1, setTab1] = useState(PRICE_1);
+  const [tab2, setTab2] = useState(PRICE_2);
+  const [rerender, setRerender] = useState(false);
 
   const handleChange = (e) => {
     const { checked, value } = e.target;
@@ -65,22 +64,83 @@ function Price() {
     }
   };
 
-  const [modalEdit, setModalEdit] = useState([false, false]);
-  const handleModal = (index) => {
-    index === 0
-      ? setModalEdit([!modalEdit[0], modalEdit[1]])
-      : setModalEdit([modalEdit[0], !modalEdit[1]]);
+  const handleResetInput = (index) => {
+    if (index === 1) {
+      setDeltaPrice1(0);
+      setDeltaPercent1(0);
+    } else {
+      setDeltaPrice2(0);
+      setDeltaPercent2(0);
+    }
   };
 
-  const [newPrice, setNewPrice] = useState([0, 0]);
-  const [deltaPrice1, setDeltaPrice1] = useState(0);
-  const [deltaPrice2, setDeltaPrice2] = useState(0);
-  const [deltaPercent1, setDeltaPercent1] = useState(0);
-  const [deltaPercent2, setDeltaPercent2] = useState(0);
-  const [action, setAction] = useState(UP);
+  const handleUpdatePrice = async () => {
+    //price <= 2km
+    //price >  2km
+    let flag = false;
+    for (let i = 0; i < checkedNewItem.length; i++) {
+      if (
+        checkedItem[i].price1 === checkedNewItem[i].price1 &&
+        checkedItem[i].price2 === checkedNewItem[i].price2
+      ) {
+        flag = true;
+        break;
+      }
+    }
+    if (flag) {
+      handleModal(1);
+      return;
+    }
+    let dataSend = [];
+    checkedNewItem.map((itemNew) => {
+      const itemOld = checkedItem.find((itemOld) => itemNew.id === itemOld.id);
+      if (itemOld) {
+        if (itemNew.price1 !== itemOld.price1) {
+          dataSend.push({
+            priceOld: itemOld.price1,
+            priceNew: itemNew.price1,
+            id: itemOld.idPrice1,
+            id_handler: user._id,
+          });
+        }
+        if (itemNew.price2 !== itemOld.price2) {
+          dataSend.push({
+            priceOld: itemOld.price2,
+            priceNew: itemNew.price2,
+            id: itemOld.idPrice2,
+            id_handler: user._id,
+          });
+        }
+      }
+      return itemNew;
+    });
+    if (dataSend.length === 0) {
+      handleModal(1);
+      return;
+    }
+    await priceAPI.putransportPrice(dataSend);
+    setRerender(!rerender);
+    setDeltaPercent1(0);
+    setDeltaPercent2(0);
+    setDeltaPrice1(0);
+    setDeltaPrice2(0);
+    handleModal(1);
+  };
+  useEffect(() => {
+    const checked = checkedPostion.filter((x) => x === true).length;
+    if (checked >= 1) {
+      setDisableEdit(false);
+    } else {
+      setDisableEdit(true);
+    }
 
-  const [tab1, setTab1] = useState(PRICE_1);
-  const [tab2, setTab2] = useState(PRICE_2);
+    let list = [];
+    for (let i = 0; i < checkedPostion.length; i++) {
+      if (checkedPostion[i]) list.push(data[i]);
+    }
+    setCheckedItem(list);
+    setCheckedNewItem(list);
+  }, [checkedPostion, data]);
 
   useEffect(() => {
     let listNative = [...checkedItem];
@@ -108,16 +168,7 @@ function Price() {
       listNative = [...list];
       setCheckedNewItem(list);
     }
-  }, [deltaPrice1, deltaPercent1, deltaPrice2, deltaPercent2]);
-  const handleResetInput = (index) => {
-    if (index === 1) {
-      setDeltaPrice1(0);
-      setDeltaPercent1(0);
-    } else {
-      setDeltaPrice2(0);
-      setDeltaPercent2(0);
-    }
-  };
+  }, [deltaPrice1, deltaPercent1, deltaPrice2, deltaPercent2, action, checkedItem, tab1, tab2]);
 
   useEffect(() => {
     //call get all price
@@ -125,15 +176,16 @@ function Price() {
       const resTransportPrice = await priceAPI.getAllTransportPrice();
       if (!resTransportPrice.notFound) {
         setData([...resTransportPrice]);
+        setCheckedPostion(Array(resTransportPrice.length).fill(false));
       }
     };
     getAllTransportPrice();
-  }, []);
+  }, [rerender]);
 
   return (
     <div>
       {/* Modal edit one */}
-      <Modal
+      {/* <Modal
         isOpen={modalEdit[0]}
         onRequestClose={() => handleModal(0)}
         style={customStyles}
@@ -186,14 +238,24 @@ function Price() {
             />
           </div>
 
-          <ButtonApply onClick={() => {}} />
+          <ButtonApply
+            onClick={() => {
+              handleUpdatePrice();
+            }}
+          />
         </div>
-      </Modal>
+      </Modal> */}
 
       {/* Modal edit all */}
       <Modal
         isOpen={modalEdit[1]}
-        onRequestClose={() => handleModal(1)}
+        onRequestClose={() => {
+          handleModal(1);
+          setDeltaPercent1(0);
+          setDeltaPercent2(0);
+          setDeltaPrice1(0);
+          setDeltaPrice2(0);
+        }}
         style={customStyles2}
         ariaHideApp={false}
       >
@@ -213,14 +275,14 @@ function Price() {
             </tbody>
           </Table>
 
-          <label className={cx('label-mtb')}>{action} giá hàng loạt:</label>
+          <label className={cx('label-mtb')}>{action} giá:</label>
           <div className={cx('wrapper-edit')}>
             <div className={cx('wrapper-delta')}>
               <label className={cx('label-long')}>Ở 2km đầu tiên</label>
               {tab1 === PRICE_1 ? (
                 <div className={cx('view-input')}>
                   <CurrencyInput
-                    placeholder="100,000"
+                    placeholder="0"
                     maxLength={9}
                     onValueChange={(value) => setDeltaPrice1(value)}
                     value={deltaPrice1}
@@ -259,7 +321,7 @@ function Price() {
               {tab2 === PRICE_2 ? (
                 <div className={cx('view-input')}>
                   <CurrencyInput
-                    placeholder="100,000"
+                    placeholder="0"
                     maxLength={9}
                     onValueChange={(value) => setDeltaPrice2(value)}
                     className={cx('currency-input')}
@@ -311,14 +373,18 @@ function Price() {
             </tbody>
           </Table>
 
-          <ButtonApply onClick={() => {}} />
+          <ButtonApply
+            onClick={() => {
+              handleUpdatePrice();
+            }}
+          />
         </div>
       </Modal>
 
       <div className={cx('title')}>Bảng giá vận chuyển</div>
-      {/* <Link to={'/pr/history-change'}>
+      <Link to={'/pr/history-change'}>
         <div className={cx('title-link')}>Xem lịch sử thay đổi &#62;&#62;</div>
-      </Link> */}
+      </Link>
       {/* Bảng giá */}
       <Table bordered>
         <thead>
@@ -330,48 +396,37 @@ function Price() {
             </th>
             <th>Giá cước mỗi km tiếp theo</th>
             <th>
-              <Input type="checkbox" value={'All'} onChange={handleChange} />
+              <Input
+                type="checkbox"
+                value={'All'}
+                onChange={handleChange}
+                checked={
+                  checkedPostion.filter((item) => item === true).length === checkedPostion.length
+                }
+              />
             </th>
           </tr>
         </thead>
         <tbody>
-          {data[0] && (
-            <tr>
-              {/* <th rowSpan={5}>Toàn quốc</th> */}
-              <td>{data[0]?.title}</td>
-              <td>{convertMoney(data[0]?.price1, ' đ')}</td>
-              <td>{convertMoney(data[0]?.price2, ' đ')}</td>
+          {data?.map((e, i) => (
+            <tr key={i}>
+              <td>{e?.title}</td>
+              <td>{convertMoney(e?.price1, ' đ')}</td>
+              <td>{convertMoney(e?.price2, ' đ')}</td>
               <td>
                 <Input
                   type="checkbox"
-                  value={0}
+                  value={i}
                   onChange={handleChange}
-                  checked={checkedPostion[0]}
+                  checked={checkedPostion[i]}
                 />
               </td>
             </tr>
-          )}
-          {data.map((e, i) =>
-            i !== 0 ? (
-              <tr key={i}>
-                <td>{e?.title}</td>
-                <td>{convertMoney(e?.price1, ' đ')}</td>
-                <td>{convertMoney(e?.price2, ' đ')}</td>
-                <td>
-                  <Input
-                    type="checkbox"
-                    value={i}
-                    onChange={handleChange}
-                    checked={checkedPostion[i]}
-                  />
-                </td>
-              </tr>
-            ) : null,
-          )}
+          ))}
         </tbody>
       </Table>
       <div className={cx('wrapper-button')}>
-        <Button
+        {/* <Button
           size="lg"
           color="success"
           className={cx('button-up')}
@@ -379,30 +434,30 @@ function Price() {
           onClick={() => handleModal(0)}
         >
           <div className={cx('txt-price')}>Điều chỉnh đơn giá</div>
-        </Button>
+        </Button> */}
         <Button
           size="lg"
           color="success"
           className={cx('button-up')}
-          disabled={disableEditAll}
+          disabled={disableEdit}
           onClick={() => {
             handleModal(1);
             setAction(UP);
           }}
         >
-          <div className={cx('txt-price')}>Tăng giá hàng loạt</div>
+          <div className={cx('txt-price')}>Tăng giá</div>
         </Button>
         <Button
           size="lg"
           color="danger"
           className={cx('button-down')}
-          disabled={disableEditAll}
+          disabled={disableEdit}
           onClick={() => {
             handleModal(1);
             setAction(DOWN);
           }}
         >
-          <div className={cx('txt-price')}>Giảm giá hàng loạt</div>
+          <div className={cx('txt-price')}>Giảm giá</div>
         </Button>
       </div>
     </div>

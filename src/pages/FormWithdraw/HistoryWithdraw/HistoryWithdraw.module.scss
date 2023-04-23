@@ -1,0 +1,54 @@
+.search-place {
+  display: flex;
+  align-items: center;
+
+  .wrapper-search {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+  }
+  .title {
+    margin-right: 20px;
+  }
+}
+.table-order {
+  margin-top: 10px;
+}
+.tabs {
+  font-size: 1.6rem;
+  cursor: pointer;
+
+  .choose-tab {
+    font-weight: 700;
+    color: var(--main-green);
+  }
+  .no-choose-tab {
+    color: var(--text-color);
+  }
+}
+// Modal
+.wrapper-modal {
+  padding: 20px;
+  .title {
+    margin-bottom: 10px;
+  }
+  .input {
+    text-align: left;
+    height: 35px;
+    font-size: 16px;
+  }
+  .button {
+    margin-top: 20px;
+  }
+}
+.img {
+  height: 100px;
+  cursor: pointer;
+}
+.icon-del {
+  position: relative;
+  top: -50px;
+  left: -5px;
+  color: red;
+  cursor: pointer;
+}

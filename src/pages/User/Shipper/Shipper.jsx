@@ -25,6 +25,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import useDebounce from '~/hook/useDebounce';
 import MyConfirm from '~/components/MyConfirm/MyConfirm';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -52,6 +53,7 @@ function Customer() {
   const [txtConfirm, setTxtConfirm] = useState(false);
   const [userConfirm, setUserConfirm] = useState(null);
   const [money, setMoney] = useState('');
+  const user = useSelector((state) => state.auth.user);
 
   const handleRecharge = async () => {
     if (money <= 100000) {
@@ -59,7 +61,11 @@ function Customer() {
     } else {
       const shipperSend = userInputMoney;
       shipperSend.balance = Number(shipperSend.balance) + Number(money);
-      await shipperAPI.recharge(shipperSend.id_shipper, shipperSend);
+      const dataSend = {
+        shipperSend: shipperSend,
+        id_handler: user._id,
+      };
+      await shipperAPI.recharge(shipperSend.id_shipper, dataSend);
 
       setModal(false);
       const res = await shipperAPI.getShipperById(shipperSend.id_shipper);

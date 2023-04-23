@@ -21,14 +21,18 @@ const goodsApi = {
     return axiosClient.post(url, { ...params });
   },
 
-  delete: (label) => {
-    const url = `/goodsType/${label}`;
-    return axiosClient.delete(url);
+  delete: (param) => {
+    const url = `/goodsType/delete`;
+    return axiosClient.put(url, param);
   },
 
   search: (keyword = '') => {
     const url = `/goodsType/search/${keyword}`;
     return axiosClient.get(url);
+  },
+  put: (params) => {
+    const url = `/goodsType`;
+    return axiosClient.put(url, { ...params });
   },
 };
 

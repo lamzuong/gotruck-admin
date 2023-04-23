@@ -94,16 +94,16 @@ function Radius() {
       <Table striped bordered className={cx('table-order')}>
         <thead>
           <th>STT</th>
-          <th>Thời gian thay đổi</th>
           <th>Bán kính nhận đơn</th>
+          <th>Thời gian thay đổi</th>
           <th>Người thay đổi</th>
         </thead>
         <tbody>
           {data.map((e, i) => (
             <tr>
               <td>{i + 1}</td>
-              <td>{formatDateFull(e.createdAt)}</td>
               <td>{Number(e.distance_receive_order) / 1000 + ' km'}</td>
+              <td>{formatDateFull(e.createdAt)}</td>
               <td>{e.nameUserChange}</td>
             </tr>
           ))}

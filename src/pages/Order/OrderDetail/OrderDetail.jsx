@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { withGoogleMap, withScriptjs, GoogleMap } from 'react-google-maps';
 import Map from '../Map';
 const cx = classNames.bind(styles);
@@ -31,13 +31,13 @@ function OrderDetail() {
     {
       title: 'Tài xế',
       content:
-        Object.keys(item.shipper).length > 0 && item.shipper.id_shipper ? (
+        Object.keys(item?.shipper || {}).length > 0 && item?.shipper?.id_shipper ? (
           item.shipper?.id_shipper?.id_shipper + ' - ' + item.shipper?.id_shipper?.name
         ) : (
           <i>Chưa có</i>
         ),
     },
-    { title: 'Biển số xe', content: item.shipper?.truck.license_plate || <i>Chưa có</i> },
+    { title: 'Biển số xe', content: item.shipper?.truck?.license_plate || <i>Chưa có</i> },
   ];
   const div_1_right_title = [
     { title: 'Người gửi', content: item.from_address.name },
@@ -56,6 +56,11 @@ function OrderDetail() {
 
   return (
     <div className={cx('wrapper')}>
+      <FontAwesomeIcon
+        icon={faArrowLeftLong}
+        style={{ fontSize: '150%', cursor: 'pointer' }}
+        onClick={() => navigate(-1)}
+      />
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
@@ -121,13 +126,15 @@ function OrderDetail() {
             <Col>
               <div className={cx('row-info')}>
                 <div className={cx('label')}>Tiền vận chuyển</div>
-                <div className={cx('content')}>{convertMoney(item.priceTransport || 0, 'VNĐ')}</div>
+                <div className={cx('content')}>{convertMoney(item.total || 0, 'VNĐ')}</div>
               </div>
             </Col>
             <Col>
               <div className={cx('row-info')}>
-                <div className={cx('label')}>Phí giao dịch</div>
-                <div className={cx('content')}>{convertMoney(12100, 'VNĐ')}</div>
+                <div className={cx('label')}>Phí</div>
+                <div className={cx('content')}>
+                  {convertMoney((item.total * item.fee) / 100, 'VNĐ')}
+                </div>
               </div>
             </Col>
           </Row>
@@ -136,42 +143,66 @@ function OrderDetail() {
       {/* div 3 */}
       <div className={cx('div3')}>
         <Container>
-          <Row>
-            <div className={cx('img-place')}>
-              <div className={cx('title')}>Hình ảnh lúc lấy hàng</div>
-              <div className={cx('cover-image')}>
-                {img.map((e, i) => (
-                  <img
-                    src={e}
-                    className={cx('image')}
-                    key={i}
-                    onClick={() => {
-                      openModal();
-                      setImageChoose(e);
-                    }}
-                  />
-                ))}
+          {item.list_image_from.length > 0 && (
+            <Row>
+              <div className={cx('img-place')}>
+                <div className={cx('title')}>Hình ảnh hàng hóa</div>
+                <div className={cx('cover-image')}>
+                  {item.list_image_from.map((e, i) => (
+                    <img
+                      src={e}
+                      className={cx('image')}
+                      key={i}
+                      onClick={() => {
+                        openModal();
+                        setImageChoose(e);
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          </Row>
-          <Row>
-            <div className={cx('img-place')}>
-              <div className={cx('title')}>Hình ảnh lúc giao hàng</div>
-              <div className={cx('cover-image')}>
-                {img.map((e, i) => (
-                  <img
-                    src={e}
-                    className={cx('image')}
-                    key={i}
-                    onClick={() => {
-                      openModal();
-                      setImageChoose(e);
-                    }}
-                  />
-                ))}
+            </Row>
+          )}
+          {item.list_image_from_of_shipper.length > 0 && (
+            <Row>
+              <div className={cx('img-place')}>
+                <div className={cx('title')}>Hình ảnh lúc lấy hàng</div>
+                <div className={cx('cover-image')}>
+                  {item.list_image_from_of_shipper.map((e, i) => (
+                    <img
+                      src={e}
+                      className={cx('image')}
+                      key={i}
+                      onClick={() => {
+                        openModal();
+                        setImageChoose(e);
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          </Row>
+            </Row>
+          )}
+          {item.list_image_to_of_shipper.length > 0 && (
+            <Row>
+              <div className={cx('img-place')}>
+                <div className={cx('title')}>Hình ảnh lúc giao hàng</div>
+                <div className={cx('cover-image')}>
+                  {item.list_image_to_of_shipper.map((e, i) => (
+                    <img
+                      src={e}
+                      className={cx('image')}
+                      key={i}
+                      onClick={() => {
+                        openModal();
+                        setImageChoose(e);
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </Row>
+          )}
         </Container>
       </div>
       {/* Button */}
@@ -185,21 +216,26 @@ function OrderDetail() {
       </div> */}
 
       {item.status === 'Đang giao' && (
-        <Map
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={
-            <div
-              style={{
-                height: `500px`,
-                width: `1000px`,
-                margin: `auto`,
-                border: '2px solid black',
-              }}
-            />
-          }
-          mapElement={<div style={{ height: `100%` }} />}
-        />
+        <>
+          <div style={{ fontSize: 18, fontWeight: 600, marginLeft: 30, marginBottom: 20 }}>
+            Vị trí tài xế
+          </div>
+          <Map
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={
+              <div
+                style={{
+                  height: `500px`,
+                  width: `1000px`,
+                  margin: `auto`,
+                  border: '2px solid black',
+                }}
+              />
+            }
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+        </>
       )}
     </div>
   );

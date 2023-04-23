@@ -7,7 +7,7 @@ import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
-const title = ['Mã tài xế', 'Người gửi', 'Số điện thoại', 'Thời gian gửi', 'Hành động'];
+const title = ['Mã đơn', 'Người gửi', 'Số điện thoại', 'Thời gian gửi', 'Hành động'];
 const HeaderTable = () => (
   <thead>
     <tr>
@@ -17,14 +17,33 @@ const HeaderTable = () => (
     </tr>
   </thead>
 );
+
+const titleHistory = [
+  'Mã đơn',
+  'Người gửi',
+  'Số điện thoại',
+  'Thời gian gửi',
+  'Người xử lý',
+  'Hành động',
+];
+const HeaderTableHistory = () => (
+  <thead>
+    <tr>
+      {titleHistory.map((e, i) => (
+        <th key={i}>{e}</th>
+      ))}
+    </tr>
+  </thead>
+);
 const BodyTable = ({ item }) => {
   const navigate = useNavigate();
   return (
     <tr>
-      <td>{item.id_shipper}</td>
+      <td>{item.id_form}</td>
       <td>{item.name}</td>
       <td>{item.phone}</td>
       <td>{formatDateFull(item.createdAt)}</td>
+      {item.status !== 'Chưa duyệt' && <td>{item.id_handler.fullname}</td>}
       <td>
         <Button
           color="primary"
@@ -38,4 +57,4 @@ const BodyTable = ({ item }) => {
     </tr>
   );
 };
-export { HeaderTable, BodyTable };
+export { HeaderTable, BodyTable, HeaderTableHistory };

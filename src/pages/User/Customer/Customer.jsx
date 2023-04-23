@@ -45,7 +45,6 @@ function Customer() {
           page: page,
           status: tab,
         });
-        console.log(res);
         setCustomers(res);
       } catch (error) {
         console.log(error);

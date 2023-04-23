@@ -1,94 +1,31 @@
-import styles from './HistoryPage.module.scss';
-
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import classNames from 'classnames/bind';
 import { Button, Table } from 'reactstrap';
-import { useSelector } from 'react-redux';
 import policyAPI from '~/api/policyAPI';
-import { formatDatetime } from '~/global/functionGlobal';
-
-const cx = classNames.bind(styles);
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { formatDateFull } from '~/global/formatDateCustom';
+import MyPagination from '~/components/MyPagination/MyPagination';
 
 function HistoryPage() {
   const navigate = useNavigate();
   const url = window.location.href.slice(21);
-  const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const item = location.state;
   const [policy, setPolicy] = useState([]);
-
-  const data = [
-    {
-      title: 'ABC',
-      content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-      type: 'Customer',
-      history: {
-        oldValue: {
-          title: null,
-          content: [],
-        },
-        modifiedAt: '24/02/2023 3:43 P.M',
-        modifiedBy: 'Nguyen Van An',
-      },
-      deletedAt: null,
-      deletedBy: null,
-      hide: false,
-    },
-    {
-      title: 'DEF',
-      content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-      type: 'Customer',
-      history: {
-        oldValue: {
-          title: 'ABC',
-          content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-        },
-        modifiedAt: '24/02/2023 3:43 P.M',
-        modifiedBy: 'Nguyen Van Linh',
-      },
-      deletedAt: null,
-      deletedBy: null,
-      hide: false,
-    },
-    {
-      title: 'GHI',
-      content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-      type: 'Customer',
-      history: {
-        oldValue: {
-          title: null,
-          content: [],
-        },
-        modifiedAt: '24/02/2023 3:43 P.M',
-        modifiedBy: 'Le Hong Dao',
-      },
-      deletedAt: '24/02/2023 3:43 P.M',
-      deletedBy: 'Tran Hong Vy',
-      hide: false,
-    },
-    {
-      title: 'CVB',
-      content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-      type: 'Customer',
-      history: {
-        oldValue: {
-          title: 'QER',
-          content: ['zxcvzxc', 'zxcvzxcv', 'zxvczxcv'],
-        },
-        modifiedAt: '24/02/2023 3:43 P.M',
-        modifiedBy: 'Le Hong Dao',
-      },
-      deletedAt: '24/02/2023 3:43 P.M',
-      deletedBy: 'Tran Hong Vy',
-      hide: false,
-    },
-  ];
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
 
   useEffect(() => {
     const getPolicy = async () => {
       try {
-        const res = await policyAPI.getByType(item.type);
+        const total = await policyAPI.getByNoPageHistory({ type: item.type });
+        setTotalItems(total);
+        const res = await policyAPI.getByPageHistory({
+          limit: 10,
+          page: page,
+          type: item.type,
+        });
         setPolicy(
           res.sort(
             (a, b) =>
@@ -101,7 +38,7 @@ function HistoryPage() {
       }
     };
     getPolicy();
-  }, []);
+  }, [page, item.type]);
 
   const checkModify = (item) => {
     if (item.deletedBy !== null) return 'Xóa bỏ';
@@ -115,7 +52,16 @@ function HistoryPage() {
 
   return (
     <div>
-      <div className={cx('title-header')}>Lịch sử thay đổi</div>
+      <div
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}
+      >
+        <FontAwesomeIcon
+          icon={faArrowLeftLong}
+          style={{ fontSize: '150%', cursor: 'pointer' }}
+          onClick={() => navigate(-1)}
+        />
+        <h1 style={{ fontWeight: 'bold', fontSize: 26, marginLeft: 15 }}>Lịch sử thay đổi</h1>
+      </div>
       <Table striped>
         <thead>
           <tr>
@@ -131,8 +77,12 @@ function HistoryPage() {
           {policy.map((e, i) => (
             <tr key={i}>
               <td>{i + 1}</td>
-              <td>{e.title}</td>
-              <td>{formatDatetime(e.deletedBy === null ? e.history.modifiedAt : e.deletedAt)}</td>
+              <td style={{ maxWidth: 300 }}>{e.title}</td>
+              <td>
+                {e.deletedBy === null
+                  ? formatDateFull(e.history.modifiedAt)
+                  : formatDateFull(e.deletedAt)}
+              </td>
               <td>{checkModify(e)}</td>
               <td>{peopleModify(e)}</td>
               <td style={{ width: '10%' }}>
@@ -144,6 +94,7 @@ function HistoryPage() {
           ))}
         </tbody>
       </Table>
+      <MyPagination setPage={setPage} page={page} totalItems={totalItems.length} />
     </div>
   );
 }

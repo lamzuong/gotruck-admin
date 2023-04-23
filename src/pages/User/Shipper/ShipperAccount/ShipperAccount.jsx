@@ -1,9 +1,9 @@
 import styles from './ShipperAccount.module.scss';
 
 import classNames from 'classnames/bind';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Alert, Button, Input, Modal, Table } from 'reactstrap';
 import {
   BodyTableVehicle,
@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import shipperAPI from '~/api/shipperAPI';
 import MyConfirm from '~/components/MyConfirm/MyConfirm';
 import { formatDateFull } from '~/global/formatDateCustom';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +29,13 @@ function ShipperAccount() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [txtConfirm, setTxtConfirm] = useState(false);
   const [money, setMoney] = useState('');
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const handleBlock = async () => {
     await shipperAPI.block(item.id_shipper);
@@ -60,8 +69,11 @@ function ShipperAccount() {
     } else {
       const shipperSend = item;
       shipperSend.balance = Number(shipperSend.balance) + Number(money);
-      await shipperAPI.recharge(item.id_shipper, shipperSend);
-
+      const dataSend = {
+        shipperSend: shipperSend,
+        id_handler: user._id,
+      };
+      await shipperAPI.recharge(shipperSend.id_shipper, dataSend);
       setModal(false);
       const res = await shipperAPI.getShipperById(item.id_shipper);
       setItem(res);
@@ -81,12 +93,29 @@ function ShipperAccount() {
   };
   return (
     <div className={cx('wrapper')}>
+      <FontAwesomeIcon
+        icon={faArrowLeftLong}
+        style={{ fontSize: '150%', cursor: 'pointer' }}
+        onClick={() => navigate(-1)}
+      />
       <MyConfirm
         setShow={setShowConfirm}
         show={showConfirm}
         title={txtConfirm}
         action={handleBlock}
       />
+      <Modal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'black'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </Modal>
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
           <div className={cx('inline-center')}>
@@ -115,7 +144,14 @@ function ShipperAccount() {
         </div>
       </Modal>
       <div className={cx('display-flex')}>
-        <img src={item.avatar} className={cx('avatar')} />
+        <img
+          src={item.avatar}
+          className={cx('avatar')}
+          onClick={() => {
+            openModal();
+            setImageChoose(item.avatar);
+          }}
+        />
         <div className={cx('column')}>
           <div className={cx('inline')}>
             <label className={cx('label-short')}>Mã tài xế</label>
@@ -212,7 +248,12 @@ function ShipperAccount() {
           <HeaderTableVehicle />
           <tbody>
             {item.infoAllTruck?.map((e, i) => (
-              <BodyTableVehicle item={e} key={i} />
+              <BodyTableVehicle
+                item={e}
+                key={i}
+                setImageChoose={setImageChoose}
+                openModal={openModal}
+              />
             ))}
           </tbody>
         </Table>

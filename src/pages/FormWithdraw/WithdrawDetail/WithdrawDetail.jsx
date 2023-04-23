@@ -1,13 +1,19 @@
 import styles from './WithdrawDetail.module.scss';
 
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Button, Input, Modal } from 'reactstrap';
+import { Button, Modal } from 'reactstrap';
 import { convertMoney } from '~/global/functionGlobal';
 import MyButtonAdd from '~/components/MyButtonAdd/MyButtonAdd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { formatDateFull } from '~/global/formatDateCustom';
+import { useSelector } from 'react-redux';
+import storage from '~/firebase/firebaseConfig';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import uuid from 'react-uuid';
+import formWithDrawAPI from '~/api/formWithDraw';
 
 const cx = classNames.bind(styles);
 
@@ -17,20 +23,51 @@ function WithdrawDetail() {
 
   const [imagePay, setImagePay] = useState(null);
   const [modal, setModal] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+
   const toggle = () => setModal(!modal);
+
+  const uploadImage = async (imageFile) => {
+    const storageRef = ref(storage, uuid());
+    await uploadBytesResumable(storageRef, imageFile);
+    const imageUrl = await getDownloadURL(storageRef);
+    return imageUrl;
+  };
+
+  const handleConfirm = async () => {
+    if (!imagePay) {
+      alert('Chưa có ảnh minh chứng nạp tiền');
+      return;
+    }
+    let image_proof = await uploadImage(imagePay[0]);
+    const dataSend = item;
+    dataSend.status = 'Đã xử lý';
+    dataSend.id_handler = user._id;
+    dataSend.image_proof = image_proof;
+    await formWithDrawAPI.put(dataSend);
+    toggle();
+    navigate('/form-withdraw');
+  };
 
   return (
     <div className={cx('wrapper')}>
+      <FontAwesomeIcon
+        icon={faArrowLeftLong}
+        style={{ fontSize: '150%', cursor: 'pointer' }}
+        onClick={() => navigate(-1)}
+      />
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
-          <div className={cx('title')}>Ảnh minh chứng nạp tiền</div>
+          <div className={cx('title')}>Ảnh minh chứng nạp tiền (1 ảnh):</div>
           {imagePay === null ? (
-            <MyButtonAdd data={setImagePay} />
+            <MyButtonAdd data={setImagePay} single={true} />
           ) : (
             <div>
               <img
                 src={imagePay !== null && window.URL.createObjectURL(imagePay[0])}
                 className={cx('img')}
+                alt="proof"
               />
               <FontAwesomeIcon
                 icon={faCircleXmark}
@@ -40,28 +77,46 @@ function WithdrawDetail() {
             </div>
           )}
           <input type={'file'} />
-          <Button block color="primary" className={cx('button')} size="lg">
+          <Button
+            block
+            color="primary"
+            className={cx('button')}
+            size="lg"
+            onClick={() => handleConfirm()}
+          >
             <h4>Xác nhận</h4>
           </Button>
         </div>
       </Modal>
       <div className={cx('display-flex')}>
         <div className={cx('column')}>
-          <img src={item.user.avatar} className={cx('avatar')} />
+          <img src={item.id_shipper.avatar} className={cx('avatar')} alt="avatar" />
         </div>
         <div className={cx('column')}>
           <h1 style={{ marginBottom: 20 }}>Thông tin cá nhân</h1>
           <div>
             <label className={cx('label-short')}>Mã đơn</label>
-            <label className={cx('content')}>{item.id}</label>
+            <label className={cx('content')}>{item.id_transaction_history}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Mã người gửi</label>
-            <label className={cx('content')}>{item.user.id}</label>
+            <label className={cx('content')}>{item.id_shipper.id_shipper}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Tên người gửi</label>
-            <label className={cx('content')}>{item.user.name}</label>
+            <label className={cx('content')}>{item.id_shipper.name}</label>
+          </div>
+          <div>
+            <label className={cx('label-short')}>Tên ngân hàng</label>
+            <label className={cx('content')}>{item.id_bank.name_full}</label>
+          </div>
+          <div>
+            <label className={cx('label-short')}>Tên chủ tài khoản</label>
+            <label className={cx('content')}>{item.account_name}</label>
+          </div>
+          <div>
+            <label className={cx('label-short')}>Số tài khoản</label>
+            <label className={cx('content')}>{item.account_number}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Số tiền cần rút</label>
@@ -69,17 +124,24 @@ function WithdrawDetail() {
           </div>
           <div>
             <label className={cx('label-short')}>Thời gian gửi</label>
-            <label className={cx('content')}>{item.time}</label>
+            <label className={cx('content')}>{formatDateFull(item.createdAt)}</label>
           </div>
-          {item.img !== null && (
+          {item.status === 'Đã xử lý' && (
+            <div>
+              <label className={cx('label-short')}>Người xử lý</label>
+              <label className={cx('content')}>{item.id_handler.fullname}</label>
+            </div>
+          )}
+
+          {item.status === 'Đã xử lý' && item.image_proof && (
             <div>
               <label className={cx('label-short')}>Hình ảnh nạp tiền</label>
               <label className={cx('content')}>
-                <img src={item.img} className={cx('img')} />
+                <img src={item.image_proof} className={cx('img')} alt="image_proof" />
               </label>
             </div>
           )}
-          {item.status === 'Chưa xử lý' ? (
+          {item.status === 'Đang xử lý' ? (
             <div className={cx('wrapper-button')}>
               <Button className={cx('button-unblock')} color="success" onClick={toggle}>
                 Xác nhận xử lý xong

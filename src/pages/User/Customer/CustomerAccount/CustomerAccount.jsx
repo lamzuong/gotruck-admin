@@ -8,6 +8,8 @@ import MyConfirm from '~/components/MyConfirm/MyConfirm';
 import { useEffect, useState } from 'react';
 import customerAPI from '~/api/customerAPI';
 import { formatDateFull } from '~/global/formatDateCustom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -44,6 +46,11 @@ function CustomerAccount() {
 
   return (
     <div className={cx('wrapper')}>
+      <FontAwesomeIcon
+        icon={faArrowLeftLong}
+        style={{ fontSize: '150%', cursor: 'pointer', marginBottom: 10 }}
+        onClick={() => navigate(-1)}
+      />
       <MyConfirm
         setShow={setShowConfirm}
         show={showConfirm}
@@ -65,10 +72,10 @@ function CustomerAccount() {
             <label className={cx('label-short')}>Điện thoại</label>
             <label className={cx('content')}>{item.phone}</label>
           </div>
-          <div>
+          {/* <div>
             <label className={cx('label-long')}>Ngày bắt đầu hoạt động</label>
             <label className={cx('content')}>{formatDateFull(item.createdAt)}</label>
-          </div>
+          </div> */}
         </div>
         <div className={cx('column')}>
           <div>
@@ -97,7 +104,7 @@ function CustomerAccount() {
             </Button>
           )}
         </label>
-        <label className={cx('content')}>
+        {/* <label className={cx('content')}>
           <Button
             className={cx('button-custom')}
             color="success"
@@ -107,7 +114,7 @@ function CustomerAccount() {
           >
             Xem danh sách đơn hàng
           </Button>
-        </label>
+        </label> */}
       </div>
     </div>
   );

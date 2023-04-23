@@ -68,7 +68,6 @@ function Truck() {
     const getTruckType = async () => {
       try {
         const res = await truckAPI.getTruckTypePagination({ page: pageTruck, limit: 10 });
-        console.log(res);
         let list = [];
         for (const e of res) {
           list.push({

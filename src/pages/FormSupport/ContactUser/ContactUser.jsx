@@ -1,11 +1,15 @@
 import styles from './ContactUser.module.scss';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Input } from 'reactstrap';
+import { useSelector } from 'react-redux';
+import conversationAPI from '~/api/conversation';
+import GlobalStyles from '~/global/GlobalStyles';
+import { socketClient } from '~/api/socket';
 
 const cx = classNames.bind(styles);
 
@@ -13,40 +17,79 @@ function ContactUser() {
   const navigate = useNavigate();
   const location = useLocation();
   const item = location.state;
+  const [conversation, setConversation] = useState();
+  const [listMess, setListMessage] = useState([]);
+  const [mess, setMess] = useState();
+  const user = useSelector((state) => state.auth.user);
+  const [feedback, setFeedback] = useState(item);
 
-  const chat = [
-    {
-      sender: 'admin',
-      mess: 'Chúng tôi đã xem hình ảnh minh chứng và còn một số điều cần làm rõ',
-      img: [],
-    },
-    {
-      sender: 'admin',
-      mess: 'Hình ảnh đó còn thiếu về đơn hàng của bạn mong bạn gửi thêm hình ảnh minh chứng',
-      img: [],
-    },
-    { sender: item.sender.id, mess: 'Dạ bên bạn chờ mình xíu nhé', img: [] },
-    {
-      sender: item.sender.id,
-      mess: 'Mình gửi ạ',
-      img: [
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-      ],
-    },
-    {
-      sender: item.sender.id,
-      mess: '',
-      img: [
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/6e/8e/24/a253072a098918e947099fb5683f0401.jpg',
-      ],
-    },
-    { sender: item.sender.id, mess: 'Bên admin giải quyết giúp e', img: [] },
-  ];
+  const getAllMessage = async () => {
+    const listMess = await conversationAPI.getMessage(conversation._id);
+    listMess.reverse();
+    setListMessage(listMess);
+  };
+
+  useEffect(() => {
+    const getMessage = async () => {
+      const resConversation = await conversationAPI.getConversation({
+        id_cus: feedback.id_sender._id,
+        id_admin: user._id,
+      });
+      setConversation(resConversation);
+      const listMess = await conversationAPI.getMessage(resConversation._id);
+      listMess.reverse();
+      setListMessage(listMess);
+    };
+    getMessage();
+    socketClient.off(user._id + 'message');
+    socketClient.on(user._id + 'message', (data) => {
+      getAllMessage();
+    });
+  }, []);
+
+  const handleSend = async () => {
+    const messageSend = {
+      id_conversation: conversation._id,
+      message: mess.trim(),
+      id_sender: user._id,
+      userSendModel: 'Admin',
+      //   id_sender: feedback.id_sender._id,
+      //   userSendModel: 'Customer',
+    };
+    if (mess.trim()) {
+      await conversationAPI.postMessage(messageSend);
+      socketClient.emit('send_message', { id_receive: feedback.id_sender._id });
+      setMess('');
+      getAllMessage();
+    }
+    setMess('');
+  };
+
+  function timeSince(date) {
+    let seconds = Math.floor((new Date() - date) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) {
+      return Math.floor(interval) + ' năm trước';
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + ' tháng trước';
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + ' ngày trước';
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + ' giờ trước';
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + ' phút trước';
+    }
+    return 'Vừa gửi';
+  }
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
@@ -55,38 +98,57 @@ function ContactUser() {
           className={cx('icon')}
           onClick={() => navigate(-1)}
         />
-        <div className={cx('name')}>{item.sender.name}</div>
+        <div className={cx('name')}>{item.id_sender.name}</div>
         <div></div>
       </div>
-      <div className={cx('body')}>
-        {chat.map((e, i) => (
-          <div key={i}>
-            {e.sender === 'admin' ? (
-              <div className={cx('mess-admin')}>
-                <div className={cx('txt-mess-admin')}>{e.mess}</div>
-                <div className={cx('view-image')}>
-                  {e.img?.map((e1, i1) => (
-                    <img src={e1} key={i1} className={cx('image')} />
-                  ))}
+      <div className={cx('body')} style={{ height: 500 }}>
+        {listMess.map((e, i) => (
+          <React.Fragment key={i}>
+            <div key={i} style={{ marginBottom: 10 }}>
+              {e.userSendModel === 'Admin' ? (
+                <div className={cx('time-admin')}>
+                  <div className={cx('time-mess-admin')}>{timeSince(new Date(e.createdAt))}</div>
                 </div>
-              </div>
-            ) : (
-              <div className={cx('mess-user')}>
-                <div className={cx('txt-mess-user')}>{e.mess}</div>
-                <div className={cx('view-image')}>
-                  {e.img?.map((e1, i1) => (
-                    <img src={e1} key={i1} className={cx('image')} />
-                  ))}
+              ) : (
+                <div className={cx('time-user')}>
+                  <div className={cx('time-mess-user')}>{timeSince(new Date(e.createdAt))}</div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+            <div>
+              {e.userSendModel === 'Admin' ? (
+                <div className={cx('mess-admin')}>
+                  <div className={cx('txt-mess-admin')}>{e.message}</div>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <img
+                    src={e.id_sender.avatar}
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
+                  ></img>
+                  <div className={cx('mess-user')}>
+                    <div className={cx('txt-mess-user')}>{e.message}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </React.Fragment>
         ))}
       </div>
       <div className={cx('footer')}>
         <div className={cx('')}></div>
-        <Input className={cx('input')} placeholder="Nhập tin nhắn..." />
-        <FontAwesomeIcon icon={faPaperPlane} className={cx('icon')} />
+        <Input
+          value={mess}
+          className={cx('input')}
+          placeholder="Nhập tin nhắn..."
+          onChange={(e) => setMess(e.target.value)}
+        />
+        <FontAwesomeIcon
+          icon={faPaperPlane}
+          color="#04af46"
+          className={cx('icon')}
+          onClick={() => handleSend()}
+        />
       </div>
     </div>
   );

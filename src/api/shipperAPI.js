@@ -29,9 +29,9 @@ const shipperAPI = {
     const url = `/shipperAdmin/block/${id}`;
     return axiosClient.put(url);
   },
-  recharge: (id, shipper) => {
+  recharge: (id, dataSend) => {
     const url = `/shipperAdmin/recharge/${id}`;
-    return axiosClient.put(url, shipper);
+    return axiosClient.put(url, dataSend);
   },
 };
 export default shipperAPI;

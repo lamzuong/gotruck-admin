@@ -19,19 +19,37 @@ const HeaderTableVehicle = () => {
     </thead>
   );
 };
-const BodyTableVehicle = ({ item }) => {
+const BodyTableVehicle = ({ item, setImageChoose, openModal }) => {
   return (
     <tr>
       <td>{item.name}</td>
       <td>{item.license_plate}</td>
       <td>
         {item.list_vehicle_registration.map((e, i) => (
-          <img src={e} key={i} className={cx('image-paper')} alt={e} />
+          <img
+            src={e}
+            key={i}
+            className={cx('image-paper')}
+            alt={e}
+            onClick={() => {
+              openModal();
+              setImageChoose(e);
+            }}
+          />
         ))}
       </td>
       <td>
         {item.list_image_info.map((e, i) => (
-          <img src={e} key={i} className={cx('image-paper')} alt={e} />
+          <img
+            src={e}
+            key={i}
+            className={cx('image-paper')}
+            alt={e}
+            onClick={() => {
+              openModal();
+              setImageChoose(e);
+            }}
+          />
         ))}
       </td>
       <td>{item.default ? <FontAwesomeIcon icon={faTruck} /> : ''}</td>

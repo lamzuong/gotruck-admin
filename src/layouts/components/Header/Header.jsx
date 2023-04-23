@@ -8,21 +8,18 @@ import {
   faCircleExclamation,
   faClipboardList,
   faRightFromBracket,
-  faRightToBracket,
   faSackDollar,
   faShieldHalved,
   faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logOut } from '~/app/authSlide';
 
 const cx = classNames.bind(styles);
 
 function Header() {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
 
   const MENU_ITEMS_ACCOUNT = [
     { title: 'Khách hàng', to: '/customer' },
@@ -50,7 +47,7 @@ function Header() {
       numberNotify: 4,
     },
     {
-      title: 'Đơn đăng ký của shipper',
+      title: 'Đơn đăng ký của tài xế',
       to: '/form-register',
       numberNotify: 2,
     },

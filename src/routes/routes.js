@@ -40,6 +40,10 @@ import CustomerPolicy from '~/pages/Policy/DetailPolicy/DetailPolicy';
 import FormAddPolicy from '~/pages/Policy/FormAddPolicy/FormAddPolicy';
 import HistoryPage from '~/pages/Policy/HistoryPage/HistoryPage';
 import DetailPolicy from '~/pages/Policy/HistoryPage/HistoryDetail/HistoryDetail';
+import HistorySupport from '~/pages/FormSupport/HistorySupport/HistorySupport';
+import HistoryWithdraw from '~/pages/FormWithdraw/HistoryWithdraw/HistoryWithdraw';
+import HistoryRegister from '~/pages/FormRegister/HistoryRegister/HistoryRegister';
+import HistoryVehicle from '~/pages/FormVehicle/HistoryVehicle/HistoryVehicle';
 
 // Không cần đăng nhập
 const publicRoutes = [
@@ -75,19 +79,23 @@ const publicRoutes = [
   { path: '/policy/history/:type', component: HistoryPage },
   { path: '/policy/history/:type/detail', component: DetailPolicy },
 
-  { path: '/pr/price', component: Price },
+  { path: '/t/price', component: Price },
   { path: '/pr/discount', component: Discount },
   { path: '/pr/history-change', component: HistoryChange },
   { path: '/pr/history-change/:id', component: HistoryDetail },
 
   { path: '/form-support', component: FormSupport },
+  { path: '/form-support/history', component: HistorySupport },
   { path: '/form-support/support-detail/:id', component: SupportDetail },
   { path: '/form-support/support-detail/:id/contact', component: ContactUser },
   { path: '/form-register', component: FormRegister },
+  { path: '/form-register/history', component: HistoryRegister },
   { path: '/form-register/register-detail/:id', component: RegisterDetail },
   { path: '/form-withdraw', component: FormWithdraw },
+  { path: '/form-withdraw/history', component: HistoryWithdraw },
   { path: '/form-withdraw/withdraw-detail/:id', component: WithdrawDetail },
   { path: '/form-vehicle', component: FormVehicle },
+  { path: '/form-vehicle/history', component: HistoryVehicle },
   { path: '/form-vehicle/vehicle-detail/:id', component: VehicleDetail },
 ];
 // Đăng nhập để xem được

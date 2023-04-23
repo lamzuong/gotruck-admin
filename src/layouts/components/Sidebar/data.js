@@ -5,12 +5,12 @@ import {
   faCircleExclamation,
   faClipboardList,
   faPeopleCarry,
-  faSackDollar,
   faShieldHalved,
   faTruckFast,
   faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
-const sidebar = [
+
+const sidebarLocal = [
   {
     title: 'Thống kê doanh thu',
     icon: <FontAwesomeIcon icon={faChartLine} />,
@@ -44,9 +44,13 @@ const sidebar = [
         title: 'Quản lý loại hàng hóa',
         to: '/t/goods',
       },
+      // {
+      //   title: 'Quản lý loại xe tải',
+      //   to: '/t/truck',
+      // },
       {
-        title: 'Quản lý loại xe tải',
-        to: '/t/truck',
+        title: 'Giá vận chuyển',
+        to: '/t/price',
       },
       {
         title: 'Bán kính nhận đơn',
@@ -54,21 +58,17 @@ const sidebar = [
       },
     ],
   },
-  {
-    title: 'Giá cả',
-    icon: <FontAwesomeIcon icon={faSackDollar} />,
-    path: '/pr',
-    sub: [
-      {
-        title: 'Giá vận chuyển',
-        to: '/pr/price',
-      },
-      {
-        title: 'Khuyến mãi',
-        to: '/pr/discount',
-      },
-    ],
-  },
+  // {
+  //   title: 'Giá cả',
+  //   icon: <FontAwesomeIcon icon={faSackDollar} />,
+  //   path: '/pr',
+  //   sub: [
+  //     {
+  //       title: 'Khuyến mãi',
+  //       to: '/pr/discount',
+  //     },
+  //   ],
+  // },
   {
     title: 'Đơn xử lý',
     icon: <FontAwesomeIcon icon={faCircleExclamation} />,
@@ -77,22 +77,26 @@ const sidebar = [
       {
         title: 'Đơn Góp ý và Khiếu nại',
         to: '/form-support',
-        numberNotify: 4,
+        numberNotify: 0,
+        type: 'feedback',
       },
       {
-        title: 'Đơn đăng ký của shipper',
+        title: 'Đơn đăng ký của tài xế',
         to: '/form-register',
-        numberNotify: 2,
+        numberNotify: 0,
+        type: 'register',
       },
       {
         title: 'Đơn yêu cầu rút tiền',
         to: '/form-withdraw',
-        numberNotify: 2,
+        numberNotify: 0,
+        type: 'withdraw',
       },
       {
         title: 'Đơn yêu cầu thêm phương tiện',
         to: '/form-vehicle',
-        numberNotify: 2,
+        numberNotify: 0,
+        type: 'vehicle',
       },
     ],
   },
@@ -109,4 +113,5 @@ const sidebar = [
     sub: [],
   },
 ];
-export default sidebar;
+
+export default sidebarLocal;
