@@ -74,7 +74,6 @@ function Earning() {
           setEndDate(convertSubstringDate(currentDate));
 
           const res = await earningApi.getEarningWeek();
-          console.log(res);
           setData({
             labels: week,
             datasets: [
@@ -146,8 +145,11 @@ function Earning() {
     } else if (get_day_of_time(startDate, endDate) > 30) {
       alert('Thời gian tìm kiếm giới hạn trong 30 ngày');
     } else {
-      if (startDate === endDate) earnToday(startDate);
-      else if (statistic.value === 'specific') {
+      if (startDate === endDate) {
+        setStartDate(convertSubstringDate(currentDate));
+        setEndDate(convertSubstringDate(currentDate));
+        earnToday();
+      } else if (statistic.value === 'specific') {
         const res = await earningApi.getEarningSpecific({
           startDate: startDate,
           endDate: endDate,
