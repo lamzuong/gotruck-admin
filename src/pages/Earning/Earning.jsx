@@ -145,16 +145,24 @@ function Earning() {
     } else if (get_day_of_time(startDate, endDate) > 30) {
       alert('Thời gian tìm kiếm giới hạn trong 30 ngày');
     } else {
-      if (startDate === endDate) {
-        setStartDate(convertSubstringDate(currentDate));
-        setEndDate(convertSubstringDate(currentDate));
-        earnToday();
-      } else if (statistic.value === 'specific') {
-        const res = await earningApi.getEarningSpecific({
-          startDate: startDate,
-          endDate: endDate,
-        });
+      const res = await earningApi.getEarningSpecific({
+        startDate: startDate,
+        endDate: endDate,
+      });
 
+      if (startDate === endDate) {
+        setData({
+          labels: today,
+          datasets: [
+            {
+              label: 'Doanh thu theo ngày',
+              data: res.earnPerHour,
+              borderColor: 'blue',
+            },
+          ],
+        });
+        setTotal(res.total);
+      } else {
         let d1 = new Date(startDate);
         let d2 = new Date(endDate);
         let d3 = (d2 - d1) / 24 / 60 / 60 / 1000;
