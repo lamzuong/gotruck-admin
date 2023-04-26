@@ -9,7 +9,9 @@ import { formatDateFull } from '~/global/formatDateCustom';
 import formVehicleAPI from '~/api/formVehicle';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +24,11 @@ function VehicleDetail() {
   const [inputReason, setInputReason] = useState('');
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const handleAccept = async () => {
     await formVehicleAPI.put({ data: item, id_handler: user._id, type: 'accept' });
@@ -38,6 +45,18 @@ function VehicleDetail() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'black'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <FontAwesomeIcon
         icon={faArrowLeftLong}
         style={{ fontSize: '150%', cursor: 'pointer' }}
@@ -129,7 +148,15 @@ function VehicleDetail() {
             <label className={cx('label-short')}>Hình ảnh xe</label>
             <label className={cx('view-image')}>
               {item.list_image_info.map((e, i) => (
-                <img src={e} key={i} className={cx('image-paper')} />
+                <img
+                  src={e}
+                  key={i}
+                  className={cx('image-paper')}
+                  onClick={() => {
+                    openModal();
+                    setImageChoose(e);
+                  }}
+                />
               ))}
             </label>
           </div>
@@ -137,7 +164,15 @@ function VehicleDetail() {
             <label className={cx('label-short')}>Hình ảnh giấy tờ</label>
             <label className={cx('view-image')}>
               {item.list_vehicle_registration.map((e, i) => (
-                <img src={e} key={i} className={cx('image-paper')} />
+                <img
+                  src={e}
+                  key={i}
+                  className={cx('image-paper')}
+                  onClick={() => {
+                    openModal();
+                    setImageChoose(e);
+                  }}
+                />
               ))}
             </label>
           </div>

@@ -24,6 +24,7 @@
   width: 150px;
   height: 200px;
   object-fit: cover;
+  cursor: pointer;
 }
 .img {
   height: 100px;
@@ -85,4 +86,19 @@
 }
 .column {
   margin: 20px;
+}
+.cover-img {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  .icon-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .show-img {
+    object-fit: contain;
+  }
 }

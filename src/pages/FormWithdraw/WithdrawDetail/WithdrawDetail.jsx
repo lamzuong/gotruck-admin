@@ -14,6 +14,8 @@ import storage from '~/firebase/firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import uuid from 'react-uuid';
 import formWithDrawAPI from '~/api/formWithDraw';
+import ReactModal from 'react-modal';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +29,11 @@ function WithdrawDetail() {
   const navigate = useNavigate();
 
   const toggle = () => setModal(!modal);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const uploadImage = async (imageFile) => {
     const storageRef = ref(storage, uuid());
@@ -52,6 +59,18 @@ function WithdrawDetail() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'black'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <FontAwesomeIcon
         icon={faArrowLeftLong}
         style={{ fontSize: '150%', cursor: 'pointer' }}
@@ -90,7 +109,15 @@ function WithdrawDetail() {
       </Modal>
       <div className={cx('display-flex')}>
         <div className={cx('column')}>
-          <img src={item.id_shipper.avatar} className={cx('avatar')} alt="avatar" />
+          <img
+            src={item.id_shipper.avatar}
+            className={cx('avatar')}
+            alt="avatar"
+            onClick={() => {
+              openModal();
+              setImageChoose(item.id_shipper.avatar);
+            }}
+          />
         </div>
         <div className={cx('column')}>
           <h1 style={{ marginBottom: 20 }}>Thông tin cá nhân</h1>

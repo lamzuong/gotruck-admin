@@ -46,7 +46,7 @@ const BodyTable = ({ item, hiddenAction }) => {
     await formFeedbackAPI.put(dataSend);
     navigate('/form-support');
   };
-
+  console.log(item);
   return (
     <tr>
       <td>{item.id_feedback}</td>
@@ -59,7 +59,7 @@ const BodyTable = ({ item, hiddenAction }) => {
         <Button
           color="primary"
           onClick={() => {
-            navigate(`/form-support/support-detail/${item.id}`, { state: item });
+            navigate(`/form-support/support-detail/${item.id_feedback}`, { state: item });
           }}
         >
           <h4>Xem</h4>

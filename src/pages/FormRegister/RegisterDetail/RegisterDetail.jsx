@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -70,7 +71,7 @@ function RegisterDetail() {
           </Button>
         </div>
       </Modal>
-      <Modal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
             icon={faCircleXmark}
@@ -81,7 +82,7 @@ function RegisterDetail() {
           />
           <img src={imageChoose} className={cx('show-img')} />
         </div>
-      </Modal>
+      </ReactModal>
       <div className={cx('display-flex')}>
         <div className={cx('column')}>
           <h1 style={{ marginBottom: 20 }}>Thông tin cá nhân</h1>
