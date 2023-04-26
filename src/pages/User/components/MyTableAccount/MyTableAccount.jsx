@@ -26,6 +26,9 @@ const BodyTableCustomer = ({
   setShow = () => {},
   setText = () => {},
   setUser = () => {},
+  setImageChoose = () => {},
+  showAvatar = false,
+  setShowAvatar = () => {},
 }) => {
   const [showConfirm, setShowConfirm] = useState(show);
 
@@ -44,6 +47,14 @@ const BodyTableCustomer = ({
     setShow(show);
   }, [show]);
 
+  const handleImageChoose = () => {
+    setImageChoose(user.avatar);
+    setShowAvatar(true);
+  };
+  useEffect(() => {
+    setShowAvatar(showAvatar);
+  }, [showAvatar]);
+
   const navigate = useNavigate();
   const avatar = user.avatar ? user.avatar : noAvatar;
 
@@ -51,7 +62,7 @@ const BodyTableCustomer = ({
     <tr>
       <td>{user.id_cus}</td>
       <td>
-        <img src={avatar} className={cx('avatar')} />
+        <img src={avatar} className={cx('avatar')} onClick={handleImageChoose} />
       </td>
       <td>{user.name}</td>
       <td>{user.phone}</td>
@@ -106,6 +117,9 @@ const BodyTableShipper = ({
   setShow = () => {},
   setText = () => {},
   setUser = () => {},
+  setImageChoose = () => {},
+  showAvatar = false,
+  setShowAvatar = () => {},
 }) => {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(show);
@@ -125,11 +139,23 @@ const BodyTableShipper = ({
     setShow(show);
   }, [show]);
 
+  const handleImageChoose = () => {
+    setImageChoose(user.avatar);
+    setShowAvatar(true);
+  };
+  useEffect(() => {
+    setShowAvatar(showAvatar);
+  }, [showAvatar]);
   return (
     <tr>
       <td>{user.id_shipper}</td>
       <td>
-        <img src={user.avatar} className={cx('avatar')} alt={user.avatar} />
+        <img
+          src={user.avatar}
+          className={cx('avatar')}
+          alt={user.avatar}
+          onClick={handleImageChoose}
+        />
       </td>
       <td>{user.name}</td>
       <td>{formatDateFull(user.updatedAt)}</td>

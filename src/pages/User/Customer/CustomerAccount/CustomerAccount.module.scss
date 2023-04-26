@@ -56,3 +56,18 @@
   padding: 0 20px;
   background-color: var(--main-green);
 }
+.cover-img {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  .icon-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .show-img {
+    object-fit: contain;
+  }
+}

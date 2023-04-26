@@ -1,21 +1,23 @@
 import styles from './ShipperAccount.module.scss';
+import { convertMoney } from '~/global/functionGlobal';
+import { formatDateFull } from '~/global/formatDateCustom';
+import shipperAPI from '~/api/shipperAPI';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import MyConfirm from '~/components/MyConfirm/MyConfirm';
+import {
+  BodyTableVehicle,
+  HeaderTableVehicle,
+} from '../../components/MyTableVehicle/MyTableVehicle';
 
 import classNames from 'classnames/bind';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faCircleXmark, faStar } from '@fortawesome/free-solid-svg-icons';
-import { Alert, Button, Input, Modal, Table } from 'reactstrap';
-import {
-  BodyTableVehicle,
-  HeaderTableVehicle,
-} from '../../components/MyTableVehicle/MyTableVehicle';
-import { convertMoney } from '~/global/functionGlobal';
+import { Button, Modal, Table } from 'reactstrap';
 import { useEffect, useState } from 'react';
-import shipperAPI from '~/api/shipperAPI';
-import MyConfirm from '~/components/MyConfirm/MyConfirm';
-import { formatDateFull } from '~/global/formatDateCustom';
-import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 import { useSelector } from 'react-redux';
+import CurrencyInput from 'react-currency-input-field';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -104,18 +106,19 @@ function ShipperAccount() {
         title={txtConfirm}
         action={handleBlock}
       />
-      <Modal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+      {/* Đoạn mở ảnh */}
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
             icon={faCircleXmark}
-            color={'black'}
+            color={'white'}
             size={'2x'}
             className={cx('icon-close')}
             onClick={closeModal}
           />
           <img src={imageChoose} className={cx('show-img')} />
         </div>
-      </Modal>
+      </ReactModal>
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
           <div className={cx('inline-center')}>
@@ -124,12 +127,12 @@ function ShipperAccount() {
           </div>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Số tiền nạp:</div>
-            <Input
-              type="number"
+            <CurrencyInput
+              placeholder="0"
+              maxLength={10}
+              onValueChange={(value) => setMoney(value)}
+              value={money}
               className={cx('input')}
-              onChange={(e) => {
-                setMoney(e.target.value);
-              }}
             />
             <div style={{ marginLeft: 10 }}>VNĐ</div>
           </div>
@@ -192,7 +195,7 @@ function ShipperAccount() {
           <div>
             <label className={cx('label-long')}>Đánh giá trung bình</label>
             {/* <label className={cx('content')}>{item.rateShipper}</label> */}
-            {item.rateShipper ? renderStar(item.rateShipper) : 'Không có đánh giá'}
+            {item.rateShipper ? renderStar(item.rateShipper) : 'Chưa có đánh giá'}
           </div>
           <div>
             <label className={cx('label-long')}>Số đơn hoàn thành</label>

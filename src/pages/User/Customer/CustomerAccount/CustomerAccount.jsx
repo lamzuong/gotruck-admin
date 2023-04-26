@@ -9,7 +9,9 @@ import { useEffect, useState } from 'react';
 import customerAPI from '~/api/customerAPI';
 import { formatDateFull } from '~/global/formatDateCustom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import ReactModal from 'react-modal';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +22,11 @@ function CustomerAccount() {
   const [item, setItem] = useState(location.state);
   const [showConfirm, setShowConfirm] = useState(false);
   const [txtConfirm, setTxtConfirm] = useState(false);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const handleBlock = async () => {
     await customerAPI.block(item.id_cus);
@@ -46,6 +53,18 @@ function CustomerAccount() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'white'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <FontAwesomeIcon
         icon={faArrowLeftLong}
         style={{ fontSize: '150%', cursor: 'pointer', marginBottom: 10 }}
@@ -58,7 +77,14 @@ function CustomerAccount() {
         action={handleBlock}
       />
       <div className={cx('display-flex')}>
-        <img src={item.avatar || noAvatar} className={cx('avatar')} />
+        <img
+          src={item.avatar || noAvatar}
+          className={cx('avatar')}
+          onClick={() => {
+            openModal();
+            setImageChoose(item.avatar);
+          }}
+        />
         <div className={cx('column')}>
           <div>
             <label className={cx('label-short')}>Mã khách hàng</label>

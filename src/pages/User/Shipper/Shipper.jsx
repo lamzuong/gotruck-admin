@@ -21,11 +21,14 @@ import {
   TabPane,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import useDebounce from '~/hook/useDebounce';
 import MyConfirm from '~/components/MyConfirm/MyConfirm';
 import { useSelector } from 'react-redux';
+import CurrencyInput from 'react-currency-input-field';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -55,8 +58,12 @@ function Customer() {
   const [money, setMoney] = useState('');
   const user = useSelector((state) => state.auth.user);
 
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const closeModal = () => setIsOpen(false);
+
   const handleRecharge = async () => {
-    if (money <= 100000) {
+    if (+money <= 100000) {
       alert('Số tiền phải lớn hơn 100,000 vnđ');
     } else {
       const shipperSend = userInputMoney;
@@ -134,6 +141,18 @@ function Customer() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'white'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <MyConfirm
         setShow={setShowConfirm}
         show={showConfirm}
@@ -148,12 +167,12 @@ function Customer() {
           </div>
           <div className={cx('inline-center')}>
             <div className={cx('title')}>Số tiền nạp:</div>
-            <Input
-              type="number"
+            <CurrencyInput
+              placeholder="0"
+              maxLength={10}
+              onValueChange={(value) => setMoney(value)}
+              value={money}
               className={cx('input')}
-              onChange={(e) => {
-                setMoney(e.target.value);
-              }}
             />
             <div style={{ marginLeft: 10 }}>VNĐ</div>
           </div>
@@ -163,7 +182,7 @@ function Customer() {
             color="success"
             onClick={() => handleRecharge()}
           >
-            Nạp tiền
+            <h4>Nạp tiền</h4>
           </Button>
         </div>
       </Modal>
@@ -187,6 +206,9 @@ function Customer() {
                   setShow={setShowConfirm}
                   setText={setTxtConfirm}
                   setUser={setUserConfirm}
+                  setImageChoose={setImageChoose}
+                  showAvatar={modalIsOpen}
+                  setShowAvatar={setIsOpen}
                 />
               ))}
             </tbody>
@@ -221,6 +243,9 @@ function Customer() {
                         setShow={setShowConfirm}
                         setText={setTxtConfirm}
                         setUser={setUserConfirm}
+                        setImageChoose={setImageChoose}
+                        showAvatar={modalIsOpen}
+                        setShowAvatar={setIsOpen}
                       />
                     ))}
                   </tbody>

@@ -95,9 +95,7 @@
 .cover-img {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 500px;
-  width: 500px;
+  height: 100%;
 
   .icon-close {
     position: absolute;
@@ -106,8 +104,6 @@
     cursor: pointer;
   }
   .show-img {
-    // object-fit: auto;
-    width: 300px;
-    height: 250px;
+    object-fit: contain;
   }
 }

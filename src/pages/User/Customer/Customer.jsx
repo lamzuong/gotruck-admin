@@ -12,8 +12,10 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { Nav, NavItem, NavLink, TabContent, Table, TabPane } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 import useDebounce from '~/hook/useDebounce';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +35,9 @@ function Customer() {
   const [txtConfirm, setTxtConfirm] = useState(false);
   const [userConfirm, setUserConfirm] = useState(null);
 
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const closeModal = () => setIsOpen(false);
   useEffect(() => {
     const getCustomer = async () => {
       try {
@@ -92,6 +97,18 @@ function Customer() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'white'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <MyConfirm
         setShow={setShowConfirm}
         show={showConfirm}
@@ -116,6 +133,9 @@ function Customer() {
                   setShow={setShowConfirm}
                   setText={setTxtConfirm}
                   setUser={setUserConfirm}
+                  setImageChoose={setImageChoose}
+                  showAvatar={modalIsOpen}
+                  setShowAvatar={setIsOpen}
                 />
               ))}
             </tbody>
@@ -149,6 +169,9 @@ function Customer() {
                         setShow={setShowConfirm}
                         setText={setTxtConfirm}
                         setUser={setUserConfirm}
+                        setImageChoose={setImageChoose}
+                        showAvatar={modalIsOpen}
+                        setShowAvatar={setIsOpen}
                       />
                     ))}
                   </tbody>

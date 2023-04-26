@@ -18,7 +18,7 @@ function Sidebar() {
 
   useEffect(() => {
     setPath(window.location.href);
-  }, []);
+  }, [window.location.href]);
 
   useEffect(() => {
     const getTotalForm = async (type) => {

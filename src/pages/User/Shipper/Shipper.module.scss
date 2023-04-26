@@ -35,9 +35,12 @@
   }
   .input {
     height: 30px;
-    width: 50%;
+    width: 40%;
     text-align: left;
     font-size: 16px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 10px;
   }
 }
 .title-header {
@@ -54,4 +57,19 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+.cover-img {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  .icon-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .show-img {
+    object-fit: contain;
+  }
 }
