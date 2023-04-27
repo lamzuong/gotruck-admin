@@ -15,9 +15,8 @@ const cx = classNames.bind(styles);
 function SupportDetail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const itemTemp = location.state;
   const user = useSelector((state) => state.auth.user);
-  const [item, setItem] = useState(itemTemp);
+  const [item, setItem] = useState();
 
   const handleReceive = async () => {
     const dataSend = item;
@@ -36,6 +35,15 @@ function SupportDetail() {
     navigate('/form-support');
   };
 
+  useEffect(() => {
+    const getFeedBack = async () => {
+      const itemTemp = location.state;
+      const resFeedback = await formFeedbackAPI.getById(itemTemp._id);
+      setItem(resFeedback);
+    };
+    getFeedBack();
+  }, []);
+
   return (
     <div className={cx('wrapper')}>
       <div
@@ -52,55 +60,59 @@ function SupportDetail() {
         <div className={cx('column')}>
           <div>
             <label className={cx('label-short')}>Mã đơn</label>
-            <label className={cx('content')}>{item.id_feedback}</label>
+            <label className={cx('content')}>{item?.id_feedback}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Mã người dùng</label>
-            <label className={cx('content')}>{item.id_sender.id_cus}</label>
+            <label className={cx('content')}>{item?.id_sender?.id_cus}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Họ tên</label>
-            <label className={cx('content')}>{item.id_sender.name}</label>
-          </div>
-          <div>
-            <label className={cx('label-short')}>Người xử lý</label>
-            <label className={cx('content')}>{item.id_handler.fullname}</label>
+            <label className={cx('content')}>{item?.id_sender?.name}</label>
           </div>
 
           <div>
             <label className={cx('label-short')}>Điện thoại</label>
-            <label className={cx('content')}>{item.id_sender.phone}</label>
+            <label className={cx('content')}>{item?.id_sender?.phone}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Thời gian gửi</label>
-            <label className={cx('content')}>{formatDateFull(item.createdAt)}</label>
+            <label className={cx('content')}>{formatDateFull(item?.createdAt)}</label>
           </div>
+          {item?.id_handler ? (
+            <div>
+              <label className={cx('label-short')}>Người xử lý</label>
+              <label className={cx('content')}>{item?.id_handler?.fullname}</label>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className={cx('column')}>
           <div>
             <label className={cx('label-short')}>Vấn đề</label>
-            <label className={cx('content')}>{item.subject}</label>
+            <label className={cx('content')}>{item?.subject}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Mô tả</label>
-            <label className={cx('content')}>{item.description}</label>
+            <label className={cx('content')}>{item?.description}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Trạng thái</label>
-            <label className={cx('content')}>{item.status}</label>
+            <label className={cx('content')}>{item?.status}</label>
           </div>
 
           <div>
             <label className={cx('label-long')}>Hình ảnh minh chứng </label>
             <label className={cx('content')}>
-              {item.list_image.map((e, i) => (
+              {item?.list_image.map((e, i) => (
                 <img src={e} key={i} className={cx('image-paper')} />
               ))}
             </label>
           </div>
           <div>
-            {item.status === 'Đã gửi' ? (
+            {item?.status === 'Đã gửi' ? (
               <Button
                 className={cx('button-unblock')}
                 color="success"
@@ -108,7 +120,7 @@ function SupportDetail() {
               >
                 Tiếp nhận
               </Button>
-            ) : item.status === 'Đã tiếp nhận' ? (
+            ) : item?.status === 'Đã tiếp nhận' ? (
               <div className={cx('inline')}>
                 <Button
                   className={cx('button-unblock')}

@@ -46,7 +46,7 @@ const BodyTable = ({ item, hiddenAction }) => {
     await formFeedbackAPI.put(dataSend);
     navigate('/form-support');
   };
-  console.log(item);
+
   return (
     <tr>
       <td>{item.id_feedback}</td>
