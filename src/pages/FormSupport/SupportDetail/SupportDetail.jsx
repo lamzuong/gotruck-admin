@@ -8,7 +8,9 @@ import { formatDateFull } from '~/global/formatDateCustom';
 import formFeedbackAPI from '~/api/formFeedback';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import ReactModal from 'react-modal';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +19,11 @@ function SupportDetail() {
   const location = useLocation();
   const user = useSelector((state) => state.auth.user);
   const [item, setItem] = useState();
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageChoose, setImageChoose] = useState('');
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const handleReceive = async () => {
     const dataSend = item;
@@ -46,6 +53,18 @@ function SupportDetail() {
 
   return (
     <div className={cx('wrapper')}>
+      <ReactModal isOpen={modalIsOpen} toggle={closeModal} style={customStyles}>
+        <div className={cx('cover-img')}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={'white'}
+            size={'2x'}
+            className={cx('icon-close')}
+            onClick={closeModal}
+          />
+          <img src={imageChoose} className={cx('show-img')} />
+        </div>
+      </ReactModal>
       <div
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}
       >
@@ -107,7 +126,15 @@ function SupportDetail() {
             <label className={cx('label-long')}>Hình ảnh minh chứng </label>
             <label className={cx('content')}>
               {item?.list_image.map((e, i) => (
-                <img src={e} key={i} className={cx('image-paper')} />
+                <img
+                  src={e}
+                  key={i}
+                  className={cx('image-paper')}
+                  onClick={() => {
+                    openModal();
+                    setImageChoose(e);
+                  }}
+                />
               ))}
             </label>
           </div>

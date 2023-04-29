@@ -35,6 +35,7 @@
     height: 60px;
     object-fit: cover;
     margin-right: 10px;
+    cursor: pointer;
   }
 }
 @mixin button($width: 100%) {
@@ -57,4 +58,19 @@
   display: flex;
   width: 550px;
   margin-left: 40px;
+}
+.cover-img {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  .icon-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .show-img {
+    object-fit: contain;
+  }
 }
