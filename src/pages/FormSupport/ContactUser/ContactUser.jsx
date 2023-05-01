@@ -16,13 +16,13 @@ const cx = classNames.bind(styles);
 function ContactUser() {
   const navigate = useNavigate();
   const location = useLocation();
-  const item = location.state;
+  const item = location.state.state;
+  const historyChat = location.state.historyChat;
   const [conversation, setConversation] = useState();
   const [listMess, setListMessage] = useState([]);
   const [mess, setMess] = useState();
   const user = useSelector((state) => state.auth.user);
   const [feedback, setFeedback] = useState(item);
-
   const getAllMessage = async () => {
     const listMess = await conversationAPI.getMessage(conversation._id);
     listMess.reverse();
@@ -32,8 +32,10 @@ function ContactUser() {
   useEffect(() => {
     const getMessage = async () => {
       const resConversation = await conversationAPI.getConversation({
-        id_cus: feedback.id_sender._id,
-        id_admin: user._id,
+        id_customer: feedback?.id_sender?._id,
+        id_admin: user?._id,
+        id_form: feedback?._id,
+        form_model: 'FeedBack',
       });
       setConversation(resConversation);
       const listMess = await conversationAPI.getMessage(resConversation._id);
@@ -53,8 +55,8 @@ function ContactUser() {
       message: mess.trim(),
       id_sender: user._id,
       userSendModel: 'Admin',
-      //   id_sender: feedback.id_sender._id,
-      //   userSendModel: 'Customer',
+      // id_sender: feedback.id_sender._id,
+      // userSendModel: 'Customer',
     };
     if (mess.trim()) {
       await conversationAPI.postMessage(messageSend);
@@ -98,7 +100,7 @@ function ContactUser() {
           className={cx('icon')}
           onClick={() => navigate(-1)}
         />
-        <div className={cx('name')}>{item.id_sender.name}</div>
+        <div className={cx('name')}>{item?.id_sender?.name}</div>
         <div></div>
       </div>
       <div className={cx('body')} style={{ height: 500 }}>
@@ -135,21 +137,34 @@ function ContactUser() {
           </React.Fragment>
         ))}
       </div>
-      <div className={cx('footer')}>
-        <div className={cx('')}></div>
-        <Input
-          value={mess}
-          className={cx('input')}
-          placeholder="Nhập tin nhắn..."
-          onChange={(e) => setMess(e.target.value)}
-        />
-        <FontAwesomeIcon
-          icon={faPaperPlane}
-          color="#04af46"
-          className={cx('icon')}
-          onClick={() => handleSend()}
-        />
-      </div>
+      {!historyChat ? (
+        <div className={cx('footer')}>
+          <div className={cx('')}></div>
+          <Input
+            value={mess}
+            className={cx('input')}
+            placeholder="Nhập tin nhắn..."
+            onChange={(e) => setMess(e.target.value)}
+          />
+          <FontAwesomeIcon
+            icon={faPaperPlane}
+            color="#04af46"
+            className={cx('icon')}
+            onClick={() => handleSend()}
+          />
+        </div>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            fontSize: 30,
+            alignItems: 'center',
+          }}
+        >
+          Đơn đã xử lý xong
+        </div>
+      )}
     </div>
   );
 }

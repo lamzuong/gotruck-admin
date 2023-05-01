@@ -173,11 +173,25 @@ function SupportDetail() {
                   color="warning"
                   onClick={() =>
                     navigate(`/form-support/support-detail/${item.id_feedback}/contact`, {
-                      state: item,
+                      state: { state: item, historyChat: false },
                     })
                   }
                 >
                   Liên hệ với người gửi
+                </Button>
+              </div>
+            ) : item?.status === 'Đã xong' ? (
+              <div className={cx('inline')}>
+                <Button
+                  className={cx('button-custom')}
+                  color="warning"
+                  onClick={() =>
+                    navigate(`/form-support/support-detail/${item.id_feedback}/contact`, {
+                      state: { state: item, historyChat: true },
+                    })
+                  }
+                >
+                  Xem lịch sử trò chuyện
                 </Button>
               </div>
             ) : null}
