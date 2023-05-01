@@ -98,13 +98,25 @@ function SupportDetail() {
             <label className={cx('label-short')}>Thời gian gửi</label>
             <label className={cx('content')}>{formatDateFull(item?.createdAt)}</label>
           </div>
-          {item?.id_handler ? (
+          {item?.id_handler && item?.status === 'Đã xong' ? (
             <div>
               <label className={cx('label-short')}>Người xử lý</label>
               <label className={cx('content')}>{item?.id_handler?.fullname}</label>
             </div>
           ) : (
             <></>
+          )}
+          {item?.status === 'Đã xong' && item.date_receive && (
+            <div>
+              <label className={cx('label-short')}>Thời gian tiếp nhận</label>
+              <label className={cx('content')}>{formatDateFull(item.date_receive)}</label>
+            </div>
+          )}
+          {item?.status === 'Đã xong' && item.date_complete && (
+            <div>
+              <label className={cx('label-short')}>Thời gian xử lý xong</label>
+              <label className={cx('content')}>{formatDateFull(item.date_complete)}</label>
+            </div>
           )}
         </div>
 

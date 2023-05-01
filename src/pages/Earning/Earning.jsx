@@ -87,7 +87,7 @@ function Earning() {
           setTotal(res.total);
         } else if (statistic.value === 'month') {
           let d = new Date();
-          d.setMonth(d.getMonth() - 1);
+          d.setDate(d.getDate() - 30);
           setStartDate(convertSubstringDate(d));
           setEndDate(convertSubstringDate(currentDate));
 

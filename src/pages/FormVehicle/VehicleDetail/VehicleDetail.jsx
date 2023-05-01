@@ -121,6 +121,12 @@ function VehicleDetail() {
                 <label className={cx('label-short')}>Trạng thái</label>
                 <label className={cx('content')}>{item.status}</label>
               </div>
+              {item.approval_date && (
+                <div>
+                  <label className={cx('label-short')}>Thời gian xử lý</label>
+                  <label className={cx('content')}>{formatDateFull(item.approval_date)}</label>
+                </div>
+              )}
             </>
           )}
           {item.status === 'Từ chối' && (

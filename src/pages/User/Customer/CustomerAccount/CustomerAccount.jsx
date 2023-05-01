@@ -98,10 +98,18 @@ function CustomerAccount() {
             <label className={cx('label-short')}>Điện thoại</label>
             <label className={cx('content')}>{item.phone}</label>
           </div>
-          {/* <div>
+          <div>
             <label className={cx('label-long')}>Ngày bắt đầu hoạt động</label>
             <label className={cx('content')}>{formatDateFull(item.createdAt)}</label>
-          </div> */}
+          </div>
+          <div>
+            <label className={cx('label-long')}>Hoạt động lần cuối</label>
+            <label className={cx('content')}>
+              {item.last_active_date
+                ? formatDateFull(item.last_active_date)
+                : formatDateFull(item.updatedAt)}
+            </label>
+          </div>
         </div>
         <div className={cx('column')}>
           <div>

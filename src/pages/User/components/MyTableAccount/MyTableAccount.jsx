@@ -10,7 +10,15 @@ import { formatDateFull } from '~/global/formatDateCustom';
 
 const cx = classNames.bind(styles);
 
-const titleCustomer = ['ID', 'Ảnh', 'Họ tên', 'Số điện thoại', 'Tình trạng', 'Hành động'];
+const titleCustomer = [
+  'ID',
+  'Ảnh',
+  'Họ tên',
+  'Số điện thoại',
+  'Tình trạng',
+  'Hoạt động lần cuối ',
+  'Hành động',
+];
 const HeaderTableCustomer = () => (
   <thead>
     <tr>
@@ -67,6 +75,12 @@ const BodyTableCustomer = ({
       <td>{user.name}</td>
       <td>{user.phone}</td>
       <td>{user.block ? 'Đã khóa' : 'Đang hoạt động'}</td>
+      <td>
+        {user.last_active_date
+          ? formatDateFull(user.last_active_date)
+          : formatDateFull(user.updatedAt)}
+      </td>
+
       <td className={cx('align-left')}>
         <Button
           color="primary"
@@ -158,7 +172,11 @@ const BodyTableShipper = ({
         />
       </td>
       <td>{user.name}</td>
-      <td>{formatDateFull(user.updatedAt)}</td>
+      <td>
+        {user.last_active_date
+          ? formatDateFull(user.last_active_date)
+          : formatDateFull(user.updatedAt)}
+      </td>
       <td>{convertMoney(user.balance, ' đ')}</td>
       <td>{user.block ? 'Đã khóa' : 'Đang hoạt động'}</td>
       <td>

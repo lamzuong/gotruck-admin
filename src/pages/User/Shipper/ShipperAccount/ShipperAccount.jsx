@@ -216,7 +216,11 @@ function ShipperAccount() {
           </div>
           <div>
             <label className={cx('label-long')}>Lần cuối cùng hoạt động</label>
-            <label className={cx('content')}>{formatDateFull(item.updatedAt)}</label>
+            <label className={cx('content')}>
+              {item.last_active_date
+                ? formatDateFull(item.last_active_date)
+                : formatDateFull(item.updatedAt)}
+            </label>
           </div>
 
           <div className={cx('view-button')}>

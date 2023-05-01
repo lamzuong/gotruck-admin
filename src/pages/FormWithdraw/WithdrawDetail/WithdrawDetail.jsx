@@ -159,7 +159,12 @@ function WithdrawDetail() {
               <label className={cx('content')}>{item.id_handler.fullname}</label>
             </div>
           )}
-
+          {item.status === 'Đã xử lý' && item.approval_date && (
+            <div>
+              <label className={cx('label-short')}>Thời gian xử lý</label>
+              <label className={cx('content')}>{formatDateFull(item.approval_date)}</label>
+            </div>
+          )}
           {item.status === 'Đã xử lý' && item.image_proof && (
             <div>
               <label className={cx('label-short')}>Hình ảnh nạp tiền</label>
