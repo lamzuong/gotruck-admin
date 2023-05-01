@@ -1,0 +1,43 @@
+.wrapper-radius {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  .radius-view {
+    display: flex;
+
+    .txt-value {
+      font-size: 20px;
+      margin-right: 20px;
+    }
+    .button-edit {
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+  .wrapper-input {
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+  .button {
+    margin: 5px;
+    cursor: pointer;
+  }
+}
+.table-order {
+  margin-top: 20px;
+}
+.title-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 20px;
+}
+.inline-center {
+  display: flex;
+  align-items: center;
+}
+.inline-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

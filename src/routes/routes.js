@@ -45,6 +45,8 @@ import HistoryWithdraw from '~/pages/FormWithdraw/HistoryWithdraw/HistoryWithdra
 import HistoryRegister from '~/pages/FormRegister/HistoryRegister/HistoryRegister';
 import HistoryVehicle from '~/pages/FormVehicle/HistoryVehicle/HistoryVehicle';
 
+import FeeApp from '~/pages/FeeApp/FeeApp';
+
 // Không cần đăng nhập
 const publicRoutes = [
   { path: '/', component: Login, layout: null },
@@ -58,6 +60,7 @@ const publicRoutes = [
   { path: '/t/goods', component: Goods },
   { path: '/t/truck', component: Truck },
   { path: '/t/radius', component: Radius },
+  { path: '/t/feeapp', component: FeeApp },
 
   { path: '/customer', component: Customer },
   { path: '/customer/:id', component: CustomerAccount },

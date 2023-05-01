@@ -56,6 +56,10 @@ const sidebarLocal = [
         title: 'Bán kính nhận đơn',
         to: '/t/radius',
       },
+      {
+        title: 'Phí vận chuyển',
+        to: '/t/feeapp',
+      },
     ],
   },
   // {

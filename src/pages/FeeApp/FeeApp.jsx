@@ -1,88 +1,92 @@
-import styles from './Radius.module.scss';
+import styles from './FeeApp.module.scss';
 
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Button, Input, Table } from 'reactstrap';
-import radiusAPI from '~/api/radius';
 import { useSelector } from 'react-redux';
 import { formatDateFull } from '~/global/formatDateCustom';
+import feeAppAPI from '~/api/feeAppAPI';
 
 const cx = classNames.bind(styles);
 
-function Radius() {
-  const [radiusShow, setRadiusShow] = useState('');
-  const [valueRadius, setValueRadius] = useState('');
-  const [showEditRadius, setShowEditRadius] = useState(false);
+function FeeApp() {
+  const [feeShow, setFeeShow] = useState('');
+  const [valueFee, setValueFee] = useState('');
+  const [showEditFee, setShowEditFee] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const [data, setData] = useState([]);
 
-  const handleRadiusChange = (event) => {
+  const handleFeeChange = (event) => {
     const limit = 2;
-    setValueRadius(event.target.value.slice(0, limit));
+    setValueFee(event.target.value.slice(0, limit));
   };
-  const handleEditRadius = async () => {
-    await radiusAPI.putRadius({
-      radius: Number(valueRadius) * 1000,
-      nameUserChange: user.fullname,
+  const handleEditFee = async () => {
+    if (Number(valueFee) <= 0) {
+      alert('Phí phải lớn hơn 0');
+      return;
+    }
+    await feeAppAPI.putFee({
+      fee: Number(valueFee),
+      id_modify: user._id,
     });
 
-    const resHistoryChange = await radiusAPI.getHistoryChange();
+    const resHistoryChange = await feeAppAPI.getHistoryChange();
     if (!resHistoryChange.notFound) {
-      setValueRadius(resHistoryChange[0].distance_receive_order / 1000);
+      setValueFee(resHistoryChange[0].fee);
       setData([...resHistoryChange]);
-      setRadiusShow(resHistoryChange[0].distance_receive_order / 1000);
+      setFeeShow(resHistoryChange[0].fee);
     }
 
-    setShowEditRadius(false);
+    setShowEditFee(false);
   };
 
   useEffect(() => {
     const getHistoryChange = async () => {
-      const resHistoryChange = await radiusAPI.getHistoryChange();
-      console.log(resHistoryChange);
+      const resHistoryChange = await feeAppAPI.getHistoryChange();
       if (!resHistoryChange.notFound) {
-        setValueRadius(resHistoryChange[0].distance_receive_order / 1000);
-        setRadiusShow(resHistoryChange[0].distance_receive_order / 1000);
+        setValueFee(resHistoryChange[0].fee);
+        setFeeShow(resHistoryChange[0].fee);
         setData([...resHistoryChange]);
       }
     };
     getHistoryChange();
   }, []);
+
   return (
     <div>
       <div className={cx('wrapper-radius')}>
         <div className={cx('radius-view')}>
-          <div className={cx('title-header')}>Bán kính nhận đơn:</div>
-          <span className={cx('txt-value')}>{radiusShow} km</span>
-          {!showEditRadius && (
-            <span className={cx('button-edit')} onClick={() => setShowEditRadius(true)}>
+          <div className={cx('title-header')}>Phí vận chuyển:</div>
+          <span className={cx('txt-value')}>{feeShow} %</span>
+          {!showEditFee && (
+            <span className={cx('button-edit')} onClick={() => setShowEditFee(true)}>
               <FontAwesomeIcon icon={faPenToSquare} />
             </span>
           )}
         </div>
-        {showEditRadius && (
+        {showEditFee && (
           <div className={cx('wrapper-input')}>
             <div className={cx('inline-center')}>
               <Input
                 bsSize="lg"
                 type="number"
                 max={2}
-                value={valueRadius}
-                onChange={handleRadiusChange}
+                value={valueFee}
+                onChange={handleFeeChange}
               />
-              <div style={{ margin: 10 }}>km</div>
+              <div style={{ margin: 10 }}>%</div>
             </div>
             <div className={cx('wrapper-button')}>
-              <Button color="primary" size="lg" className={cx('button')} onClick={handleEditRadius}>
+              <Button color="primary" size="lg" className={cx('button')} onClick={handleEditFee}>
                 OK
               </Button>
               <Button
                 color="danger"
                 size="lg"
                 className={cx('button')}
-                onClick={() => setShowEditRadius(false)}
+                onClick={() => setShowEditFee(false)}
               >
                 Hủy
               </Button>
@@ -95,17 +99,19 @@ function Radius() {
       <Table striped bordered className={cx('table-order')}>
         <thead>
           <th>STT</th>
-          <th>Bán kính nhận đơn</th>
-          <th>Thời gian thay đổi</th>
+          <th>Phí vận chuyển</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
           <th>Người thay đổi</th>
         </thead>
         <tbody>
           {data.map((e, i) => (
             <tr>
               <td>{i + 1}</td>
-              <td>{Number(e.distance_receive_order) / 1000 + ' km'}</td>
-              <td>{formatDateFull(e.createdAt)}</td>
-              <td>{e.nameUserChange}</td>
+              <td>{Number(e.fee) + ' %'}</td>
+              <td>{formatDateFull(e.dateStart)}</td>
+              <td>{e.dateEnd ? formatDateFull(e.dateEnd) : ' '}</td>
+              <td>{e?.modifyBy?.fullname}</td>
             </tr>
           ))}
         </tbody>
@@ -114,4 +120,4 @@ function Radius() {
   );
 }
 
-export default Radius;
+export default FeeApp;
