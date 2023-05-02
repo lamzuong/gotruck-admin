@@ -49,7 +49,7 @@ function VehicleDetail() {
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
             icon={faCircleXmark}
-            color={'black'}
+            color={'white'}
             size={'2x'}
             className={cx('icon-close')}
             onClick={closeModal}

@@ -63,7 +63,7 @@ function WithdrawDetail() {
         <div className={cx('cover-img')}>
           <FontAwesomeIcon
             icon={faCircleXmark}
-            color={'black'}
+            color={'white'}
             size={'2x'}
             className={cx('icon-close')}
             onClick={closeModal}
@@ -169,7 +169,15 @@ function WithdrawDetail() {
             <div>
               <label className={cx('label-short')}>Hình ảnh nạp tiền</label>
               <label className={cx('content')}>
-                <img src={item.image_proof} className={cx('img')} alt="image_proof" />
+                <img
+                  src={item.image_proof}
+                  className={cx('img')}
+                  alt="image_proof"
+                  onClick={() => {
+                    openModal();
+                    setImageChoose(item.image_proof);
+                  }}
+                />
               </label>
             </div>
           )}
