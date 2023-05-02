@@ -100,9 +100,9 @@ export const formatDateFull = (date) => {
 
   var iHourCheck = parseInt(sHour);
 
-  if (iHourCheck > 12) {
+  if (iHourCheck >= 12) {
     sAMPM = 'PM';
-    sHour = iHourCheck - 12;
+    if (iHourCheck > 12) sHour = iHourCheck - 12;
   } else if (iHourCheck === 0) {
     sHour = '12';
   }

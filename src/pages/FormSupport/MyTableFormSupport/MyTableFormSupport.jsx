@@ -18,12 +18,18 @@ const title = [
   'Thời gian gửi',
   'Hành động',
 ];
-const HeaderTable = (hiddenAction) => (
+const HeaderTable = ({ hiddenAction }) => (
   <thead>
     <tr>
-      {title.map((e, i) =>
-        hiddenAction && e === 'Tình trạng' ? <th key={i}>Người xử lý</th> : <th key={i}>{e}</th>,
-      )}
+      {title.map((e, i) => {
+        let item = '';
+        if (e === 'Tình trạng') {
+          hiddenAction === true ? (item = 'Người xử lý') : (item = e);
+        } else if (e === 'Thời gian gửi') {
+          hiddenAction === true ? (item = 'Thời gian xử lý xong') : (item = e);
+        } else item = e;
+        return <th key={i}>{item}</th>;
+      })}
     </tr>
   </thead>
 );
@@ -46,7 +52,6 @@ const BodyTable = ({ item, hiddenAction }) => {
     await formFeedbackAPI.put(dataSend);
     navigate('/form-support');
   };
-
   return (
     <tr>
       <td>{item.id_feedback}</td>
@@ -54,7 +59,7 @@ const BodyTable = ({ item, hiddenAction }) => {
       <td>{item.id_sender.name}</td>
       <td>{item.subject}</td>
       {hiddenAction ? <td>{item.id_handler.fullname}</td> : <td>{item.status}</td>}
-      <td>{formatDateFull(item.createdAt)}</td>
+      <td>{hiddenAction ? formatDateFull(item.date_complete) : formatDateFull(item.createdAt)}</td>
       <td>
         <Button
           color="primary"

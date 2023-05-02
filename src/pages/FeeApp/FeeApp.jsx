@@ -110,7 +110,7 @@ function FeeApp() {
               <td>{i + 1}</td>
               <td>{Number(e.fee) + ' %'}</td>
               <td>{formatDateFull(e.dateStart)}</td>
-              <td>{e.dateEnd ? formatDateFull(e.dateEnd) : ' '}</td>
+              <td>{e.dateEnd ? formatDateFull(e.dateEnd) : 'Vẫn đang sử dụng'}</td>
               <td>{e?.modifyBy?.fullname}</td>
             </tr>
           ))}

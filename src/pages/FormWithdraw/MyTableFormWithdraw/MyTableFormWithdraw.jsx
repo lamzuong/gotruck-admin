@@ -21,7 +21,7 @@ const titleHistory = [
   'Mã người gửi',
   // 'Tình trạng',
   'Số tiền cần rút',
-  'Thời gian gửi',
+  'Thời gian xử lý xong',
   'Người xử lý',
   'Hành động',
 ];
@@ -45,7 +45,7 @@ const HeaderTableHistory = () => (
   </thead>
 );
 
-const BodyTable = ({ item, showConfirm }) => {
+const BodyTable = ({ item, showConfirm, history }) => {
   const navigate = useNavigate();
   return (
     <tr>
@@ -53,7 +53,7 @@ const BodyTable = ({ item, showConfirm }) => {
       <td>{item.id_shipper.id_shipper}</td>
       {/* <td>{item.status}</td> */}
       <td>{convertMoney(item.money, 'đ')}</td>
-      <td>{formatDateFull(item.createdAt)}</td>
+      <td>{history ? formatDateFull(item.approval_date) : formatDateFull(item.createdAt)}</td>
       {item.status === 'Đã xử lý' && <td>{item.id_handler.fullname}</td>}
       <td>
         <Button

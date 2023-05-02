@@ -132,7 +132,7 @@ function HistoryWithdraw() {
             <HeaderTableHistory />
             <tbody>
               {searchResult.map((e, i) => (
-                <BodyTable item={e} key={i} showConfirm={toggle} />
+                <BodyTable item={e} key={i} showConfirm={toggle} history={true} />
               ))}
             </tbody>
           </Table>
@@ -158,7 +158,7 @@ function HistoryWithdraw() {
                   <tbody>
                     {listWithDraw.map((e, i) =>
                       status === 'Tất cả' || status === e.status ? (
-                        <BodyTable item={e} key={i} showConfirm={toggle} />
+                        <BodyTable item={e} key={i} showConfirm={toggle} history={true} />
                       ) : null,
                     )}
                   </tbody>

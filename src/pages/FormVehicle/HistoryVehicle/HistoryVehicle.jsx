@@ -96,10 +96,10 @@ function HistoryVehicle() {
       {searchId !== '' ? (
         searchResult.length > 0 ? (
           <Table striped className={cx('table-order')}>
-            <HeaderTable />
+            <HeaderTable history={true} />
             <tbody>
               {searchResult.map((e, i) => (
-                <BodyTable item={e} key={i} />
+                <BodyTable item={e} key={i} history={true} />
               ))}
             </tbody>
           </Table>
@@ -121,13 +121,11 @@ function HistoryVehicle() {
             {status.map((status, i) => (
               <TabPane tabId={status} key={i}>
                 <Table striped className={cx('table-order')}>
-                  <HeaderTable />
+                  <HeaderTable history={true} />
                   <tbody>
-                    {listVehicle.map((e, i) =>
-                      status === 'Tất cả' || status === e.status ? (
-                        <BodyTable item={e} key={i} />
-                      ) : null,
-                    )}
+                    {listVehicle.map((e, i) => (
+                      <BodyTable item={e} key={i} history={true} />
+                    ))}
                   </tbody>
                 </Table>
               </TabPane>

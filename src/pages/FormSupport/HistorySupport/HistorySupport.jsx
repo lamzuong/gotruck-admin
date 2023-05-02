@@ -128,11 +128,9 @@ function HistorySupport() {
                 <Table striped className={cx('table-order')}>
                   <HeaderTable hiddenAction={true} />
                   <tbody>
-                    {listFeedBack.map((e, i) =>
-                      status === 'Tất cả' || status === e.status ? (
-                        <BodyTable item={e} key={i} hiddenAction={true} />
-                      ) : null,
-                    )}
+                    {listFeedBack.map((e, i) => (
+                      <BodyTable item={e} key={i} hiddenAction={true} />
+                    ))}
                   </tbody>
                 </Table>
               </TabPane>

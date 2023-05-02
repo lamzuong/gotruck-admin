@@ -127,11 +127,9 @@ function FormSupport() {
                 <Table striped className={cx('table-order')}>
                   <HeaderTable />
                   <tbody>
-                    {listFeedBack.map((e, i) =>
-                      status === 'Tất cả' || status === e.status ? (
-                        <BodyTable item={e} key={i} />
-                      ) : null,
-                    )}
+                    {listFeedBack.map((e, i) => (
+                      <BodyTable item={e} key={i} />
+                    ))}
                   </tbody>
                 </Table>
               </TabPane>

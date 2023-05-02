@@ -66,6 +66,9 @@ function ContactUser() {
     }
     setMess('');
   };
+  function enterKey(e) {
+    if (e.key === 'Enter') handleSend();
+  }
 
   function timeSince(date) {
     let seconds = Math.floor((new Date() - date) / 1000);
@@ -145,6 +148,7 @@ function ContactUser() {
             className={cx('input')}
             placeholder="Nhập tin nhắn..."
             onChange={(e) => setMess(e.target.value)}
+            onKeyDown={(e) => enterKey(e)}
           />
           <FontAwesomeIcon
             icon={faPaperPlane}
