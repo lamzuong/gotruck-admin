@@ -27,6 +27,7 @@ function Earning() {
   const [startDate, setStartDate] = useState(convertSubstringDate(currentDate));
   const [endDate, setEndDate] = useState(convertSubstringDate(currentDate));
   const [statistic, setStatistic] = useState({ value: 'today' });
+  const [total, setTotal] = useState(0);
 
   const [data, setData] = useState({
     labels: ['Mon', 'Tue', 'Web', 'Thu', 'Fri'],
@@ -39,7 +40,6 @@ function Earning() {
       },
     ],
   });
-  const [total, setTotal] = useState(0);
 
   const earnToday = async (date = '') => {
     let res = [];
@@ -103,6 +103,9 @@ function Earning() {
             ],
           });
           setTotal(res.total);
+        } else if (statistic.value === 'specific') {
+          setStartDate(convertSubstringDate(new Date().getDate() - 30));
+          setEndDate(convertSubstringDate(new Date()));
         }
       } catch (error) {
         console.log(error);
@@ -143,7 +146,7 @@ function Earning() {
     } else if (endDate < startDate) {
       alert('Chọn ngày không hợp lệ');
     } else if (get_day_of_time(startDate, endDate) > 30) {
-      alert('Thời gian tìm kiếm giới hạn trong 30 ngày');
+      alert('Thời gian tìm kiếm giới hạn trong 31 ngày');
     } else {
       const res = await earningApi.getEarningSpecific({
         startDate: startDate,

@@ -42,10 +42,15 @@ const Map = () => {
   // calculateRoute();
 
   useEffect(() => {
-    socketClient.on(order?.id_order + '', (data) => {
-      setLocationShipper(data);
-    });
-    return () => socketClient.off(order?.id_order + '');
+    const timeId = setInterval(async () => {
+      const resShp = await axiosClient.get('order/shipper/' + order.shipper.id_shipper._id);
+      if (resShp && resShp.current_address) {
+        setLocationShipper(resShp.current_address);
+      }
+    }, 10000);
+    return () => {
+      clearInterval(timeId);
+    };
   }, []);
 
   useEffect(() => {
