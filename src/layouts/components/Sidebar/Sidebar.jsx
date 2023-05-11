@@ -11,10 +11,10 @@ import axiosClient from '~/api/axiosClient';
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-  const baseUrl = 'http://localhost:8080';
+  const baseUrl = 'http://localhost:3000';
 
   const [path, setPath] = useState('');
-  const [sidebar, setSliebar] = useState(sidebarLocal);
+  const [sidebar, setSidebar] = useState(sidebarLocal);
 
   useEffect(() => {
     setPath(window.location.href);
@@ -45,7 +45,7 @@ function Sidebar() {
         }
         return item;
       });
-      setSliebar([...sidebarTemp]);
+      setSidebar([...sidebarTemp]);
     };
     getTotalForm();
     // window.addEventListener('click', () => {

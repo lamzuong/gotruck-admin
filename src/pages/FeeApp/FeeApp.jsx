@@ -98,15 +98,17 @@ function FeeApp() {
       <div className={cx('title-header')}>Lịch sử thay đổi</div>
       <Table striped bordered className={cx('table-order')}>
         <thead>
-          <th>STT</th>
-          <th>Phí vận chuyển</th>
-          <th>Ngày bắt đầu</th>
-          <th>Ngày kết thúc</th>
-          <th>Người thay đổi</th>
+          <tr>
+            <th>STT</th>
+            <th>Phí vận chuyển</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Người thay đổi</th>
+          </tr>
         </thead>
         <tbody>
           {data.map((e, i) => (
-            <tr>
+            <tr key={i}>
               <td>{i + 1}</td>
               <td>{Number(e.fee) + ' %'}</td>
               <td>{formatDateFull(e.dateStart)}</td>
