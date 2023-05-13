@@ -43,8 +43,8 @@ function ContactUser() {
       setListMessage(listMess);
     };
     getMessage();
-    socketClient.off(user._id + 'message');
-    socketClient.on(user._id + 'message', (data) => {
+    socketClient.off('message' + user._id);
+    socketClient.on('message' + user._id, (data) => {
       getAllMessage();
     });
   }, []);

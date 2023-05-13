@@ -1,7 +1,6 @@
 import styles from './OrderDetail.module.scss';
 import { convertMoney } from '~/global/functionGlobal';
 import customStyles from './stylesModal';
-import MyButton from '~/components/MyButton/MyButton';
 
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
@@ -10,7 +9,6 @@ import { Col, Container, Row } from 'reactstrap';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { withGoogleMap, withScriptjs, GoogleMap } from 'react-google-maps';
 import Map from '../Map';
 const cx = classNames.bind(styles);
 
@@ -70,7 +68,7 @@ function OrderDetail() {
             className={cx('icon-close')}
             onClick={closeModal}
           />
-          <img src={imageChoose} className={cx('show-img')} />
+          <img src={imageChoose} className={cx('show-img')} alt="show" />
         </div>
       </Modal>
       {/* div 1 */}
@@ -157,6 +155,7 @@ function OrderDetail() {
                         openModal();
                         setImageChoose(e);
                       }}
+                      alt="imamge-choose"
                     />
                   ))}
                 </div>
@@ -177,6 +176,7 @@ function OrderDetail() {
                         openModal();
                         setImageChoose(e);
                       }}
+                      alt={i}
                     />
                   ))}
                 </div>
@@ -197,6 +197,7 @@ function OrderDetail() {
                         openModal();
                         setImageChoose(e);
                       }}
+                      alt={i}
                     />
                   ))}
                 </div>
@@ -205,15 +206,6 @@ function OrderDetail() {
           )}
         </Container>
       </div>
-      {/* Button */}
-      {/* <div className={cx('wrapper-button')}>
-        {item.status === 'Đang giao' ? (
-          <MyButton
-            title={'Xem vị trí shipper hiện tại'}
-            action={() => navigate(`/order-detail/${item.id}/shipper-location`)}
-          />
-        ) : null}
-      </div> */}
 
       {item.status === 'Đang giao' && (
         <>
