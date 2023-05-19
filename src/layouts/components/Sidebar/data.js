@@ -74,7 +74,7 @@ const sidebarLocal = [
   //   ],
   // },
   {
-    title: 'Đơn xử lý',
+    title: 'Xử lý đơn',
     icon: <FontAwesomeIcon icon={faCircleExclamation} />,
     path: '/form',
     sub: [

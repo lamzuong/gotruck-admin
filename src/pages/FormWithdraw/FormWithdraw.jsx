@@ -81,7 +81,7 @@ function FormWithdraw() {
     <div className={cx('wrapper')}>
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
-          <div className={cx('title')}>Ảnh minh chứng nạp tiền</div>
+          <div className={cx('title')}>Ảnh minh chứng đã chuyển khoản</div>
           {imagePay === null ? (
             <MyButtonAdd data={setImagePay} />
           ) : (

@@ -198,13 +198,13 @@ const BodyTableShipper = ({
             <Button color="danger" className={cx('button-block')} onClick={() => toggle(true)}>
               <h4>Khóa tài khoản</h4>
             </Button>
-            <Button
+            {/* <Button
               color="primary"
               onClick={() => handleInputMoney(user)}
               className={cx('button-pay')}
             >
               <h4>Nạp tiền</h4>
-            </Button>
+            </Button> */}
           </>
         )}
       </td>

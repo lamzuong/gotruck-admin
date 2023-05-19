@@ -26,7 +26,7 @@ const BodyTable = ({ order }) => {
       <td>{order.shipper?.id_shipper?.id_shipper || <i>Chưa có</i>}</td>
       <td>{order.shipper?.id_shipper?.name || <i>Chưa có</i>}</td>
       <td>{order.shipper?.truck?.license_plate || <i>Chưa có</i>}</td>
-      <td>{order.id_customer.id_cus}</td>
+      <td>{order.id_customer?.id_cus}</td>
       <td>{order.status}</td>
       <td>
         <Button

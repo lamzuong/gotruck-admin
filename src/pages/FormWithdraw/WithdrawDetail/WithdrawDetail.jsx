@@ -44,7 +44,7 @@ function WithdrawDetail() {
 
   const handleConfirm = async () => {
     if (!imagePay) {
-      alert('Chưa có ảnh minh chứng nạp tiền');
+      alert('Chưa có ảnh minh chứng đã chuyển khoản');
       return;
     }
     let image_proof = await uploadImage(imagePay[0]);
@@ -78,7 +78,7 @@ function WithdrawDetail() {
       />
       <Modal isOpen={modal} toggle={toggle}>
         <div className={cx('wrapper-modal')}>
-          <div className={cx('title')}>Ảnh minh chứng nạp tiền (1 ảnh):</div>
+          <div className={cx('title')}>Ảnh minh chứng đã chuyển khoản (1 ảnh):</div>
           {imagePay === null ? (
             <MyButtonAdd data={setImagePay} single={true} />
           ) : (
@@ -167,7 +167,7 @@ function WithdrawDetail() {
           )}
           {item.status === 'Đã xử lý' && item.image_proof && (
             <div>
-              <label className={cx('label-short')}>Hình ảnh nạp tiền</label>
+              <label className={cx('label-short')}>Hình ảnh chuyển khoản</label>
               <label className={cx('content')}>
                 <img
                   src={item.image_proof}

@@ -86,7 +86,7 @@ function Header() {
           <MyMenu items={MENU_ITEMS_REPORT} width={'350px'} offset={[150, 8]}>
             <div className={cx('header-item')}>
               <FontAwesomeIcon icon={faCircleExclamation} />
-              <div className={cx('item-title')}>Đơn xử lý</div>
+              <div className={cx('item-title')}>Xử lý đơn</div>
               <div className={cx('total-notify')}>{totalNotify() > 0 ? totalNotify() : null}</div>
             </div>
           </MyMenu>

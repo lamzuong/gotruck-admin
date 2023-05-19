@@ -48,8 +48,8 @@ const Map = () => {
   return (
     <div>
       <GoogleMap
-        defaultZoom={10}
-        defaultCenter={{ lat: order?.from_address?.latitude, lng: order?.from_address?.longitude }}
+      // defaultZoom={10}
+      // defaultCenter={{ lat: order?.from_address?.latitude, lng: order?.from_address?.longitude }}
       >
         {locationShipper && (
           <Marker

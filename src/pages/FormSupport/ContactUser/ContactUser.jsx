@@ -59,10 +59,14 @@ function ContactUser() {
       // userSendModel: 'Customer',
     };
     if (mess.trim()) {
-      await conversationAPI.postMessage(messageSend);
-      socketClient.emit('send_message', { id_receive: feedback.id_sender._id });
-      setMess('');
-      getAllMessage();
+      const resMess = await conversationAPI.postMessage(messageSend);
+      if (resMess.disable) {
+        alert('Đơn đã xử lý xong nên không thể trò chuyện tiếp');
+      } else {
+        socketClient.emit('send_message', { id_receive: feedback.id_sender._id });
+        setMess('');
+        getAllMessage();
+      }
     }
     setMess('');
   };

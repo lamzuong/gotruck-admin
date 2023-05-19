@@ -73,7 +73,7 @@ function SupportDetail() {
           style={{ fontSize: '150%', cursor: 'pointer' }}
           onClick={() => navigate(-1)}
         />
-        <h1 style={{ fontWeight: 'bold', fontSize: 26, marginLeft: 15 }}>Chi tiết đơn xử lý</h1>
+        <h1 style={{ fontWeight: 'bold', fontSize: 26, marginLeft: 15 }}>Chi tiết Xử lý đơn</h1>
       </div>
       <div className={cx('display-flex')}>
         <div className={cx('column')}>

@@ -29,7 +29,7 @@ function Sidebar() {
       const resVehicle = await axiosClient.get('form/vehicle');
 
       sidebar.map((item, i) => {
-        if (item.title === 'Đơn xử lý') {
+        if (item.title === 'Xử lý đơn') {
           item.sub.map((itemOld, index) => {
             if (itemOld.type === 'feedback') {
               sidebarTemp[i].sub[index].numberNotify = resFeedback.total || 0;
@@ -87,7 +87,7 @@ function Sidebar() {
             >
               <div className={cx('icon')}>{e.icon}</div>
               <div className={cx('item-title')}>{e.title}</div>
-              {e.title === 'Đơn xử lý' && totalNotify(e) > 0 && (
+              {e.title === 'Xử lý đơn' && totalNotify(e) > 0 && (
                 <div className={cx('total-notify')}>
                   {totalNotify(e) > 0 ? totalNotify(e) : null}
                 </div>
