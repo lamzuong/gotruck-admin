@@ -27,7 +27,7 @@ function NotifyDetail() {
       </div>
       <div className={cx('inline')}>
         <div className={cx('label')}>Người gửi</div>
-        <div className={cx('content')}>{item.id_handler.fullname}</div>
+        <div className={cx('content')}>{item.id_handler?.fullname || 'Hệ thống'}</div>
       </div>
       <div className={cx('inline')}>
         <div className={cx('label')}>Thông báo tới</div>

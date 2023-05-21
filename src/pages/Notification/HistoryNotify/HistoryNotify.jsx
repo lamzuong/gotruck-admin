@@ -52,7 +52,7 @@ function HistoryNotify() {
             <th>Mã thông báo</th>
             <th>Người tạo</th>
             <th>Loại thông báo</th>
-            <th>Tiêu đề</th>
+            <th style={{ maxWidth: 300 }}>Tiêu đề</th>
             <th>Ngày tạo</th>
             <th>Hành động</th>
           </tr>
@@ -61,9 +61,9 @@ function HistoryNotify() {
           {listNotify.map((e, i) => (
             <tr key={i}>
               <td>{e.id_notify}</td>
-              <td>{e.id_handler.fullname}</td>
+              <td>{e.id_handler?.fullname || 'Hệ thống'}</td>
               <td>{typeNotify(e.type_notify)}</td>
-              <td>{e.title}</td>
+              <td style={{ maxWidth: 300 }}>{e.title}</td>
               <td>{formatDateFull(e.createdAt)}</td>
 
               <td style={{ width: '10%' }}>

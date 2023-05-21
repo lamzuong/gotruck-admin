@@ -50,7 +50,7 @@ const BodyTable = ({ item, showConfirm, history }) => {
   return (
     <tr>
       <td>{item.id_transaction_history}</td>
-      <td>{item.id_shipper.id_shipper}</td>
+      <td>{item.id_shipper?.id_shipper}</td>
       {/* <td>{item.status}</td> */}
       <td>{convertMoney(item.money, 'đ')}</td>
       <td>{history ? formatDateFull(item.approval_date) : formatDateFull(item.createdAt)}</td>

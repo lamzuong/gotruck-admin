@@ -211,7 +211,7 @@ function RegisterDetail() {
                 color="success"
                 onClick={() => handleAccept()}
               >
-                Chấp thuận và cấp tài khoản
+                Chấp thuận
               </Button>
               <Button className={cx('button-block')} color="danger" onClick={toggle}>
                 Từ chối đơn

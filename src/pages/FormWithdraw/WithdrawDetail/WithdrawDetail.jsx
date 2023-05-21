@@ -127,7 +127,7 @@ function WithdrawDetail() {
           </div>
           <div>
             <label className={cx('label-short')}>Mã người gửi</label>
-            <label className={cx('content')}>{item.id_shipper.id_shipper}</label>
+            <label className={cx('content')}>{item.id_shipper?.id_shipper}</label>
           </div>
           <div>
             <label className={cx('label-short')}>Tên người gửi</label>

@@ -33,7 +33,7 @@ const BodyTable = ({ item, history }) => {
   return (
     <tr>
       <td>{item.id_truck}</td>
-      <td>{item.id_shipper.id_shipper}</td>
+      <td>{item.id_shipper?.id_shipper}</td>
       <td>{item.status}</td>
       <td>{history ? formatDateFull(item.approval_date) : formatDateFull(item.createdAt)}</td>
       {history && <td>{item.id_handler.fullname}</td>}
