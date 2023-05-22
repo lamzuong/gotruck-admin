@@ -11,7 +11,7 @@ import axiosClient from '~/api/axiosClient';
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = 'http://18.139.161.100:3000';
 
   const [path, setPath] = useState('');
   const [sidebar, setSidebar] = useState(sidebarLocal);
