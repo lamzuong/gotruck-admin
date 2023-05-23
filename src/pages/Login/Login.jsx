@@ -14,8 +14,8 @@ const cx = classNames.bind(styles);
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [username, setUsername] = useState('nvan.gotruck');
-  const [password, setPassword] = useState('123456');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [failed, setFailed] = useState(false);
 
   const handleLogin = async () => {
