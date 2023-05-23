@@ -23,7 +23,9 @@ function ContactUser() {
   const [mess, setMess] = useState();
   const user = useSelector((state) => state.auth.user);
   const [feedback, setFeedback] = useState(item);
+
   const getAllMessage = async () => {
+    console.log(conversation);
     const listMess = await conversationAPI.getMessage(conversation._id);
     listMess.reverse();
     setListMessage(listMess);
@@ -37,17 +39,21 @@ function ContactUser() {
         id_form: feedback?._id,
         form_model: 'FeedBack',
       });
+
       setConversation(resConversation);
       const listMess = await conversationAPI.getMessage(resConversation._id);
       listMess.reverse();
       setListMessage(listMess);
     };
     getMessage();
+  }, []);
+
+  useEffect(() => {
     socketClient.off('message' + user._id);
     socketClient.on('message' + user._id, (data) => {
       getAllMessage();
     });
-  }, []);
+  });
 
   const handleSend = async () => {
     const messageSend = {

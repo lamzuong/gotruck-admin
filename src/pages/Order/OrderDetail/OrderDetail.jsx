@@ -129,7 +129,7 @@ function OrderDetail() {
             </Col>
             <Col>
               <div className={cx('row-info')}>
-                <div className={cx('label')}>Phí</div>
+                <div className={cx('label')}>Phí giao dịch</div>
                 <div className={cx('content')}>
                   {convertMoney((item.total * item.fee) / 100, 'VNĐ')}
                 </div>
