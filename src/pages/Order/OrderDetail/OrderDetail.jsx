@@ -50,7 +50,7 @@ function OrderDetail() {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const key = 'AIzaSyBl3r0dDhGqDx_6EusM3Opp_wg9WkQE6qQ';
+  const key = 'AIzaSyDBNE11c6Aq1Wo6TmU1kvXrlFgqxyKUaq8';
 
   return (
     <div className={cx('wrapper')}>
