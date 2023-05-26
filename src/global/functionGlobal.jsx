@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 const convertMoney = (money, suffix) => {
   return (
     Number.parseInt(money)
@@ -52,7 +54,17 @@ function formatDatetime(date) {
   const time = (new Date(date) + '').split(' ')[4];
   return day + ' ' + time;
 }
+const notifySuccess = (string) => {
+  toast.success(string, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
+const notifyError = (string) => {
+  toast.error(string, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 
 export { convertMoney, parseInt, parseFloat, toFindDuplicates, formatDatetime };
 export { convertIndochina, convertSubstringDate };
-export { typeNotify, typeSend, navigateToPolicy, navigateBackPolicy };
+export { typeNotify, typeSend, navigateToPolicy, navigateBackPolicy, notifySuccess, notifyError };

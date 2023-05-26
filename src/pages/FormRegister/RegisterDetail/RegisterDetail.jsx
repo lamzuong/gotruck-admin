@@ -3,7 +3,7 @@ import styles from './RegisterDetail.module.scss';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Button, Input, Modal } from 'reactstrap';
+import { Button, Input, Modal, Spinner } from 'reactstrap';
 import { formatDateFull } from '~/global/formatDateCustom';
 import formRegisterAPI from '~/api/formRegister';
 import { useSelector } from 'react-redux';
@@ -11,12 +11,15 @@ import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icon
 import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactModal from 'react-modal';
+import { notifyError, notifySuccess } from '~/global/functionGlobal';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(styles);
 
 function RegisterDetail() {
   const location = useLocation();
   const item = location.state;
+  const [loading, setLoading] = useState(false);
 
   const [inputReason, setInputReason] = useState('');
   const [modal, setModal] = useState(false);
@@ -32,19 +35,27 @@ function RegisterDetail() {
   const closeModal = () => setIsOpen(false);
 
   const handleAccept = async () => {
+    setLoading(true);
     await formRegisterAPI.put({ data: item, id_handler: user._id, type: 'accept' });
+    setLoading(false);
+    notifySuccess('Đã chấp thuận cấp tài khoản');
     navigate('/form-register');
   };
 
   const handleDenied = async () => {
+    setLoading(true);
     const dataSend = item;
     dataSend.reason_cancel = inputReason;
     await formRegisterAPI.put({ data: dataSend, id_handler: user._id, type: 'denied' });
+    setLoading(false);
     setModal(false);
+    notifyError('Đã từ chối đơn đăng ký');
     navigate('/form-register');
   };
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className={cx('wrapper')}>
       <FontAwesomeIcon
         icon={faArrowLeftLong}
