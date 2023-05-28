@@ -62,7 +62,11 @@ function WithdrawDetail() {
     dataSend.status = 'Đã xử lý';
     dataSend.id_handler = user._id;
     dataSend.image_proof = image_proof;
-    await formWithDrawAPI.put(dataSend);
+    const resAPI = await formWithDrawAPI.put(dataSend);
+
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    }
     toggle();
     navigate('/form-withdraw');
   };

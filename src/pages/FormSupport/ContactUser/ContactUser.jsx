@@ -25,7 +25,6 @@ function ContactUser() {
   const [feedback, setFeedback] = useState(item);
 
   const getAllMessage = async () => {
-    console.log(conversation);
     const listMess = await conversationAPI.getMessage(conversation._id);
     listMess.reverse();
     setListMessage(listMess);

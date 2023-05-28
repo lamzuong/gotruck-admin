@@ -57,7 +57,7 @@ const sidebarLocal = [
         to: '/t/radius',
       },
       {
-        title: 'Phí vận chuyển',
+        title: 'Phí giao dịch',
         to: '/t/feeapp',
       },
     ],

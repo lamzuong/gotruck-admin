@@ -41,7 +41,6 @@ function Radius() {
   useEffect(() => {
     const getHistoryChange = async () => {
       const resHistoryChange = await radiusAPI.getHistoryChange();
-      console.log(resHistoryChange);
       if (!resHistoryChange.notFound) {
         setValueRadius(resHistoryChange[0].distance_receive_order / 1000);
         setRadiusShow(resHistoryChange[0].distance_receive_order / 1000);

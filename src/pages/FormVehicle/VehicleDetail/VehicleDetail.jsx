@@ -31,14 +31,24 @@ function VehicleDetail() {
   const closeModal = () => setIsOpen(false);
 
   const handleAccept = async () => {
-    await formVehicleAPI.put({ data: item, id_handler: user._id, type: 'accept' });
+    const resAPI = await formVehicleAPI.put({ data: item, id_handler: user._id, type: 'accept' });
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    }
     navigate('/form-vehicle');
   };
 
   const handleDenied = async () => {
     const dataSend = item;
     dataSend.reason_cancel = inputReason;
-    await formVehicleAPI.put({ data: dataSend, id_handler: user._id, type: 'denied' });
+    const resAPI = await formVehicleAPI.put({
+      data: dataSend,
+      id_handler: user._id,
+      type: 'denied',
+    });
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    }
     setModal(false);
     navigate('/form-vehicle');
   };

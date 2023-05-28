@@ -31,14 +31,21 @@ function SupportDetail() {
     dataSend.id_handler = user._id;
     await formFeedbackAPI.put(dataSend);
     const resFeedback = await formFeedbackAPI.getById(item._id);
-    setItem(resFeedback);
+    if (resFeedback.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    } else {
+      setItem(resFeedback);
+    }
   };
 
   const handleComplete = async () => {
     const dataSend = item;
     dataSend.status = 'Đã xong';
     dataSend.id_handler = user._id;
-    await formFeedbackAPI.put(dataSend);
+    const resAPI = await formFeedbackAPI.put(dataSend);
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    }
     navigate('/form-support');
   };
 
@@ -98,7 +105,7 @@ function SupportDetail() {
             <label className={cx('label-short')}>Thời gian gửi</label>
             <label className={cx('content')}>{formatDateFull(item?.createdAt)}</label>
           </div>
-          {item?.id_handler && item?.status === 'Đã xong' ? (
+          {item?.id_handler ? (
             <div>
               <label className={cx('label-short')}>Người xử lý</label>
               <label className={cx('content')}>{item?.id_handler?.fullname}</label>
@@ -159,7 +166,7 @@ function SupportDetail() {
               >
                 Tiếp nhận
               </Button>
-            ) : item?.status === 'Đã tiếp nhận' ? (
+            ) : item?.status === 'Đã tiếp nhận' && item?.id_handler?._id === user._id ? (
               <div className={cx('inline')}>
                 <Button
                   className={cx('button-unblock')}

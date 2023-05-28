@@ -36,9 +36,13 @@ function RegisterDetail() {
 
   const handleAccept = async () => {
     setLoading(true);
-    await formRegisterAPI.put({ data: item, id_handler: user._id, type: 'accept' });
+    const resAPI = await formRegisterAPI.put({ data: item, id_handler: user._id, type: 'accept' });
+    if (resAPI.data.id_handler !== user._id) {
+      alert('Đơn hàng đã được xử lý bởi admin khác');
+    } else {
+      notifySuccess('Đã chấp thuận cấp tài khoản');
+    }
     setLoading(false);
-    notifySuccess('Đã chấp thuận cấp tài khoản');
     navigate('/form-register');
   };
 
@@ -46,10 +50,18 @@ function RegisterDetail() {
     setLoading(true);
     const dataSend = item;
     dataSend.reason_cancel = inputReason;
-    await formRegisterAPI.put({ data: dataSend, id_handler: user._id, type: 'denied' });
+    const resAPI = await formRegisterAPI.put({
+      data: dataSend,
+      id_handler: user._id,
+      type: 'denied',
+    });
+    if (resAPI.data.id_handler !== user._id) {
+      alert('Đơn hàng đã được xử lý bởi admin khác');
+    } else {
+      notifyError('Đã từ chối đơn đăng ký');
+    }
     setLoading(false);
     setModal(false);
-    notifyError('Đã từ chối đơn đăng ký');
     navigate('/form-register');
   };
 

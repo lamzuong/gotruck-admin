@@ -58,7 +58,7 @@ function FeeApp() {
     <div>
       <div className={cx('wrapper-radius')}>
         <div className={cx('radius-view')}>
-          <div className={cx('title-header')}>Phí vận chuyển:</div>
+          <div className={cx('title-header')}>Phí giao dịch:</div>
           <span className={cx('txt-value')}>{feeShow} %</span>
           {!showEditFee && (
             <span className={cx('button-edit')} onClick={() => setShowEditFee(true)}>
@@ -100,7 +100,7 @@ function FeeApp() {
         <thead>
           <tr>
             <th>STT</th>
-            <th>Phí vận chuyển</th>
+            <th>Phí giao dịch</th>
             <th>Ngày bắt đầu</th>
             <th>Ngày kết thúc</th>
             <th>Người thay đổi</th>

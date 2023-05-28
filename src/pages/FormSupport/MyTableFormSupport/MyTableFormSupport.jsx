@@ -41,16 +41,24 @@ const BodyTable = ({ item, hiddenAction }) => {
     const dataSend = item;
     dataSend.status = 'Đã tiếp nhận';
     dataSend.id_handler = user._id;
-    await formFeedbackAPI.put(dataSend);
-    navigate('/form-support');
+    const resAPI = await formFeedbackAPI.put(dataSend);
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    } else {
+      navigate('/form-support');
+    }
   };
 
   const handleComplete = async (item) => {
     const dataSend = item;
     dataSend.status = 'Đã xong';
     dataSend.id_handler = user._id;
-    await formFeedbackAPI.put(dataSend);
-    navigate('/form-support');
+    const resAPI = await formFeedbackAPI.put(dataSend);
+    if (resAPI.id_handler !== user._id) {
+      alert('Đơn đã được xử lý bởi admin khác');
+    } else {
+      navigate('/form-support');
+    }
   };
   return (
     <tr>
