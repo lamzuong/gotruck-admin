@@ -47,6 +47,16 @@ function WithdrawDetail() {
       alert('Chưa có ảnh minh chứng đã chuyển khoản');
       return;
     }
+
+    let imageSize = 0;
+    for (let i = 0; i < imagePay.length; i++) {
+      imageSize += imagePay[i].size;
+    }
+    if (imageSize > 10000000) {
+      alert('Kích thước hình ảnh minh chứng quá lớn');
+      return;
+    }
+
     let image_proof = await uploadImage(imagePay[0]);
     const dataSend = item;
     dataSend.status = 'Đã xử lý';

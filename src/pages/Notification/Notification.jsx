@@ -77,6 +77,15 @@ function Notification() {
       return;
     }
 
+    let imageSize = 0;
+    for (let i = 0; i < listImage.length; i++) {
+      imageSize += listImage[i].size;
+    }
+    if (imageSize > 10000000) {
+      alert('Kích thước hình ảnh thông báo quá lớn');
+      return;
+    }
+
     const listURLImage = await uploadImage(listImage);
 
     let typeReceiver = '';
