@@ -39,12 +39,14 @@
     margin-bottom: 20px;
   }
   .show-action {
+    padding: 10px;
     &:hover {
       .icon {
         display: block;
       }
       background-color: rgb(236, 236, 236);
       cursor: context-menu;
+      border-radius: 10px;
     }
   }
 }
