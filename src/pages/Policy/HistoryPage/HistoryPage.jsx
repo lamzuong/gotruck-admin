@@ -9,7 +9,12 @@ import MyPagination from '~/components/MyPagination/MyPagination';
 
 function HistoryPage() {
   const navigate = useNavigate();
-  const url = window.location.href.slice(21);
+  const urlNow = window.location.href.slice(21);
+  const arr = urlNow.split('/');
+  let url = '';
+  for (let i = 1; i < arr.length; i++) {
+    url += '/' + arr[i];
+  }
   const location = useLocation();
   const item = location.state;
   const [policy, setPolicy] = useState([]);

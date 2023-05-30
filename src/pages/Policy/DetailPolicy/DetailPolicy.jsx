@@ -16,8 +16,9 @@ const cx = classNames.bind(styles);
 
 function DetailPolicy() {
   const user = useSelector((state) => state.auth.user);
-  const url = window.location.href.slice(29);
-  const info = navigateToPolicy(url);
+  const url = window.location.href;
+  const arr = url.split('/');
+  const info = navigateToPolicy(arr[arr.length - 1]);
 
   const [policy, setPolicy] = useState([]);
   const [policyChoose, setPolicyChoose] = useState(null);
@@ -88,7 +89,9 @@ function DetailPolicy() {
       </Button>
       <HistoryButton
         header={info.header}
-        action={() => navigate(`/policy/history/${url}`, { state: { type: info.typePolicy } })}
+        action={() =>
+          navigate(`/policy/history/${info.typePolicy}`, { state: { type: info.typePolicy } })
+        }
       />
       {policy.length > 0 ? (
         policy.map(
