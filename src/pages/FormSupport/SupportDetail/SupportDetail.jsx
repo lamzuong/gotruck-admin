@@ -29,9 +29,9 @@ function SupportDetail() {
     const dataSend = item;
     dataSend.status = 'Đã tiếp nhận';
     dataSend.id_handler = user._id;
-    await formFeedbackAPI.put(dataSend);
+    const resAPI = await formFeedbackAPI.put(dataSend);
     const resFeedback = await formFeedbackAPI.getById(item._id);
-    if (resFeedback.id_handler !== user._id) {
+    if (resAPI.id_handler !== user._id) {
       alert('Đơn đã được xử lý bởi admin khác');
     } else {
       setItem(resFeedback);
