@@ -38,6 +38,9 @@ const Map = () => {
     let tempArray = [];
     for (i = 0; i < arrayLength; i += chunk_size) {
       let myChunk = myArray.slice(i, i + chunk_size);
+      if (i != 0) {
+        myChunk.unshift(myArray[i - 1]);
+      }
       tempArray.push(myChunk);
     }
     return tempArray;
@@ -65,7 +68,7 @@ const Map = () => {
   const getShipperRoute = async () => {
     const resOrder = await axiosClient.get('order/order/' + order._id);
     if (resOrder.shipper_route?.length > 1) {
-      let result = chunkArray(resOrder.shipper_route, 8);
+      let result = chunkArray(resOrder.shipper_route, 7);
       let routePolyTemp = [];
       for (let i = 0; i < result.length; i++) {
         const resultRoute = await getRouteManyLocation(
