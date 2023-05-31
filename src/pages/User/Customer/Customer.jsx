@@ -16,10 +16,15 @@ import { faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 import useDebounce from '~/hook/useDebounce';
 import customStyles from '~/pages/Order/OrderDetail/stylesModal';
 import ReactModal from 'react-modal';
+import notifyAPI from '~/api/notify';
+import { useSelector } from 'react-redux';
+import { socketClient } from '~/api/socket';
 
 const cx = classNames.bind(styles);
 
 function Customer() {
+  const user = useSelector((state) => state.auth.user);
+
   const status = ['Tất cả', 'Đang hoạt động', 'Đã khóa'];
 
   const [searchValue, setSearchValue] = useState('');
@@ -91,6 +96,21 @@ function Customer() {
 
   const handleBlock = async () => {
     await customerAPI.block(userConfirm.id_cus);
+    const dataSend = {
+      title: userConfirm.block ? 'Thông báo mở khóa tài khoản' : 'Thông báo khóa tài khoản',
+      content: userConfirm.block
+        ? 'Tài khoản của bạn đã được mở khóa'
+        : 'Tài khoản của bạn đã bị khóa',
+      image: [],
+      type_notify: 'Warning',
+      type_send: 'Specific',
+      id_handler: user._id,
+      id_receiver: userConfirm.id_cus,
+      userModel: 'Customer',
+    };
+    await notifyAPI.post(dataSend);
+    socketClient.emit('block_account', { id_receive: userConfirm._id });
+
     setShowConfirm(false);
     setRerender(!rerender);
   };

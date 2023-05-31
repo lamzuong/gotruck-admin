@@ -12,10 +12,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import ReactModal from 'react-modal';
 import customStyles from '~/pages/Order/OrderDetail/stylesModal';
+import notifyAPI from '~/api/notify';
+import { useSelector } from 'react-redux';
+import { socketClient } from '~/api/socket';
 
 const cx = classNames.bind(styles);
 
 function CustomerAccount() {
+  const user = useSelector((state) => state.auth.user);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,6 +35,19 @@ function CustomerAccount() {
 
   const handleBlock = async () => {
     await customerAPI.block(item.id_cus);
+    const dataSend = {
+      title: item.block ? 'Thông báo mở khóa tài khoản' : 'Thông báo khóa tài khoản',
+      content: item.block ? 'Tài khoản của bạn đã được mở khóa' : 'Tài khoản của bạn đã bị khóa',
+      image: [],
+      type_notify: 'Warning',
+      type_send: 'Specific',
+      id_handler: user._id,
+      id_receiver: item.id_cus,
+      userModel: 'Customer',
+    };
+    await notifyAPI.post(dataSend);
+    socketClient.emit('block_account', { id_receive: item._id });
+
     setShowConfirm(false);
     const res = await customerAPI.getCusById(item.id_cus);
     setItem(res);

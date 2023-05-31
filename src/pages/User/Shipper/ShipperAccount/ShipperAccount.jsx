@@ -18,6 +18,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import CurrencyInput from 'react-currency-input-field';
 import ReactModal from 'react-modal';
+import notifyAPI from '~/api/notify';
+import { socketClient } from '~/api/socket';
 
 const cx = classNames.bind(styles);
 
@@ -41,6 +43,19 @@ function ShipperAccount() {
 
   const handleBlock = async () => {
     await shipperAPI.block(item.id_shipper);
+    const dataSend = {
+      title: item.block ? 'Thông báo mở khóa tài khoản' : 'Thông báo khóa tài khoản',
+      content: item.block ? 'Tài khoản của bạn đã được mở khóa' : 'Tài khoản của bạn đã bị khóa',
+      image: [],
+      type_notify: 'Warning',
+      type_send: 'Specific',
+      id_handler: user._id,
+      id_receiver: item.id_shipper,
+      userModel: 'Shipper',
+    };
+    await notifyAPI.post(dataSend);
+    socketClient.emit('block_account', { id_receive: item._id });
+
     setShowConfirm(false);
     const res = await shipperAPI.getShipperById(item.id_shipper);
     setItem(res);
