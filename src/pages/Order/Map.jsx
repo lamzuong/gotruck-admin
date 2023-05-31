@@ -38,9 +38,11 @@ const Map = () => {
     let tempArray = [];
     for (i = 0; i < arrayLength; i += chunk_size) {
       let myChunk = myArray.slice(i, i + chunk_size);
+
       if (i != 0) {
         myChunk.unshift(myArray[i - 1]);
       }
+
       tempArray.push(myChunk);
     }
     return tempArray;
