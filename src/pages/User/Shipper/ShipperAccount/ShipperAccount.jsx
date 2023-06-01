@@ -151,14 +151,14 @@ function ShipperAccount() {
             />
             <div style={{ marginLeft: 10 }}>VNĐ</div>
           </div>
-          <Button
+          {/* <Button
             className={cx('button-unblock')}
             style={{ marginLeft: 140, marginTop: 10 }}
             color="success"
             onClick={() => handleRecharge()}
           >
             Nạp tiền
-          </Button>
+          </Button> */}
         </div>
       </Modal>
       <div className={cx('display-flex')}>
@@ -249,9 +249,9 @@ function ShipperAccount() {
               </Button>
             ) : (
               <>
-                <Button className={cx('button-unblock')} color="success" onClick={toggle}>
+                {/* <Button className={cx('button-unblock')} color="success" onClick={toggle}>
                   Nạp tiền
-                </Button>
+                </Button> */}
                 <Button
                   className={cx('button-block')}
                   color="danger"
